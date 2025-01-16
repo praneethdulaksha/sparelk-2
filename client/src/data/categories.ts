@@ -1,0 +1,17 @@
+export const allCategories: string[] = [
+    'Engine & Drivetrain',
+    'Brakes & Suspension',
+    'Wheels & Tires',
+    'Electrical Components',
+    'Body Parts & Mirrors',
+    'Lighting & Indicators',
+    'Interior Accessories',
+    'Exterior Accessories',
+    'Tools & Equipment',
+    'Fluids & Lubricants',
+    'Exhaust & Emission Systems',
+    'Cooling & Heating Systems',
+    'Fuel System Components',
+    'Transmission Parts',
+    'Safety & Security',
+];
