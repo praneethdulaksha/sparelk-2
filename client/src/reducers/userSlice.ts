@@ -9,7 +9,7 @@ type User = {
 
 type TUserInitialState = {
     loading: boolean;
-    isUserLoggedIn: boolean;
+    isUserAuthed: boolean;
     previousPage: string;
     user: User | null;
     error: string | null;
@@ -17,7 +17,7 @@ type TUserInitialState = {
 
 const initialState: TUserInitialState = {
     loading: false,
-    isUserLoggedIn: false,
+    isUserAuthed: false,
     previousPage: '/',
     user: null,
     error: null,
@@ -27,6 +27,12 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
+        login: (state, action) => {
+            state.isUserAuthed = true;
+            state.error = null;
+            state.user = action.payload;
+            state.loading = false;
+        },
         updateUser: (state, action) => {
             state.user = action.payload;
         },
@@ -44,7 +50,7 @@ const userSlice = createSlice({
         },
         logout: (state) => {
             state.loading = false;
-            state.isUserLoggedIn = false;
+            state.isUserAuthed = false;
             state.error = null;
             state.user = null;
         },
@@ -52,4 +58,4 @@ const userSlice = createSlice({
 })
 
 export default userSlice.reducer;
-export const {logout,updateUser, setPreviosPage, setAddress, setStore, setCreditCard} = userSlice.actions;
+export const userActions = userSlice.actions;

@@ -7,7 +7,7 @@ import Slide from './Slide';
 
 const Slider = () => {
     return (
-        <div className="w-screen h-[60vh]">
+        <div className="w-screen h-[80vh]">
             <Swiper
                 modules={[Navigation, Pagination, Autoplay]}
                 navigation
