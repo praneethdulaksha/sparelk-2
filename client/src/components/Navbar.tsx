@@ -1,19 +1,19 @@
-import React from 'react';
 import { FiUser, FiShoppingCart } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
     <nav className="bg-main flex items-center justify-between px-40 py-3 w-screen z-30">
       {/* Left section */}
       <div className="flex items-center space-x-4">
-        <div className="flex items-center space-x-1 text-black font-bold text-xl">
+        <Link to='/' className="flex items-center space-x-1 text-black font-bold text-xl hover:scale-105 hover:text-gray-800 duration-200">
           <span className="font-semibold">Spare.LK</span>
-        </div>
+        </Link>
       </div>
 
       {/* Center section */}
       <div className="flex items-center space-x-6 text-black">
-        <a href="#" className="hover:text-white">Home</a>
+        <Link to="/" className="hover:text-white">Home</Link>
         <div className="relative group">
           <a href="#" className="hover:text-white flex items-center">
             Shop <span className="ml-1 text-sm">&#9660;</span>
@@ -24,10 +24,10 @@ const Navbar = () => {
             <a href="#" className="block px-4 py-2 hover:bg-gray-200">Category 2</a>
           </div>
         </div>
-        <a href="#" className="hover:text-white">Blog</a>
-        <a href="#" className="hover:text-white">About Us</a>
-        <a href="#" className="hover:text-white">Gallery</a>
-        <a href="#" className="hover:text-white">Contacts</a>
+        <Link to="/blog" className="hover:text-white">Blog</Link>
+        <Link to="/aboutus" className="hover:text-white">About Us</Link>
+        <Link to="/gallery" className="hover:text-white">Gallery</Link>
+        <Link to="#footer" className="hover:text-white">Contacts</Link>
       </div>
 
       {/* Right section */}

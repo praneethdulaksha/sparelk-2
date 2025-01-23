@@ -1,17 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-type User = {
-    _id: string;
-    address: string;
-    store: string;
-    creditCard: string;
-}
+import { TUser } from "../types";
 
 type TUserInitialState = {
     loading: boolean;
     isUserAuthed: boolean;
     previousPage: string;
-    user: User | null;
+    user: TUser | null;
     error: string | null;
 }
 

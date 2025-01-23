@@ -4,20 +4,25 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import { Route, Routes } from 'react-router-dom'
 import AuthProvider from './components/auth/AuthProvider'
+import Item from './pages/Item'
 
 function App() {
 
   return (
-    <CookiesProvider>
-      <AuthProvider>
-        <Navbar />
-        {/* routes */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-        <Footer />
-      </AuthProvider>
-    </CookiesProvider>
+    <div className='flex flex-col min-h-screen items-center'>
+      <CookiesProvider>
+        <AuthProvider>
+          <Navbar />
+          {/* routes */}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/item/:itemId" element={<Item />} />
+          </Routes>
+          <Footer />
+        </AuthProvider>
+      </CookiesProvider>
+    </div>
+
   )
 }
 
