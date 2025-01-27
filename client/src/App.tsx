@@ -13,6 +13,7 @@ import MyOrders from './components/Profile/MyOrders'
 import SellerForm from './components/Profile/SellerForm'
 import ManageItems from './components/Profile/ManageItems'
 import AddItemForm from './components/Profile/AddItemForm'
+import Store from './pages/Store'
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
             <Route path="/item/:itemId" element={<Item />} />
             <Route path='/cart/place-order/:cartId' element={<PlaceOrder />} />
             <Route path='/item/place-order/:itemId/:qty' element={<PlaceOrder />} />
+            <Route path='store/:storeId' element={<Store />} />
             <Route path='profile' element={<Profile />}>
               <Route path='my-profile' element={<MyProfile />} />
               <Route path='my-orders' element={<MyOrders />} />
