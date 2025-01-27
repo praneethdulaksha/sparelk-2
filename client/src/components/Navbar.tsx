@@ -1,5 +1,4 @@
 import { faBoxOpen, faClipboardList, faLeftLong, faPlus, faStore, faUser } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { FiUser, FiShoppingCart, FiChevronDown } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';

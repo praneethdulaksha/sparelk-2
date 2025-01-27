@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBoxOpen, faClipboardList, faLeftLong, faPlus, faStore, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useCookies } from 'react-cookie';
 import { RootState } from '../store/store';
@@ -16,7 +15,7 @@ export default function Profile() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [cookies, setCookie, removeCookie] = useCookies(['user'])
+    const removeCookie = useCookies(['user'])[2]
 
     useEffect(() => {
         if (!user.isUserAuthed) {
@@ -58,7 +57,7 @@ export default function Profile() {
     }
 
     return (user.isUserAuthed && (
-        <main className="relative container xl:max-w-7xl flex flex-grow py-3 gap-3">
+        <main className="relative container xl:max-w-7xl flex flex-grow py-3 gap-3 min-h-svh">
             <div className='sticky top-0 w-64 bg-white rounded-lg items-start p-5 text-md text-zinc-500 hidden lg:block'>
                 <div className='sticky top-10 w-full h-fit flex flex-col gap-3 text-sm text-gray-700'>
                     {
