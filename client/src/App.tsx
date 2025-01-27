@@ -8,6 +8,7 @@ import Item from './pages/Item'
 import Cart from './pages/Cart'
 import PlaceOrder from './pages/Order'
 import Profile from './pages/Profile'
+import MyProfile from './components/Profile/MyProfile'
 
 function App() {
 
@@ -25,10 +26,10 @@ function App() {
             <Route path='/item/place-order/:itemId/:qty' element={<PlaceOrder />} />
             <Route path='profile' element={<Profile />}>
               <Route path='my-profile' element={<MyProfile />} />
-              <Route path='my-orders' element={<MyOrders />} />
+              {/* <Route path='my-orders' element={<MyOrders />} />
               <Route path='seller-form' element={<SellerForm />} />
               <Route path='manage-items' element={<ManageItems />} />
-              <Route path='add-item/:itemId' element={<AddItemForm />} />
+              <Route path='add-item/:itemId' element={<AddItemForm />} /> */}
             </Route>
           </Routes>
           <Footer />
