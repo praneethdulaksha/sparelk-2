@@ -1,9 +1,25 @@
+import { faBoxOpen, faClipboardList, faLeftLong, faPlus, faStore, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { FiUser, FiShoppingCart, FiChevronDown } from 'react-icons/fi';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { RootState } from '../store/store';
+import { userActions } from '../reducers/userSlice';
+import Li from './Li';
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useSelector((state: RootState) => state.user)
+
+  const dispatch = useDispatch();
+
+  const logoutAlert = () => {
+    if (window.confirm('Are you sure you want to log out?')) {
+      localStorage.removeItem('user');
+      dispatch(userActions.logout());
+    }
+  }
 
   return (
     <nav className="bg-main flex items-center justify-between px-40 py-3 w-screen z-30">
@@ -39,16 +55,29 @@ const Navbar = () => {
         <div
           onMouseOver={() => setIsMenuOpen(true)}
           onMouseOut={() => setIsMenuOpen(false)}
-          className="flex items-center gap-2 cursor-pointer relative"
+          className="flex items-center gap-2 cursor-pointer relative border-l-2 border-gray-700 pl-2"
         >
           <FiUser className="text-black h-6 w-6 hover:text-gray-800 cursor-pointer" />
           <span className="text-base text-gray-800">Welcome, <b>Dilshan!</b></span>
           <FiChevronDown className='' />
 
           {
-            isMenuOpen && (
-              <div className="absolute bg-yellow-300 shadow-md w-64 p-2 rounded-md top-[100%] right-0">
-                <Li to='/cart'>Cart</Li>
+            isMenuOpen && user && (
+              <div className="absolute bg-yellow-300 shadow-md w-64 p-2 rounded-md top-[100%] right-0 left-0 m-auto">
+                <Li to="/profile/my-profile" icon={faUser}>My Profile</Li>
+                <Li to="/profile/my-orders" icon={faBoxOpen}>Orders</Li>
+                <Li to="/profile/seller-form" icon={faStore}>{user.store ? 'Store Profile' : 'Be a Seller'}</Li>
+                {user.store && <>
+                  <Li to="/profile/manage-items" icon={faClipboardList}>Manage Items</Li>
+                  <Li to="/profile/add-item/new" icon={faPlus}>Add a Item</Li>
+                </>}
+                <Li
+                  to='/'
+                  icon={faLeftLong}
+                  onClick={() => {
+                    logoutAlert();
+                  }}
+                >Log Out</Li>
               </div>
             )
           }
@@ -57,21 +86,5 @@ const Navbar = () => {
     </nav>
   );
 };
-
-type LiProps = {
-  to: string,
-  children: React.ReactNode,
-}
-
-function Li({ children, to }: LiProps) {
-  return (
-    <Link
-      to={to}
-      className="block px-4 py-2 hover:bg-yellow-500 text-gray-700 hover:text-black rounded"
-    >
-      {children}
-    </Link>
-  )
-}
 
 export default Navbar;

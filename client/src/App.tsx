@@ -7,6 +7,7 @@ import AuthProvider from './components/auth/AuthProvider'
 import Item from './pages/Item'
 import Cart from './pages/Cart'
 import PlaceOrder from './pages/Order'
+import Profile from './pages/Profile'
 
 function App() {
 
@@ -22,6 +23,13 @@ function App() {
             <Route path="/item/:itemId" element={<Item />} />
             <Route path='/cart/place-order/:cartId' element={<PlaceOrder />} />
             <Route path='/item/place-order/:itemId/:qty' element={<PlaceOrder />} />
+            <Route path='profile' element={<Profile />}>
+              <Route path='my-profile' element={<MyProfile />} />
+              <Route path='my-orders' element={<MyOrders />} />
+              <Route path='seller-form' element={<SellerForm />} />
+              <Route path='manage-items' element={<ManageItems />} />
+              <Route path='add-item/:itemId' element={<AddItemForm />} />
+            </Route>
           </Routes>
           <Footer />
         </AuthProvider>
