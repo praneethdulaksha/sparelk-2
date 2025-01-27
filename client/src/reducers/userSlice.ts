@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TUser } from "../types";
+import { testUser } from "../data/user";
 
 type TUserInitialState = {
     loading: boolean;
@@ -11,9 +12,9 @@ type TUserInitialState = {
 
 const initialState: TUserInitialState = {
     loading: false,
-    isUserAuthed: false,
+    isUserAuthed: true,
     previousPage: '/',
-    user: null,
+    user: testUser,
     error: null,
 }
 
@@ -26,6 +27,9 @@ const userSlice = createSlice({
             state.error = null;
             state.user = action.payload;
             state.loading = false;
+        },
+        setUser: (state, action) => {
+            state.user = action.payload
         },
         updateUser: (state, action) => {
             state.user = action.payload;

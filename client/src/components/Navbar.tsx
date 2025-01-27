@@ -1,7 +1,10 @@
-import { FiUser, FiShoppingCart } from 'react-icons/fi';
+import { useState } from 'react';
+import { FiUser, FiShoppingCart, FiChevronDown } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
+
   return (
     <nav className="bg-main flex items-center justify-between px-40 py-3 w-screen z-30">
       {/* Left section */}
@@ -32,11 +35,43 @@ const Navbar = () => {
 
       {/* Right section */}
       <div className="flex items-center space-x-4">
-        <FiUser className="text-black h-6 w-6 hover:text-gray-800 cursor-pointer" />
-        <FiShoppingCart className="text-black h-6 w-6 hover:text-gray-800 cursor-pointer" />
+        <Link to='cart'><FiShoppingCart className="text-black h-6 w-6 hover:text-gray-800 cursor-pointer hover:scale-105 hover:rotate-6 duration-75" /></Link>
+        <div
+          onMouseOver={() => setIsMenuOpen(true)}
+          onMouseOut={() => setIsMenuOpen(false)}
+          className="flex items-center gap-2 cursor-pointer relative"
+        >
+          <FiUser className="text-black h-6 w-6 hover:text-gray-800 cursor-pointer" />
+          <span className="text-base text-gray-800">Welcome, <b>Dilshan!</b></span>
+          <FiChevronDown className='' />
+
+          {
+            isMenuOpen && (
+              <div className="absolute bg-yellow-300 shadow-md w-64 p-2 rounded-md top-[100%] right-0">
+                <Li to='/cart'>Cart</Li>
+              </div>
+            )
+          }
+        </div>
       </div>
     </nav>
   );
 };
+
+type LiProps = {
+  to: string,
+  children: React.ReactNode,
+}
+
+function Li({ children, to }: LiProps) {
+  return (
+    <Link
+      to={to}
+      className="block px-4 py-2 hover:bg-yellow-500 text-gray-700 hover:text-black rounded"
+    >
+      {children}
+    </Link>
+  )
+}
 
 export default Navbar;

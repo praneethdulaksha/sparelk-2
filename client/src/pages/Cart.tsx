@@ -34,6 +34,7 @@ function Cart() {
     }
 
     async function onCheckout() {
+        // navigate('/cart/place-order/' + cart.cartId)
         if (await updateCart()) {
             console.log(items);
             navigate('/cart/place-order/' + cart.cartId)
