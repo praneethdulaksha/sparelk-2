@@ -10,7 +10,7 @@ class UserController {
     async register(user: IUser): Promise<{ user: IUser; cart: any; store: any | null }> {
         try {
             const data = await new User(user).save();
-            const cart = await Cart.save({ userId: data._id, items: [] });
+            const cart = await Cart.save({ userId: data._id, items: [] } as any);
             const store = null; // Assuming store is null when registering a user
             return { user: data, cart: cart, store: store };
         } catch (err) {
