@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-interface IStore extends Document {
+export interface IStore extends Document {
     name: string;
     address: string;
     email: string;

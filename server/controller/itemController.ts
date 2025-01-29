@@ -1,29 +1,29 @@
-import Item from '../models/itemModel';
+import Item, { IItem } from '../models/itemModel';
 import Cart from '../controller/cartController';
 import deleteImage from '../util/utilMatters';
 
 class ItemModel {
-    async getAll(): Promise<ItemModel[]> {
+    async getAll(): Promise<IItem[]> {
         return Item.find({ isActive: true, stock: { $gte: 1 } });
     }
 
-    async getItem(id: string): Promise<ItemModel | null> {
+    async getItem(id: string): Promise<IItem | null> {
         return Item.findById(id).populate('store', 'name');
     }
 
-    async getDiscounts(): Promise<ItemModel[]> {
+    async getDiscounts(): Promise<IItem[]> {
         return Item.find({ discount: { $gte: 20 }, stock: { $gte: 1 }, isActive: true });
     }
 
-    async getByCategory(category: string): Promise<ItemModel[]> {
+    async getByCategory(category: string): Promise<IItem[]> {
         return Item.find({ category: category, stock: { $gte: 1 }, isActive: true });
     }
 
-    async getStoreItems(storeId: string): Promise<ItemModel[]> {
+    async getStoreItems(storeId: string): Promise<IItem[]> {
         return Item.find({ store: storeId });
     }
 
-    async getByName(keyword: string): Promise<ItemModel[]> {
+    async getByName(keyword: string): Promise<IItem[]> {
         return Item.find({ name: { $regex: keyword, $options: 'i' } });
     }
 
