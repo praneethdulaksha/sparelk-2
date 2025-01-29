@@ -1,4 +1,3 @@
-import React from "react";
 import { FiMapPin, FiPhone, FiMail } from "react-icons/fi";
 import {
   FaFacebookF,
@@ -10,7 +9,7 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-dark text-white py-10 w-screen mt-20">
+    <footer id="footer" className="bg-dark text-white py-10 w-screen mt-20">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-4 gap-8">
         {/* Left Column - Logo and Contact Info */}
         <div className="flex flex-col gap-2">

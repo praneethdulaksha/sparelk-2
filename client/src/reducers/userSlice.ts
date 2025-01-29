@@ -1,25 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-type User = {
-    _id: string;
-    address: string;
-    store: string;
-    creditCard: string;
-}
+import { TUser } from "../types";
+import { testUser } from "../data/user";
 
 type TUserInitialState = {
     loading: boolean;
     isUserAuthed: boolean;
     previousPage: string;
-    user: User | null;
+    user: TUser | null;
     error: string | null;
 }
 
 const initialState: TUserInitialState = {
     loading: false,
-    isUserAuthed: false,
+    isUserAuthed: true,
     previousPage: '/',
-    user: null,
+    user: testUser,
     error: null,
 }
 
@@ -32,6 +27,9 @@ const userSlice = createSlice({
             state.error = null;
             state.user = action.payload;
             state.loading = false;
+        },
+        setUser: (state, action) => {
+            state.user = action.payload
         },
         updateUser: (state, action) => {
             state.user = action.payload;
