@@ -45,11 +45,11 @@ export interface TUser {
 }
 
 export interface TStore {
-    _id: "661a3f15cf8939470178430b",
-    name: "TechLK",
-    address: "12/B, Lake Road, Colombo",
-    email: "tgdilshanrangaka2002@gmail.com",
-    phone: "+94771234567",
-    image: "1712996117960-abstract-blue-extruded-voronoi-b.jpg",
-    userId: "661a3e95cf893947017842fc",
+    _id: string,
+    name: string,
+    address: string,
+    email: string,
+    phone: string,
+    image: string,
+    userId: string,
 }

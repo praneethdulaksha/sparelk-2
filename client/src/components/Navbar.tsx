@@ -31,21 +31,9 @@ const Navbar = () => {
 
       {/* Center section */}
       <div className="flex items-center space-x-6 text-black">
-        <Link to="/" className="hover:text-white">Home</Link>
-        <div className="relative group">
-          <a href="/shop" className="hover:text-white flex items-center">
-            Shop
-          </a>
-          {/* Dropdown menu */}
-          {/* <div className="absolute hidden group-hover:block bg-white text-black shadow-md mt-1 py-2 rounded">
-            <a href="#" className="block px-4 py-2 hover:bg-gray-200">Category 1</a>
-            <a href="#" className="block px-4 py-2 hover:bg-gray-200">Category 2</a>
-          </div> */}
-        </div>
-        <Link to="/blog" className="hover:text-white">Blog</Link>
-        <Link to="/aboutus" className="hover:text-white">About Us</Link>
-        <Link to="/gallery" className="hover:text-white">Gallery</Link>
-        <Link to="#footer" className="hover:text-white">Contacts</Link>
+        <Link to="/" className="font-semibold text-gray-800 hover:text-black">Home</Link>
+        <Link to="/shop" className="font-semibold text-gray-800 hover:text-black">Shop</Link>
+        <a href="#footer" className="font-semibold text-gray-800 hover:text-black">Contacts</a>
       </div>
 
       {/* Right section */}

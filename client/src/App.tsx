@@ -15,6 +15,8 @@ import ManageItems from './components/Profile/ManageItems'
 import AddItemForm from './components/Profile/AddItemForm'
 import Store from './pages/Store'
 import Shop from './pages/Shop'
+import AboutUs from './pages/AboutUs'
+import ChatBot from './components/ChatBot'
 
 function App() {
 
@@ -28,6 +30,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/shop" element={<Shop />} />
+            <Route path="/aboutus" element={<AboutUs />} />
             <Route path="/item/:itemId" element={<Item />} />
             <Route path='/cart/place-order/:cartId' element={<PlaceOrder />} />
             <Route path='/item/place-order/:itemId/:qty' element={<PlaceOrder />} />
@@ -40,6 +43,7 @@ function App() {
               <Route path='add-item/:itemId' element={<AddItemForm />} />
             </Route>
           </Routes>
+          <ChatBot/>
           <Footer />
         </AuthProvider>
       </CookiesProvider>
