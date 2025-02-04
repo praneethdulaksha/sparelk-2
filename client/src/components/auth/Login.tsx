@@ -4,6 +4,7 @@ import Input from './Input';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { userActions } from '../../reducers/userSlice';
+import { testUser } from '../../data/user';
 
 type Props = {
     setIsLogin: (arg: boolean) => void;
@@ -17,12 +18,7 @@ export default function Login({ setIsLogin }: Props) {
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
-        dispatch(userActions.login({
-            _id: 'alksjdflkjdsfjslkdfj',
-            address: '123 Main St',
-            store: 'SpareLK',
-            creditCard: '1234-5678-9012-3456',
-        }));
+        dispatch(userActions.login(testUser));
     };
 
     return (

@@ -33,14 +33,14 @@ const Navbar = () => {
       <div className="flex items-center space-x-6 text-black">
         <Link to="/" className="hover:text-white">Home</Link>
         <div className="relative group">
-          <a href="#" className="hover:text-white flex items-center">
-            Shop <span className="ml-1 text-sm">&#9660;</span>
+          <a href="/shop" className="hover:text-white flex items-center">
+            Shop
           </a>
           {/* Dropdown menu */}
-          <div className="absolute hidden group-hover:block bg-white text-black shadow-md mt-1 py-2 rounded">
+          {/* <div className="absolute hidden group-hover:block bg-white text-black shadow-md mt-1 py-2 rounded">
             <a href="#" className="block px-4 py-2 hover:bg-gray-200">Category 1</a>
             <a href="#" className="block px-4 py-2 hover:bg-gray-200">Category 2</a>
-          </div>
+          </div> */}
         </div>
         <Link to="/blog" className="hover:text-white">Blog</Link>
         <Link to="/aboutus" className="hover:text-white">About Us</Link>
@@ -57,7 +57,7 @@ const Navbar = () => {
           className="flex items-center gap-2 cursor-pointer relative border-l-2 border-gray-700 pl-2"
         >
           <FiUser className="text-black h-6 w-6 hover:text-gray-800 cursor-pointer" />
-          <span className="text-base text-gray-800">Welcome, <b>Dilshan!</b></span>
+          <span className="text-base text-gray-800">Welcome, <b>{user?.firstName}</b></span>
           <FiChevronDown className='' />
 
           {
