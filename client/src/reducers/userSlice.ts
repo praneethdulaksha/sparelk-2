@@ -12,9 +12,9 @@ type TUserInitialState = {
 
 const initialState: TUserInitialState = {
     loading: false,
-    isUserAuthed: true,
+    isUserAuthed: false,
     previousPage: '/',
-    user: testUser,
+    user: null,
     error: null,
 }
 

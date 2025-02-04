@@ -6,6 +6,7 @@ import { api } from '../api/api';
 import { userActions } from '../reducers/userSlice';
 import { cartActions } from '../reducers/cartSlice';
 import CartItem from '../components/cart/CartItem';
+import { FiInfo } from 'react-icons/fi';
 
 function Cart() {
     const navigate = useNavigate();
@@ -16,78 +17,58 @@ function Cart() {
     const items = useSelector((state: RootState) => state.cart.cartItems);
     const cart = useSelector((state: RootState) => state.cart);
 
-    const [total, setTotal] = useState(0)
-
-    useEffect(() => {
-        if (!user.isUserAuthed) {
-            dispatch(userActions.setPreviosPage(location.pathname));
-            navigate('/login');
-        } else {
-            getCartItems();
-        }
-    }, [])
-
-    async function updateCart() {
-        const respond = await api.put(`cart/items/${cart.cartId}`, items);
-        console.log(respond.data.data);
-        return true;
-    }
-
-    async function onCheckout() {
-        // navigate('/cart/place-order/' + cart.cartId)
-        if (await updateCart()) {
-            console.log(items);
-            navigate('/cart/place-order/' + cart.cartId)
-        }
-    }
-
-    const getCartItems = () => {
-        api.get('cart/' + user.user?._id).then(result => {
-            console.log(result.data.data);
-            dispatch(cartActions.addToCart(result.data.data.items));
-        }).catch(err => console.log(err));
-    }
-
-    function updateTotal(tot: number) {
-        setTotal(prevTotal => prevTotal + tot);
-    }
-
     return (
-        <main className="container xl:max-w-7xl flex-grow py-3 px-2 md:px-0">
-            <h2 className="my-3 text-2xl md:text-4xl">Shoping Cart({cart.itemsCount})</h2>
+        <div className="container xl:max-w-7xl flex-grow py-3 mt-12 min-h-svh">
+      <h2 className="text-gray-800 mt-10 mb-3">Shopping Cart (5)</h2>
 
-            <div className="flex gap-3 w-full flex-col lg:flex-row">
-                <div className='flex flex-grow flex-col gap-3 lg:w-2/3'>
-                    {
-                        items?.map((item, i) => {
-                            return <CartItem key={i} cartItem={item} setTotal={updateTotal} />
-                        })
-                    }
-                </div>
+      <div className="grid grid-cols-3 gap-28">
+        <div className="col-span-2 space-y-5">
+          {new Array(5).fill(null).map((i) => (
+            <CartItem />
+          ))}
+        </div>
 
-                <div className='lg:w-1/3'>
-                    <div className='flex flex-col bg-pane-color rounded-2xl p-3 w-full'>
-                        <h3 className='text-2xl md:text-4xl'>Order Summery</h3>
-                        <div className='flex justify-between items-center mt-8'>
-                            <h5 className='text-zinc-500'>Subtotal ({cart.itemsCount} items)</h5>
-                            <h5 className=''>Rs. {parseFloat(total.toFixed(2))}</h5>
-                        </div>
-                        <div className='flex justify-between items-center mt-3'>
-                            <h5 className='text-zinc-500'>Delivery Fee</h5>
-                            <h5 className=''>Rs. 100</h5>
-                        </div>
-                        <div className='flex justify-between items-center mt-8'>
-                            <h4>Total</h4>
-                            <h4 className='text-price-color'>Rs. {parseFloat(total.toFixed(2)) + 100.00}</h4>
-                        </div>
-                        <button className='bg-navbar rounded-2xl w-64 h-12 self-center mt-8'
-                            onClick={onCheckout}
-                        >Checkout</button>
-                    </div>
-                </div>
-
+        <div className="relative">
+          <div className="sticky top-16">
+            <h6 className="font-bold text-lg text-gray-700">Order Summary</h6>
+            <div className="flex justify-between items-center border-b py-4 border-gray-500">
+              <p className="text-gray-600">Subtotoal</p>
+              <p className="text-gray-800 font-semibold">$249.00</p>
             </div>
-        </main>
+            <div className="flex justify-between items-center border-b py-4 border-gray-500">
+              <p className="text-gray-600">Shipping estimate</p>
+              <p className="text-gray-800 font-semibold">$5.00</p>
+            </div>
+            <div className="flex justify-between items-center border-b py-4 border-gray-500">
+              <p className="text-gray-600">Tax estimate</p>
+              <p className="text-gray-800 font-semibold">$24.00</p>
+            </div>
+            <div className="flex justify-between items-center py-4">
+              <p className="text-gray-600 font-semibold">Order Total</p>
+              <p className="text-gray-800 font-semibold">$276.00</p>
+            </div>
+            <button
+              type="button"
+              className="w-full h-12 text-xl bg-gray-800 text-gray-200 rounded-3xl mt-3 hover:bg-gray-950 duration-300 ease-in-out"
+            >
+              Checkout
+            </button>
+            <p className="flex items-center text-sm text-gray-500 justify-center mt-4 gap-1">
+              <FiInfo className="mr-2" />
+              Learn more{" "}
+              <b>
+                <u>Taxes</u>
+              </b>{" "}
+              and{" "}
+              <b>
+                <u>Shipping</u>
+              </b>{" "}
+              infomation
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
     )
 }
 

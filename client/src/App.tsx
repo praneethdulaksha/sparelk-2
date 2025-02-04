@@ -14,6 +14,7 @@ import SellerForm from './components/Profile/SellerForm'
 import ManageItems from './components/Profile/ManageItems'
 import AddItemForm from './components/Profile/AddItemForm'
 import Store from './pages/Store'
+import Shop from './pages/Shop'
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/shop" element={<Shop />} />
             <Route path="/item/:itemId" element={<Item />} />
             <Route path='/cart/place-order/:cartId' element={<PlaceOrder />} />
             <Route path='/item/place-order/:itemId/:qty' element={<PlaceOrder />} />
