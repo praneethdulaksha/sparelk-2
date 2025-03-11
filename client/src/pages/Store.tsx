@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,24 +5,36 @@ import { faCircleInfo, faSquareEnvelope, faSquarePhoneFlip, faSquarePollHorizont
 import { TStore } from '../types';
 import ItemCard from '../components/ItemCard';
 import { items as testItems } from '../data/items';
+import { api } from '../api/api';
 
 export default function Store() {
     const param = useParams();
     const storeId = param.storeId;
 
-    const [store, setStore] = useState<TStore>({
-        _id: "661a3f15cf8939470178430b",
-        name: "TechLK",
-        address: "12/B, Lake Road, Colombo",
-        email: "praneethdulaksha@gmail.com",
-        phone: "+94771234567",
-        image: "1712996117960-abstract-blue-extruded-voronoi-b.jpg",
-        userId: "661a3e95cf893947017842fc",
-    });
+    if (!storeId) return null;
+
+    const [store, setStore] = useState<TStore | null>();
     const [items, setItems] = useState(testItems);
     const [isStoreInfoOpen, setIsStoreInfoOpen] = useState(false);
 
-    return (
+    useEffect(() => {
+        getStoreData(storeId);
+    }, [])
+
+    const getStoreData = (storeId: string) => {
+        api.get('store/' + storeId).then(response => {
+            setStore(response.data.data);
+            getStoreItems(storeId);
+        }).catch(err => console.log(err));
+    }
+
+    const getStoreItems = (storeId: string) => {
+        api.get('item/store/' + storeId).then(response => {
+            setItems(response.data.data);
+        }).catch(err => console.log(err));
+    }
+
+    return store && (
         <main className="container xl:max-w-7xl flex-grow py-5">
             <div>
                 <div className='bg-gray-600 text-white'>

@@ -9,6 +9,7 @@ export type TItem = {
     category: string;
     sold: number;
     stock: number;
+    isActive: boolean;
     store: {
         _id: string;
         store: string;
