@@ -29,6 +29,42 @@ function Item() {
     const [itemQty, setItemQty] = useState(1);
     const [items, setAllItems] = useState([]);
 
+    function getItemRequest() {
+        api.get('item/' + itemId).then(result => {
+            setItem(result.data.data)
+            console.log(result.data.data)
+        }).catch(err => console.log(err));
+    }
+
+    function getAllItems() {
+        api.get('item/all').then(result => {
+            setAllItems(result.data.data)
+        }).catch(err => console.log(err));
+    }
+
+    function addItemCart() {
+        api.put(`cart/add/${user.user?.cart._id}`, { itemId: itemId, qty: itemQty }).then(result => {
+            console.log(result.data.data);
+            dispatch(cartActions.addItemToCart({ itemId: itemId, qty: itemQty }))
+            addedToCartAlert();
+        }).catch(err => console.log(err));
+    }
+
+    const addedToCartAlert = () => {
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Item Added to Cart",
+            showConfirmButton: true,
+            confirmButtonText: "View Cart",
+            timer: 3000
+        }).then(result => {
+            if (result.isConfirmed) {
+                navigate(`/cart`);
+            }
+        })
+    }
+
     useEffect(() => {
         window.scrollTo({ top: 0 });
     }, [params.itemId])

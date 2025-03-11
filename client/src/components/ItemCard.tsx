@@ -20,7 +20,7 @@ export default function ItemCard({itm}: Props) {
       navigate(`/item/${itm._id}`)
     }}
     >
-      <div className='aspect-square w-full bg-cover bg-center' style={{ backgroundImage: `url(${item.image})` }}></div>
+      <div className='aspect-square w-full bg-cover bg-center' style={{ backgroundImage: `url(http://localhost:3000/images/${item.image})` }}></div>
       <h6 className='text-sm text-gray-500 mx-3 mt-3'>{item.category}</h6>
       <h6 className=" mx-3 truncate text-lg">{item.name}</h6>
       {(item.discount != 0) && <span className="mx-3 mt-1 text-gray-400">

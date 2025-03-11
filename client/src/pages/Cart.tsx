@@ -9,23 +9,70 @@ import CartItem from '../components/cart/CartItem';
 import { FiInfo } from 'react-icons/fi';
 
 function Cart() {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
 
-    const user = useSelector((state: RootState) => state.user);
-    const items = useSelector((state: RootState) => state.cart.cartItems);
-    const cart = useSelector((state: RootState) => state.cart);
+  const { user, isUserAuthed } = useSelector((state: RootState) => state.user);
+  const items = useSelector((state: RootState) => state.cart.cartItems);
+  const cart = useSelector((state: RootState) => state.cart);
 
-    return (
-        <div className="container xl:max-w-7xl flex-grow py-3 mt-12 min-h-svh">
+  const [total, setTotal] = useState(0)
+
+  useEffect(() => {
+    if (isUserAuthed) {
+      dispatch(userActions.setPreviosPage(location.pathname));
+      navigate('/login');
+    } else {
+      getCartItems();
+    }
+  }, [])
+
+  const updateCart = async () => {
+    try {
+      const res = await api.put(`items/${cart.cartId}`, items);
+      if (res.status === 200) {
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.log('Failed to update cart:', err);
+      return false;
+    }
+  }
+
+  const getCartItems = () => {
+    api.get('cart/' + user!._id).then(result => {
+      console.log(result.data.data);
+      dispatch(cartActions.addToCart(result.data.data.items));
+    }).catch(err => console.log(err));
+  }
+
+  function updateTotal(tot: number) {
+    setTotal(prevTotal => prevTotal + tot);
+  }
+
+  const handleCheckout = () => {
+    updateCart().then(res => {
+      if (res) {
+        navigate('/checkout');
+      } else {
+        alert('Failed to update cart. Please try again.');
+      }
+    });
+  }
+
+  return (
+    <div className="container xl:max-w-7xl flex-grow py-3 mt-12 min-h-svh">
       <h2 className="text-gray-800 mt-10 mb-3">Shopping Cart (5)</h2>
 
       <div className="grid grid-cols-3 gap-28">
         <div className="col-span-2 space-y-5">
-          {new Array(5).fill(null).map((i) => (
-            <CartItem />
-          ))}
+          {
+            items.map((item) => (
+              <CartItem cartItem={item} setTotal={updateTotal} />
+            ))
+          }
         </div>
 
         <div className="relative">
@@ -50,6 +97,7 @@ function Cart() {
             <button
               type="button"
               className="w-full h-12 text-xl bg-gray-800 text-gray-200 rounded-3xl mt-3 hover:bg-gray-950 duration-300 ease-in-out"
+              onClick={handleCheckout}
             >
               Checkout
             </button>
@@ -69,7 +117,7 @@ function Cart() {
         </div>
       </div>
     </div>
-    )
+  )
 }
 
 export default Cart
