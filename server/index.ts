@@ -17,7 +17,7 @@ import userRoute from "./routes/userRoute";
 import itemRoute from "./routes/itemRoute";
 import cartRoute from "./routes/cartRoute";
 import storeRoute from "./routes/storeRoute";
-// import orderRoute from "./routes/orderRoute";
+import orderRoute from "./routes/orderRoute";
 
 const app = express();
 const port: number = 3000;
@@ -47,7 +47,7 @@ app.use("/sparelk/api/v1/user",userRoute);
 app.use("/sparelk/api/v1/item", verifyToken, itemRoute);
 app.use("/sparelk/api/v1/cart", verifyToken, cartRoute);
 app.use("/sparelk/api/v1/store", verifyToken, storeRoute);
-// app.use("/order", orderRoute);
+app.use("/sparelk/api/v1/order", verifyToken, orderRoute);
 
 mongoose
   .connect(uri)
