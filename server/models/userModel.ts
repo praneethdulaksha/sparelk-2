@@ -13,11 +13,17 @@ export interface ICreditCard {
     cvv: string;
 }
 
+export enum ERole {
+    BUYER = "buyer",
+    SELLER = "seller"
+}
+
 export interface IUser extends Document {
     firstName: string;
     lastName: string;
     email: string;
     password: string;
+    role: ERole;
     phone?: string;
     address?: IAddress | null;
     creditCard?: ICreditCard | null;
@@ -28,6 +34,7 @@ const UserSchema: Schema = new Schema({
     lastName: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
+    role: { type: String, required: true, enum: ERole },
     phone: { type: String, required: false },
     address: {
         type: new Schema({
