@@ -161,8 +161,8 @@ function PlaceOrder() {
                     <div className='bg-pane-color p-3 rounded-2xl'>
                         <h5 className=' text-3xl md:text-4xl'>Order Information</h5>
                         {
-                            orderItems?.map((oItem: any, i: number) => {
-                                return <OrderItem key={i} oItem={oItem} index={i} setTotal={setTotal} setOrderItemTotal={setOrderItemTotal} />
+                            new Array(2).fill(null).map((oItem: any, i: number) => {
+                                return <OrderItem key={i} oItem={{} as any} index={i} setTotal={setTotal} setOrderItemTotal={setOrderItemTotal} />
                             })
                         }
                         <div className='flex items-center justify-end mt-8 mr-2'>
