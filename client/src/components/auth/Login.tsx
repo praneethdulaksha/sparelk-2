@@ -4,7 +4,6 @@ import Input from './Input';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { userActions } from '../../reducers/userSlice';
-import { testUser } from '../../data/user';
 import { api } from '../../api/api';
 import { cartActions } from '../../reducers/cartSlice';
 import Swal from 'sweetalert2';

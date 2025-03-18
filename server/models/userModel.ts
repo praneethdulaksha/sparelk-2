@@ -15,7 +15,8 @@ export interface ICreditCard {
 
 export enum ERole {
     BUYER = "buyer",
-    SELLER = "seller"
+    SELLER = "seller",
+    ADMIN = "admin"
 }
 
 export interface IUser extends Document {
@@ -24,18 +25,24 @@ export interface IUser extends Document {
     email: string;
     password: string;
     role: ERole;
+    verified: boolean;
+    authCode: number;
+    authCodeExpiration: number;
     phone?: string;
     address?: IAddress | null;
     creditCard?: ICreditCard | null;
 }
 
-const UserSchema: Schema = new Schema({
+const UserSchema: Schema = new Schema<IUser>({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
     role: { type: String, enum: ERole, default: ERole.BUYER },
     phone: { type: String, required: false },
+    verified: { type: Boolean, default: false },
+    authCode: { type: Number, required: false, default: -1 },
+    authCodeExpiration: { type: Number, required: false, default: -1 },
     address: {
         type: new Schema({
             no: { type: String, required: true },

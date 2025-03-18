@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import { motion } from 'framer-motion';
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import Login from "./Login";
@@ -16,14 +15,9 @@ export default function AuthProvider({ children }: Props) {
 
     if (isUserAuthed) {
         return (
-            <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -50 }}
-                className="w-screen flex flex-col items-center"
-            >
+            <div className="w-screen flex-grow flex flex-col items-center">
                 {children}
-            </motion.div>
+            </div>
         );
     }
 

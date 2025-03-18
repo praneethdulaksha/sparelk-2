@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -57,7 +56,7 @@ function Item({ itm, setItems }: any) {
 
     const handleDelete = () => {
         api.delete('item/' + item._id)
-            .then(res => {
+            .then(_ => {
                 setItems((prevItems: TItem[]) => prevItems.filter(item => item._id !== itm._id));
                 dispatch(cartActions.removeFromCart({ itemId: item._id }))
             })
@@ -66,7 +65,7 @@ function Item({ itm, setItems }: any) {
 
     const handleActive = () => {
         api.put('item/active/' + item._id)
-            .then(res => {
+            .then(_ => {
                 setItem({ ...item, isActive: !item.isActive });
             })
             .catch(err => console.log(err));

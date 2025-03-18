@@ -38,6 +38,9 @@ export interface TUser {
     password: string;
     role: EUserRole;
     phone?: string;
+    verified: boolean;
+    authCode: number;
+    authCodeExpiration: number;
     address?: TAddress | null;
     creditCard?: TCreditCard | null;
     createdAt?: Date;
@@ -59,4 +62,5 @@ export interface TStore {
 export enum EUserRole {
     SELLER = 'seller',
     BUYER = 'buyer',
+    ADMIN = 'admin',
 }

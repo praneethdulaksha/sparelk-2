@@ -17,34 +17,57 @@ import Store from './pages/Store'
 import Shop from './pages/Shop'
 import AboutUs from './pages/AboutUs'
 import ChatBot from './components/ChatBot'
+import { EUserRole } from './types'
+import Admin from './pages/Admin'
 
 function App() {
+  // const { user, isUserAuthed } = useSelector((root: RootState) => root.user);
+
+  const user = { role: EUserRole.SELLER }
 
   return (
-    <div className='flex flex-col min-h-screen items-center'>
+    <div className='flex flex-col min-h-screen h-screen items-center'>
       <CookiesProvider>
         <AuthProvider>
           <Navbar />
           {/* routes */}
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/aboutus" element={<AboutUs />} />
-            <Route path="/item/:itemId" element={<Item />} />
-            <Route path='/cart/place-order/:cartId' element={<PlaceOrder />} />
-            <Route path='/item/place-order/:itemId/:qty' element={<PlaceOrder />} />
-            <Route path='store/:storeId' element={<Store />} />
-            <Route path='profile' element={<Profile />}>
-              <Route path='my-profile' element={<MyProfile />} />
-              <Route path='my-orders' element={<MyOrders />} />
-              <Route path='seller-form' element={<SellerForm />} />
-              <Route path='manage-items' element={<ManageItems />} />
-              <Route path='add-item/:itemId' element={<AddItemForm />} />
-            </Route>
+            {
+              user?.role === EUserRole.BUYER ?
+                <>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/shop" element={<Shop />} />
+                  <Route path="/aboutus" element={<AboutUs />} />
+                  <Route path="/item/:itemId" element={<Item />} />
+                  <Route path='/cart/place-order/:cartId' element={<PlaceOrder />} />
+                  <Route path='/item/place-order/:itemId/:qty' element={<PlaceOrder />} />
+                  <Route path='store/:storeId' element={<Store />} />
+                  <Route path='profile' element={<Profile />}>
+                    <Route path='/' element={<MyProfile />} />
+                    <Route path='my-orders' element={<MyOrders />} />
+                    <Route path='seller-form' element={<SellerForm />} />
+                  </Route>
+                </>
+                : user?.role === EUserRole.SELLER ?
+                  <>
+                    <Route path='/' element={<Profile />}>
+                      <Route path='/' element={<ManageItems />} />
+                      <Route path='my-profile' element={<MyProfile />} />
+                      <Route path='add-item/:itemId' element={<AddItemForm />} />
+                      <Route path='seller-form' element={<SellerForm />} />
+                    </Route>
+                  </>
+                  : user?.role === EUserRole.ADMIN ?
+                    <>
+                      <Route path='/' element={<Admin />} />
+                    </>
+                    : null
+            }
           </Routes>
-          <ChatBot/>
-          <Footer />
+
+          <ChatBot />
+          {user.role !== EUserRole.ADMIN && <Footer />}
         </AuthProvider>
       </CookiesProvider>
     </div>
