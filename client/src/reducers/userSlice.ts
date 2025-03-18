@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TUser } from "../types";
-import { testUser } from "../data/user";
 
 type TUserInitialState = {
     loading: boolean;
@@ -47,6 +46,8 @@ const userSlice = createSlice({
             if(state.user) state.user.creditCard = action.payload;
         },
         logout: (state) => {
+            localStorage.removeItem('user')
+            localStorage.removeItem('cart')
             state.loading = false;
             state.isUserAuthed = false;
             state.error = null;

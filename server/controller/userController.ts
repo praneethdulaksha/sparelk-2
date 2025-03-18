@@ -7,7 +7,7 @@ class UserController {
         return User.find();
     }
 
-    async register(user: IUser): Promise<{ user: IUser; cart: any; store: any | null }> {
+    async register(user: IUser): Promise<{ user: IUser; cart: any; store: any }> {
         try {
             const data = await new User(user).save();
             const cart = await Cart.save({ userId: data._id, items: [] } as any);

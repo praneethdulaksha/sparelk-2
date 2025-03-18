@@ -1,9 +1,10 @@
 import Store, { IStore } from '../models/storeModel';
 import Item from '../controller/itemController';
 import deleteImage from '../util/utilMatters';
+import userModel, { ERole } from '../models/userModel';
 
 class StoreController {
-    
+
     async getAll(): Promise<IStore[]> {
         return Store.find();
     }
@@ -18,6 +19,7 @@ class StoreController {
 
     async save(body: Partial<IStore>, imageFile: Express.Multer.File): Promise<IStore> {
         const storeData = { ...body, image: imageFile.filename };
+        await userModel.findByIdAndUpdate(storeData.userId, { role: ERole.SELLER })
         return new Store(storeData).save();
     }
 

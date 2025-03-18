@@ -1,4 +1,4 @@
-import { mongoose, ClientSession } from 'mongoose';
+import mongoose, { ClientSession } from 'mongoose';
 import Order, { IOrder } from '../models/orderModel';
 import Cart from '../controller/cartController';
 import Item from '../models/itemModel';

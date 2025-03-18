@@ -5,6 +5,10 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { userActions } from '../../reducers/userSlice';
 import { testUser } from '../../data/user';
+import { api } from '../../api/api';
+import { cartActions } from '../../reducers/cartSlice';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
     setIsLogin: (arg: boolean) => void;
@@ -16,9 +20,43 @@ export default function Login({ setIsLogin }: Props) {
     const [password, setPassword] = useState('');
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const handleSubmit = () => {
-        dispatch(userActions.login(testUser));
+    const handleSubmit = async () => {
+        if (!email || !password) {
+            return;
+        }
+
+        try {
+            navigate('/');
+            const response = await api.post('user/login', { email: email, password: password });
+
+            if (response.status === 200) {
+                const user = response.data.user;
+                if (response.data.store) user.store = response.data.store;
+                dispatch(userActions.login(user));
+                dispatch(cartActions.setData({ userId: user._id, cartId: response.data.cart._id }))
+                setIsLogin(true);
+                localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem('cart', JSON.stringify(response.data.cart));
+
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Login Successful!",
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+            }
+        } catch (err) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: "Invalid Login Credentials!",
+                showConfirmButton: false,
+                timer: 1000
+            });
+        }
     };
 
     return (

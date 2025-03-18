@@ -42,11 +42,11 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.json());
 
-app.use("/sparelk/api/v1/images", express.static("./assets/images/"));
+app.use("/images", express.static("./assets/images/"));
 app.use("/sparelk/api/v1/user",userRoute);
 app.use("/sparelk/api/v1/item", verifyToken, itemRoute);
 app.use("/sparelk/api/v1/cart", verifyToken, cartRoute);
-app.use("/sparelk/api/v1/store", verifyToken, storeRoute);
+app.use("/sparelk/api/v1/store", storeRoute);
 app.use("/sparelk/api/v1/order", verifyToken, orderRoute);
 
 mongoose

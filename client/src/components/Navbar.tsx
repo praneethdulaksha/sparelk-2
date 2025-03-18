@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { RootState } from '../store/store';
 import { userActions } from '../reducers/userSlice';
 import Li from './Li';
+import { EUserRole } from '../types';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,10 +15,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
 
   const logoutAlert = () => {
-    if (window.confirm('Are you sure you want to log out?')) {
-      localStorage.removeItem('user');
-      dispatch(userActions.logout());
-    }
+    dispatch(userActions.logout());
   }
 
   return (
@@ -54,7 +52,7 @@ const Navbar = () => {
                 <Li to="/profile/my-profile" icon={faUser}>My Profile</Li>
                 <Li to="/profile/my-orders" icon={faBoxOpen}>Orders</Li>
                 <Li to="/profile/seller-form" icon={faStore}>{user.store ? 'Store Profile' : 'Be a Seller'}</Li>
-                {user.store && <>
+                {user.role === EUserRole.SELLER && <>
                   <Li to="/profile/manage-items" icon={faClipboardList}>Manage Items</Li>
                   <Li to="/profile/add-item/new" icon={faPlus}>Add a Item</Li>
                 </>}

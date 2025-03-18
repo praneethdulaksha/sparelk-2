@@ -18,11 +18,9 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        setUserId: (state, action) => {
-            state.userId = action.payload
-        },
-        setCartId: (state, action) => {
-            state.cartId = action.payload
+        setData: (state, action) => {
+            state.userId = action.payload.userId;
+            state.cartId = action.payload.cartId;
         },
         addToCart: (state, action) => {
             state.cartItems = action.payload

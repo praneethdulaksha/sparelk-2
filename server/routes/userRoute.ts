@@ -17,8 +17,9 @@ router.get('/', async (req: Request, res: Response) => {
 router.post('/register', async (req: Request, res: Response) => {
     try {
         const result = await userController.register(req.body);
-        res.status(200).json({ success: true, data: result });
+        res.status(201).json({ success: true, data: result });
     } catch (err) {
+        console.error(err);
         res.status(500).json({ success: false, err: err });
     }
 });

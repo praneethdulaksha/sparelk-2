@@ -34,7 +34,7 @@ const UserSchema: Schema = new Schema({
     lastName: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    role: { type: String, required: true, enum: ERole },
+    role: { type: String, enum: ERole, default: ERole.BUYER },
     phone: { type: String, required: false },
     address: {
         type: new Schema({

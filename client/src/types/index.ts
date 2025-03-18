@@ -36,6 +36,7 @@ export interface TUser {
     lastName: string;
     email: string;
     password: string;
+    role: EUserRole;
     phone?: string;
     address?: TAddress | null;
     creditCard?: TCreditCard | null;
@@ -53,4 +54,9 @@ export interface TStore {
     phone: string,
     image: string,
     userId: string,
+}
+
+export enum EUserRole {
+    SELLER = 'seller',
+    BUYER = 'buyer',
 }
