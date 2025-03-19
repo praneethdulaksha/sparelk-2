@@ -41,18 +41,6 @@ export default function Profile() {
                 setTimeout(() => {
                     dispatch(userActions.logout());
                     navigate('/');
-
-                    Swal.fire({
-                        title: "Logged Out",
-                        icon: "success",
-                        confirmButtonText: "Login",
-                        showCancelButton: true,
-                        cancelButtonText: "Ok",
-                    }).then(result => {
-                        if (result.isConfirmed) {
-                            navigate('/');
-                        }
-                    })
                 }, 300);
             }
         })

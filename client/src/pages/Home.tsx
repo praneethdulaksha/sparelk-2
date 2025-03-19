@@ -11,9 +11,8 @@ import { api } from '../api/api';
 import ItemsList from '../components/home/ItemsList';
 
 export default function Home() {
-  const [allItems, setAllItems] = useState(items);
-  const [discountItems, setDiscountItems] = useState(items);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [allItems, setAllItems] = useState([]);
+  const [discountItems, setDiscountItems] = useState([]);
   const [categories, setCategories] = useState(allCategories);
   const [clickedTab, setClickedTab] = useState<'latest' | 'discount' | 'trending'>('latest');
 
@@ -36,15 +35,8 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    getAllItems();
+    getDiscountItems();
   }, [])
 
   return (

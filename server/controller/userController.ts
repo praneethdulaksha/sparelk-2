@@ -20,7 +20,7 @@ class UserController {
     }
 
     async update(id: string, user: Partial<IUser>): Promise<IUser | null> {
-        return User.findByIdAndUpdate(id, { $set: user }, { new: true });
+        return await User.findByIdAndUpdate(id, { $set: user }, { new: true });
     }
 
     async delete(id: string): Promise<IUser | null> {

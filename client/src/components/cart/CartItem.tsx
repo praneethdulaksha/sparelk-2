@@ -18,13 +18,13 @@ export default function CartItem({ cartItem, setTotal }: Props) {
   const cartId = useSelector((state: RootState) => state.cart.cartId);
   const dispatch = useDispatch();
 
-  useEffect(()=>{
+  useEffect(() => {
     getItem(cartItem);
-  },[])
+  }, [])
 
-  function updateQty(qty: number){
-    setCItem({...cItem, qty: qty});
-    dispatch(cartActions.updateCartItem({...cItem, qty: qty}))
+  function updateQty(qty: number) {
+    setCItem({ ...cItem, qty: qty });
+    dispatch(cartActions.updateCartItem({ ...cItem, qty: qty }))
   }
 
   function getItem(cartItem: any) {
@@ -64,7 +64,7 @@ export default function CartItem({ cartItem, setTotal }: Props) {
   return item?.isActive && (
     <div className="flex gap-3 w-full border-t border-gray-500 py-5">
       <img
-        src={`http://localhost:3000/images/${item.image}` }
+        src={`http://localhost:3000/images/${item.image}`}
         alt="shirt"
         className="aspect-square h-32 rounded-xl"
       />

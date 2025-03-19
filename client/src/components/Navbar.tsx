@@ -11,8 +11,7 @@ import Swal from 'sweetalert2';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user } = useSelector((state: RootState) => state.user)
-  const { role } = user!;
+  const { user } = useSelector((state: RootState) => state.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,7 +46,7 @@ const Navbar = () => {
 
       {/* Center section */}
       {
-        role == EUserRole.BUYER && <div className="flex items-center space-x-6 text-black">
+        user.role == EUserRole.BUYER && <div className="flex items-center space-x-6 text-black">
           <Link to="/" className="font-semibold text-gray-800 hover:text-black">Home</Link>
           <Link to="/shop" className="font-semibold text-gray-800 hover:text-black">Shop</Link>
           <a href="#footer" className="font-semibold text-gray-800 hover:text-black">Contacts</a>
@@ -57,7 +56,7 @@ const Navbar = () => {
       {/* Right section */}
       <div className="flex items-center space-x-4">
         {
-          role == EUserRole.BUYER && <Link to='cart' className=' border-r-2 border-gray-700 pr-4'>
+          user.role == EUserRole.BUYER && <Link to='cart' className=' border-r-2 border-gray-700 pr-4'>
             <FiShoppingCart className="text-black h-6 w-6 hover:text-gray-800 cursor-pointer hover:scale-105 hover:rotate-6 duration-75" />
           </Link>
         }
@@ -75,12 +74,12 @@ const Navbar = () => {
             isMenuOpen && (
               <div className="absolute bg-yellow-300 shadow-md w-64 p-2 rounded-md top-[100%] right-0 left-0 m-auto">
                 {
-                  role === EUserRole.SELLER ? <>
+                  user.role === EUserRole.SELLER ? <>
                     <Li to="/" icon={faUser}>My Profile</Li>
                     <Li to="/manage-items" icon={faClipboardList}>Manage Items</Li>
                     <Li to="/add-item/new" icon={faPlus}>Add a Item</Li>
                   </>
-                    : role === EUserRole.BUYER ? <>
+                    : user.role === EUserRole.BUYER ? <>
                       <Li to="/profile" icon={faUser}>My Profile</Li>
                       <Li to="/profile/my-orders" icon={faBoxOpen}>Orders</Li>
                       <Li to="/profile/seller-form" icon={faStore}>{user.store ? 'Store Profile' : 'Be a Seller'}</Li>

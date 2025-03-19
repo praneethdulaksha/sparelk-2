@@ -15,7 +15,7 @@ export default function AddressForm({ isAddressFormOpened, currentAdd, setAddres
         delete updatedUser.cart;
         delete updatedUser.store;
         api.put('user/' + user?._id, { ...updatedUser, address: address }).then(response => {
-            console.log('address saved')
+            // console.log('address saved')
         }).catch(err => console.log(err));
     }
 

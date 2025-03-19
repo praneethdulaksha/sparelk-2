@@ -5,7 +5,6 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { RootState } from '../store/store';
-import { userActions } from '../reducers/userSlice';
 import { api } from '../api/api';
 import { cartActions } from '../reducers/cartSlice';
 import OrderItem from '../components/order/OrderItem';
@@ -24,19 +23,12 @@ function PlaceOrder() {
     const [total, setTotal] = useState(0);
 
     const user = useSelector((state: RootState) => state.user.user);
-    const isUserLoggedIn = useSelector((state: RootState) => state.user.isUserAuthed);
     const cartItems = useSelector((state: RootState) => state.cart.cartItems);
 
     if (!user) return <></>
 
     useEffect(() => {
-        if (isUserLoggedIn) {
-            getOrderItems()
-        } else {
-            dispatch(userActions.setPreviosPage(location.pathname))
-            console.log(location.pathname);
-            navigate('/login');
-        }
+        getOrderItems()
     }, [])
 
     function getOrderItems() {
@@ -112,7 +104,6 @@ function PlaceOrder() {
 
 
     return (
-        isUserLoggedIn &&
         <main className="container xl:max-w-7xl flex-grow py-3">
             <h2 className="my-3 text-3xl md:text-4xl">Place Order</h2>
 
@@ -161,8 +152,8 @@ function PlaceOrder() {
                     <div className='bg-pane-color p-3 rounded-2xl'>
                         <h5 className=' text-3xl md:text-4xl'>Order Information</h5>
                         {
-                            new Array(2).fill(null).map((oItem: any, i: number) => {
-                                return <OrderItem key={i} oItem={{} as any} index={i} setTotal={setTotal} setOrderItemTotal={setOrderItemTotal} />
+                            orderItems.map((oItem: any, i: number) => {
+                                return <OrderItem key={i} oItem={oItem} index={i} setTotal={setTotal} setOrderItemTotal={setOrderItemTotal} />
                             })
                         }
                         <div className='flex items-center justify-end mt-8 mr-2'>

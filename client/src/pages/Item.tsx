@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faStar, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { faStarHalfStroke } from '@fortawesome/free-solid-svg-icons';
@@ -10,29 +10,24 @@ import { RootState } from '../store/store';
 import { api } from '../api/api';
 import { cartActions } from '../reducers/cartSlice';
 import { TItem } from '../types';
-import { userActions } from '../reducers/userSlice';
 import ItemCard from '../components/ItemCard';
 import RatingsReviews from '../components/items/RatingsReviews';
-import { items as testItems } from '../data/items';
 
 function Item() {
     const params = useParams();
-    const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const itemId = params.itemId;
-
-    const isUserLoggedIn = useSelector((state: RootState) => state.user.isUserAuthed);
-    const user = useSelector((state: RootState) => state.user);
-
-    const [item, setItem] = useState<TItem>(testItems[3]);
+    const { cartId } = useSelector((state: RootState) => state.cart);
+    const [item, setItem] = useState<TItem | null>(null);
     const [itemQty, setItemQty] = useState(1);
     const [items, setAllItems] = useState([]);
+
+
 
     function getItemRequest() {
         api.get('item/' + itemId).then(result => {
             setItem(result.data.data)
-            console.log(result.data.data)
         }).catch(err => console.log(err));
     }
 
@@ -43,7 +38,7 @@ function Item() {
     }
 
     function addItemCart() {
-        api.put(`cart/add/${user.user?.cart._id}`, { itemId: itemId, qty: itemQty }).then(result => {
+        api.put(`cart/add/${cartId}`, { itemId: itemId, qty: itemQty }).then(result => {
             console.log(result.data.data);
             dispatch(cartActions.addItemToCart({ itemId: itemId, qty: itemQty }))
             addedToCartAlert();
@@ -64,8 +59,9 @@ function Item() {
             }
         })
     }
-
     useEffect(() => {
+        getItemRequest();
+        getAllItems();
         window.scrollTo({ top: 0 });
     }, [params.itemId])
 
@@ -80,8 +76,8 @@ function Item() {
 
             <div className='flex flex-col md:flex-row bg-pane-color rounded-2xl overflow-hidden mt-3 pb-3'>
                 <div className='flex items-center justify-center md:w-72 lg:w-96'>
-                    {/* <div className='aspect-square h-72 lg:h-96 md:w-full bg-cover bg-center' style={{ backgroundImage: `url(http://localhost:3000/images/${item.image})` }}></div> */}
-                    <div className='aspect-square h-72 lg:h-96 md:w-full bg-cover bg-center' style={{ backgroundImage: `url(/tires-category.png)` }}></div>
+                    <div className='aspect-square h-72 lg:h-96 md:w-full bg-cover bg-center' style={{ backgroundImage: `url(http://localhost:3000/images/${item.image})` }}></div>
+                    {/* <div className='aspect-square h-72 lg:h-96 md:w-full bg-cover bg-center' style={{ backgroundImage: `url(/tires-category.png)` }}></div> */}
                 </div>
 
                 <div className='flex flex-grow flex-col px-5 pt-3'>
@@ -128,15 +124,7 @@ function Item() {
                             Buy Now
                         </button></Link>
                         <button className='bg-blue-500 rounded-md py-1 px-3 shadow-lg w-full sm:w-fit'
-                            onClick={() => {
-                                // Add Item to Cart
-                                if (isUserLoggedIn) {
-                                    // addItemCart()
-                                } else {
-                                    dispatch(userActions.setPreviosPage(location.pathname))
-                                    navigate('/login');
-                                }
-                            }}
+                            onClick={addItemCart}
                         >Add to Cart</button>
                     </div>
                 </div>

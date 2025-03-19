@@ -26,8 +26,8 @@ router.post('/register', async (req: Request, res: Response) => {
 
 router.put('/:id', async (req: Request, res: Response) => {
     try {
-        await userController.update(req.params.id, req.body);
-        res.status(200).json({ success: true });
+        const result = await userController.update(req.params.id, req.body);
+        res.status(200).json({ success: true, data: result });
     } catch (err) {
         res.status(500).json({ success: false, err: err });
     }

@@ -14,13 +14,13 @@ export default function CreditCardForm({ currentCard, setCreditCardForm }: any) 
 
     function saveCreditCard() {
         let updatedUser = { ...user, cart: null, store: null }
-        delete updatedUser.cart;
-        delete updatedUser.store;
+        // delete updatedUser.cart;
+        // delete updatedUser.store;
         // let updateCreditCard = {expiration: `${creditCard.expiryMonth}/${creditCard.expiryYear}`, number: creditCard.cardNumber, cvv: creditCard.cvv}
         // updatedUser = {...updatedUser, creditCard: creditCard}
 
         api.put('user/' + user?._id, { ...updatedUser, creditCard: creditCard }).then(result => {
-            console.log(result.data.data);
+            // console.log(result.data.data);
             dispatch(userActions.setUser(result.data.data));
         }).catch(err => console.log(err));
     }
