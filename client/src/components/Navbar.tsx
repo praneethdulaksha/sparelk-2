@@ -2,11 +2,12 @@ import { faBoxOpen, faClipboardList, faLeftLong, faPlus, faStore, faUser } from 
 import { useState } from 'react';
 import { FiUser, FiShoppingCart, FiChevronDown } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from '../store/store';
 import { userActions } from '../reducers/userSlice';
 import Li from './Li';
 import { EUserRole } from '../types';
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,9 +15,25 @@ const Navbar = () => {
   const { role } = user!;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const logoutAlert = () => {
-    dispatch(userActions.logout());
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setTimeout(() => {
+          dispatch(userActions.logout());
+          navigate('/');
+        }, 300);
+      }
+    })
   }
 
   return user && (
@@ -58,20 +75,17 @@ const Navbar = () => {
             isMenuOpen && (
               <div className="absolute bg-yellow-300 shadow-md w-64 p-2 rounded-md top-[100%] right-0 left-0 m-auto">
                 {
-                  role !== EUserRole.ADMIN && <>
-                    <Li to="/profile" icon={faUser}>My Profile</Li>
-                    {
-                      role === EUserRole.SELLER ? <>
-                        <Li to="/profile/manage-items" icon={faClipboardList}>Manage Items</Li>
-                        <Li to="/profile/add-item/new" icon={faPlus}>Add a Item</Li>
-                      </>
-                        : role === EUserRole.BUYER ? <>
-                          <Li to="/profile/my-orders" icon={faBoxOpen}>Orders</Li>
-                          <Li to="/profile/seller-form" icon={faStore}>{user.store ? 'Store Profile' : 'Be a Seller'}</Li>
-                        </>
-                          : null
-                    }
+                  role === EUserRole.SELLER ? <>
+                    <Li to="/" icon={faUser}>My Profile</Li>
+                    <Li to="/manage-items" icon={faClipboardList}>Manage Items</Li>
+                    <Li to="/add-item/new" icon={faPlus}>Add a Item</Li>
                   </>
+                    : role === EUserRole.BUYER ? <>
+                      <Li to="/profile" icon={faUser}>My Profile</Li>
+                      <Li to="/profile/my-orders" icon={faBoxOpen}>Orders</Li>
+                      <Li to="/profile/seller-form" icon={faStore}>{user.store ? 'Store Profile' : 'Be a Seller'}</Li>
+                    </>
+                      : null
                 }
 
                 <Li

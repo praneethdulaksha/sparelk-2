@@ -76,6 +76,7 @@ router.post('/', upload.single('image'), async (req: Request, res: Response) => 
         const data = await Item.save(req.body, req.file);
         res.status(200).json({ success: true, data: data });
     } catch (err) {
+        console.log(err);
         res.status(500).json({ err: err });
     }
 });

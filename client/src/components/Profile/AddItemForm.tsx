@@ -70,14 +70,12 @@ const AddItemForm = () => {
         formData.append('store', storeId);
 
         isNewItem ? saveItem(formData) : updateItem(formData);
-
-        console.log(itemData);
     };
 
     function saveItem(formData: any) {
         api.post('item', formData).then(result => {
             console.log(result.data.data);
-            navigate('/profile/manage-items')
+            navigate('/manage-items')
             Swal.fire({
                 icon: 'success',
                 title: 'Item Added Successfully',
@@ -100,7 +98,7 @@ const AddItemForm = () => {
     }
 
     function getItem() {
-        api.get('hitem/' + params.itemId).then(result => {
+        api.get('item/' + params.itemId).then(result => {
             setItemData(result.data.data);
             setImagePreview('http://localhost:3000/images/' + result.data.data.image);
         }).catch(err => console.log(err));

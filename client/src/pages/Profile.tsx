@@ -63,26 +63,23 @@ export default function Profile() {
             <div className='sticky top-0 w-64 bg-white rounded-lg items-start p-5 text-md text-zinc-500 hidden lg:block'>
                 <div className='sticky top-10 w-full h-fit flex flex-col gap-3 text-sm text-gray-700'>
                     {
-                        role !== EUserRole.ADMIN && <>
-                            <Li to="/profile" icon={faUser}>My Profile</Li>
-                            {
-                                role === EUserRole.SELLER ? <>
-                                    <Li to="/profile/manage-items" icon={faClipboardList}>Manage Items</Li>
-                                    <Li to="/profile/add-item/new" icon={faPlus}>Add a Item</Li>
-                                </>
-                                    : role === EUserRole.BUYER ? <>
-                                        <Li to="/profile/my-orders" icon={faBoxOpen}>Orders</Li>
-                                        <Li to="/profile/seller-form" icon={faStore}>{user.store ? 'Store Profile' : 'Be a Seller'}</Li>
-                                    </>
-                                        : null
-                            }
+                        role === EUserRole.SELLER ? <>
+                            <Li to="/" icon={faUser}>My Profile</Li>
+                            <Li to="/manage-items" icon={faClipboardList}>Manage Items</Li>
+                            <Li to="/add-item/new" icon={faPlus}>Add a Item</Li>
                         </>
+                            : role === EUserRole.BUYER ? <>
+                                <Li to="/profile" icon={faUser}>My Profile</Li>
+                                <Li to="/profile/my-orders" icon={faBoxOpen}>Orders</Li>
+                                <Li to="/profile/seller-form" icon={faStore}>{user.store ? 'Store Profile' : 'Be a Seller'}</Li>
+                            </>
+                                : null
                     }
                     <Li
                         to='/'
                         icon={faLeftLong}
                         onClick={() => {
-                            // logoutAlert();
+                            logoutAlert();
                         }}
                     >Log Out</Li>
                 </div>

@@ -1,6 +1,7 @@
 import User, { IUser } from '../models/userModel';
 import Cart from '../controller/cartController';
 import Store from '../controller/storeController';
+import { getJwtToken } from '../util/utilMatters';
 
 class UserController {
     async getAll(): Promise<IUser[]> {
@@ -26,13 +27,16 @@ class UserController {
         return User.findByIdAndDelete(id);
     }
 
-    async login(username: string, password: string): Promise<{ user: IUser; cart: any; store: any | null } | Error> {
+    async login(username: string, password: string) {
         try {
             const user = await User.findOne({ email: username, password: password });
             if (user) {
                 const cart = await Cart.getCart(user._id);
                 const store = await Store.getStoreByUser(user._id);
-                return { user: user, cart: cart, store: store };
+
+                const accessToken = getJwtToken(user, '3h');
+                const refreshToken = getJwtToken(user, '72h');
+                return { user, cart, store, accessToken, refreshToken };
             } else {
                 throw new Error('User not found');
             }

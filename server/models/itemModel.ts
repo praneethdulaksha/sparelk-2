@@ -1,5 +1,10 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+export enum ECondition {
+    NEW = 'New',
+    USED = 'Used',
+}
+
 export interface IItem extends Document {
     name: string;
     description: string;
@@ -9,6 +14,7 @@ export interface IItem extends Document {
     discount?: number;
     image: string;
     category: string;
+    condition: ECondition;
     isActive: boolean;
     store: mongoose.Types.ObjectId;
     sold: number;
@@ -27,6 +33,7 @@ const itemSchema = new Schema<IItem>({
     discount: { type: Number, default: 0 },
     image: { type: String, required: true },
     category: { type: String, required: true },
+    condition: { type: String, enum: Object.values(ECondition), default: ECondition.NEW },
     isActive: { type: Boolean, required: true, default: true },
     store: { type: Schema.Types.ObjectId, ref: "Store", required: true },
     sold: { type: Number, required: true, default: 0 }

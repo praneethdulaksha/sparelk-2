@@ -7,6 +7,7 @@ export type TItem = {
     image: string;
     rating: number;
     category: string;
+    condition: ECondition;
     sold: number;
     stock: number;
     isActive: boolean;
@@ -28,6 +29,11 @@ export interface TCreditCard {
     expiryMonth: string;
     expiryYear: string;
     cvv: string;
+}
+
+export enum ECondition {
+    NEW = 'New',
+    USED = 'Used',
 }
 
 export interface TUser {

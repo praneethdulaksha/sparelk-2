@@ -19,7 +19,6 @@ export default function ManageItems() {
         api.get('item/store/' + store._id)
             .then(res => {
                 setItems(res.data.data);
-                console.log(res.data.data);
             })
             .catch(err => console.log(err));
     }
@@ -107,7 +106,7 @@ function Item({ itm, setItems }: any) {
                                 <h6 className='bg-red-300 px-1 rounded-md text-sm border border-red-600'>{item.isActive ? 'Active' : 'Inactive'}</h6>
                         }
                         <div className='flex gap-5'>
-                            <button className='bg-green-400 px-3 rounded-md text-lg shadow-lg hover:bg-green-500 hover:scale-110 duration-75' onClick={() => navigate('/profile/add-item/' + item._id)}>Update</button>
+                            <button className='bg-green-400 px-3 rounded-md text-lg shadow-lg hover:bg-green-500 hover:scale-110 duration-75' onClick={() => navigate('/add-item/' + item._id)}>Update</button>
                             <button className='bg-red-300 px-3 rounded-md text-lg shadow-lg hover:bg-red-400 hover:scale-110 duration-75' onClick={handleDelete}>Remove</button>
                             <button className='bg-blue-300 px-3 rounded-md text-lg shadow-lg hover:bg-blue-400 hover:scale-110 duration-75' onClick={handleActive}>{item.isActive ? 'Inactive' : 'Active'}</button>
                         </div>

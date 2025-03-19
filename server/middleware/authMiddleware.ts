@@ -17,6 +17,7 @@ export function verifyToken(req: Request, res: Response, next: NextFunction): vo
         (req as any).user = decoded; // Attach user info to request
         next();
     } catch (error) {
+        console.log(error);
         if (error instanceof TokenExpiredError){
             res.status(401).json({ message: "Token Expired" });
         }else{

@@ -19,11 +19,12 @@ import AboutUs from './pages/AboutUs'
 import ChatBot from './components/ChatBot'
 import { EUserRole } from './types'
 import Admin from './pages/Admin'
+import { useSelector } from 'react-redux'
+import { RootState } from './store/store'
 
 function App() {
-  // const { user, isUserAuthed } = useSelector((root: RootState) => root.user);
-
-  const user = { role: EUserRole.SELLER }
+  const { user } = useSelector((root: RootState) => root.user);
+  // const user = { role: EUserRole.SELLER }
 
   return (
     <div className='flex flex-col min-h-screen h-screen items-center'>
@@ -44,7 +45,7 @@ function App() {
                   <Route path='/item/place-order/:itemId/:qty' element={<PlaceOrder />} />
                   <Route path='store/:storeId' element={<Store />} />
                   <Route path='profile' element={<Profile />}>
-                    <Route path='/' element={<MyProfile />} />
+                    <Route path='' element={<MyProfile />} />
                     <Route path='my-orders' element={<MyOrders />} />
                     <Route path='seller-form' element={<SellerForm />} />
                   </Route>
@@ -52,8 +53,8 @@ function App() {
                 : user?.role === EUserRole.SELLER ?
                   <>
                     <Route path='/' element={<Profile />}>
-                      <Route path='/' element={<ManageItems />} />
-                      <Route path='my-profile' element={<MyProfile />} />
+                      <Route path='/' element={<MyProfile />} />
+                      <Route path='manage-items' element={<ManageItems />} />
                       <Route path='add-item/:itemId' element={<AddItemForm />} />
                       <Route path='seller-form' element={<SellerForm />} />
                     </Route>
@@ -67,7 +68,7 @@ function App() {
           </Routes>
 
           <ChatBot />
-          {user.role !== EUserRole.ADMIN && <Footer />}
+          <Footer />
         </AuthProvider>
       </CookiesProvider>
     </div>
