@@ -53,13 +53,14 @@ export default function Profile() {
                     {
                         role === EUserRole.SELLER ? <>
                             <Li to="/" icon={faUser}>My Profile</Li>
+                            <Li to="/seller-form" icon={faStore}>My Store</Li>
                             <Li to="/manage-items" icon={faClipboardList}>Manage Items</Li>
                             <Li to="/add-item/new" icon={faPlus}>Add a Item</Li>
                         </>
                             : role === EUserRole.BUYER ? <>
                                 <Li to="/profile" icon={faUser}>My Profile</Li>
                                 <Li to="/profile/my-orders" icon={faBoxOpen}>Orders</Li>
-                                <Li to="/profile/seller-form" icon={faStore}>{user.store ? 'Store Profile' : 'Be a Seller'}</Li>
+                                <Li to="/profile/seller-form" icon={faStore}>Be a Seller</Li>
                             </>
                                 : null
                     }

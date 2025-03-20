@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 export enum ECondition {
     NEW = 'New',
     USED = 'Used',
+    ALL = 'All',
 }
 
 export interface IItem extends Document {
@@ -18,6 +19,7 @@ export interface IItem extends Document {
     isActive: boolean;
     store: mongoose.Types.ObjectId;
     sold: number;
+    createdAt?: number;
 }
 
 const itemSchema = new Schema<IItem>({
@@ -36,7 +38,8 @@ const itemSchema = new Schema<IItem>({
     condition: { type: String, enum: Object.values(ECondition), default: ECondition.NEW },
     isActive: { type: Boolean, required: true, default: true },
     store: { type: Schema.Types.ObjectId, ref: "Store", required: true },
-    sold: { type: Number, required: true, default: 0 }
+    sold: { type: Number, required: true, default: 0 },
+    createdAt: { type: Number, default: Date.now() },
 });
 
 export default mongoose.model<IItem>("Item", itemSchema);

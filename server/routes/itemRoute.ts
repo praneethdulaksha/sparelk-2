@@ -58,6 +58,15 @@ router.get('/search/:keyword', async (req: Request, res: Response) => {
     }
 });
 
+router.put('/filter', async (req: Request, res: Response) => {
+    try {
+        const data = await Item.filterItems(req.body);
+        res.status(200).json(data);
+    } catch (err) {
+        res.status(500).json({ err: err });
+    }
+});
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'assets/images/');

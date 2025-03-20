@@ -1,9 +1,9 @@
 import ItemCard from '../ItemCard'
 import { motion } from 'framer-motion';
 
-export default function ItemsList({ items }: { items: any[] }) {
+export default function ItemsList({ items, className }: { items: any[], className?: string }) {
     return (
-        <div className='grid grid-cols-4 place-items-center gap-8'>
+        <div className={'grid grid-cols-4 place-items-center gap-8 ' + className}>
             {
                 items.length > 0 ?
                     <>

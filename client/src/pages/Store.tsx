@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo, faSquareEnvelope, faSquarePhoneFlip, faSquarePollHorizontal, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { TStore } from '../types';
 import ItemCard from '../components/ItemCard';
-import { items as testItems } from '../data/items';
 import { api } from '../api/api';
 
 export default function Store() {
@@ -14,7 +13,7 @@ export default function Store() {
     if (!storeId) return null;
 
     const [store, setStore] = useState<TStore | null>();
-    const [items, setItems] = useState(testItems);
+    const [items, setItems] = useState([]);
     const [isStoreInfoOpen, setIsStoreInfoOpen] = useState(false);
 
     useEffect(() => {

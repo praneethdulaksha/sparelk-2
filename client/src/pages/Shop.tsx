@@ -1,27 +1,98 @@
 import { Link } from "react-router-dom";
-import ItemCard from "../components/ItemCard";
-import { items } from "../data/items";
-import { FiChevronRight, FiSearch } from "react-icons/fi";
-import { useState } from "react";
+import { FiChevronRight, FiDelete, FiLoader, FiSearch } from "react-icons/fi";
+import { useEffect, useState } from "react";
+import { api } from "../api/api";
+import ItemsList from "../components/home/ItemsList";
+import { ECondition } from "../types";
+import { allCategories } from "../data/categories";
+import Button from "../components/Button";
 
 // vehicle spare parts
-const fillters = [
-    {
-        label: 'Categories',
-        options: ['All', 'Wheels and tires', 'Variables', 'Repair Parts', 'Performance Parts', 'Lighting', 'Electronics', 'Body Parts']
-    },
-    {
-        label: 'Brand',
-        options: ['All', 'Toyota', 'Honda', 'Ford', 'Mercedes-Benz', 'Audi', 'BMW', 'Nissan', 'Chevrolet', 'Hyundai', 'Volkswagen', 'Mazda', 'Jeep', 'Dodge', 'GMC', 'Chrysler', 'Lincoln', 'Pontiac', 'Suzuki', 'Subaru']
-    }
-]
+const conditions = [
+    { value: "All", label: "All" },
+    { value: "New", label: "New" },
+    { value: "Used", label: "Used" },
+];
 
 export default function Shop() {
+    const [loading, setLoading] = useState(true);
+    const [allItems, setAllItems] = useState([]);
+    const [count, setCount] = useState({ limit: 10, page: 1, tot: 0})
+    const [filteredItems, setFilteredItems] = useState([]);
     const [price, setPrice] = useState(10000); // Default value
+    const [categories, setCategories] = useState<string[]>([]);
+    const [sort, setSort] = useState<'new' | 'low' | 'high' | 'popular'>('new')
+    const [condition, setCondition] = useState<ECondition>(ECondition.ALL);
+    const [keyword, setKeyword] = useState('');
+
+    const loadingDone = () => setTimeout(() => setLoading(false), 500);
+
+    const getFilteredItems = async (cat?: string[]) => {
+        setLoading(true);
+        try {
+            const resp = await api.put("item/filter",
+                {
+                    price,
+                    condition,
+                    categories: cat ? [...cat].join(',') : categories.join(','),
+                    keyword,
+                    sort,
+                    count
+                }
+            );
+            setFilteredItems(resp.data.items);
+            setCount({...count, tot: resp.data.count.tot})
+        } catch (err) {
+            console.error(err);
+        } finally {
+            loadingDone();
+        }
+    }
+
+    const priceOnChange = () => {
+        getFilteredItems();
+    }
+
+    const onSearch = () => {
+        getFilteredItems();
+    }
+
+    const onConditionChange = (e: any) => {
+        setCondition(e.target.value as ECondition);
+        getFilteredItems();
+    }
+
+    const onSortChange = (e: any) => {
+        setSort(e.target.value as 'new' | 'low' | 'high' | 'popular');
+        getFilteredItems();
+    }
+
+    const categoryOnCheck = (val: boolean, cat: string) => {
+        const newCategories = [...categories];
+        if (val) {
+            newCategories.push(cat);
+        } else {
+            newCategories.splice(newCategories.indexOf(cat), 1);
+        }
+        setCategories(newCategories);
+        getFilteredItems(newCategories);
+    }
+
+    const onClear = () => {
+        setCategories([]);
+        setCondition(ECondition.ALL);
+        setPrice(10000);
+        setKeyword('');
+        getFilteredItems();
+    }
+
+    useEffect(() => {
+        getFilteredItems();
+    }, [])
 
     return (
         <div className="container xl:max-w-7xl flex-grow py-5 px-2 md:px-0 min-h-screen flex">
-            <div className="w-[600px] mr-3">
+            <form className="w-[300px] mr-3">
                 <span className="flex items-center">
                     <Link to='/' className="font-semibold text-gray-700">Home</Link>
                     <span className="mx-2"><FiChevronRight /></span>
@@ -33,27 +104,43 @@ export default function Shop() {
                         type="text"
                         name="search"
                         id="search"
+                        value={keyword}
+                        onChange={(e) => setKeyword(e.target.value)}
                         className="w-full border-2 border-gray-400 rounded-md py-2 px-3"
                         placeholder="Search..."
                     />
-                    <button type="button" className="absolute right-2 text-gray-500"><FiSearch /></button>
+                    <button onClick={onSearch} type="button" className="absolute right-2 text-gray-500"><FiSearch /></button>
                 </div>
 
-                {
-                    fillters.map(({ label, options }, i) => (
-                        <div className="py-3 mb-3 border-b border-main" key={i}>
-                            <h5 className="text-gray-600 font-semibold mb-2 uppercase">{label}</h5>
-                            {
-                                options.map((option, i) => (
-                                    <div key={i} className="ml-3">
-                                        <input type="checkbox" name={`cb-${label}-${option}`} id={`cb-${label}-${option}`} className="mr-2" />
-                                        <label htmlFor={`cb-${label}-${option}`} className="text-gray-700">{option}</label>
-                                    </div>
-                                ))
-                            }
+                <div className="py-3 mb-3 border-b border-main">
+                    <h5 className="text-gray-600 font-semibold mb-2 uppercase">Condition</h5>
+                    {conditions.map((cond) => (
+                        <div key={cond.value} className="ml-3">
+                            <input
+                                type="radio"
+                                id={`condition-${cond.value}`}
+                                name="condition"
+                                value={cond.value}
+                                checked={condition === cond.value}
+                                onChange={onConditionChange}
+                                className="mr-2"
+                            />
+                            <label htmlFor={`condition-${cond.value}`} className="text-gray-700">{cond.label}</label>
                         </div>
-                    ))
-                }
+                    ))}
+                </div>
+
+                <div className="py-3 mb-3 border-b border-main">
+                    <h5 className="text-gray-600 font-semibold mb-2 uppercase">Categories</h5>
+                    {
+                        allCategories.map((cat) => (
+                            <div key={cat} className="ml-3">
+                                <input checked={categories.includes(cat)} onChange={(e) => categoryOnCheck(e.target.checked, cat)} type="checkbox" name={`cb-cat-${cat}`} id={`cb-cat-${cat}`} className="mr-2" />
+                                <label htmlFor={`cb-cat-${cat}`} className="text-gray-700">{cat}</label>
+                            </div>
+                        ))
+                    }
+                </div>
 
                 <div className="py-3 mb-3 border-b border-main">
                     <h5 className="text-gray-600 font-semibold mb-2 uppercase">Price</h5>
@@ -63,6 +150,7 @@ export default function Shop() {
                         max="20000"
                         value={price}
                         onChange={(e) => setPrice(parseInt(e.target.value))}
+                        onMouseUp={priceOnChange}
                         className="w-full cursor-pointer accent-main"
                     />
                     <div className="flex justify-between text-gray-500 text-sm mt-1">
@@ -70,32 +158,40 @@ export default function Shop() {
                         <span>Rs.{price}</span>
                         <span>Rs.20,000</span>
                     </div>
+
                 </div>
 
-            </div>
+                <Button
+                    onClick={onClear}
+                    className="w-full flex items-center justify-center gap-3 bg-main/80">
+                    Clear
+                    <FiDelete className="rotate-180" />
+                </Button>
+            </form>
             <div className="border-l border-main pl-3 flex-grow">
                 <h3>Shop</h3>
 
                 <div className="flex items-end justify-between mb-3">
-                    <span className="text-sm font-semibold text-gray-500">Showing 1-9 of 35 results</span>
+                    <span className="text-sm font-semibold text-gray-500">Showing {filteredItems.length} of {count.tot} results</span>
 
                     <div className="w-[200px]">
-                        <select id="countries" className="bg-gray-300 border border-gray-500 text-gray-800 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            <option value='' selected>Sort By Latest</option>
-                            <option value=''>Sort By Price (Low to High)</option>
-                            <option value=''>Sort By Price (High to Low)</option>
-                            <option value=''>Sort By Popularity</option>
+                        <select
+                            onChange={onSortChange}
+                            id="countries" className="bg-gray-300 border border-gray-500 text-gray-800 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <option value='new' selected>Sort By Latest</option>
+                            <option value='low'>Sort By Price (Low to High)</option>
+                            <option value='high'>Sort By Price (High to Low)</option>
+                            <option value='popular'>Sort By Popularity</option>
                         </select>
                     </div>
                     {/* sort */}
 
                 </div>
 
-                <div className="flex flex-wrap gap-4">
-                    {Array(10).fill(null).map((_, i) => (
-                        <ItemCard key={i} itm={items[1]} />
-                    ))}
-                </div>
+                {
+                    loading
+                        ? <div className="w-full h-full flex justify-center p-4 pt-40 gap-4 border-t border-gray-400"><FiLoader className="text-5xl text-main animate-spin" /></div>
+                        : <ItemsList items={filteredItems} className="p-4 gap-4 border-t border-gray-400" />}
             </div>
         </div>
     )

@@ -1,6 +1,7 @@
 import Item, { IItem } from '../models/itemModel';
 import Cart from '../controller/cartController';
 import deleteImage from '../util/utilMatters';
+import itemModel from '../models/itemModel';
 
 class ItemModel {
     async getAll(): Promise<IItem[]> {
@@ -70,6 +71,60 @@ class ItemModel {
 
         deleteImage(item.image);
         return Item.findByIdAndDelete(itemId);
+    }
+
+    async filterItems({ price, condition, categories, keyword, sort, count }: any) {
+
+        try {
+            console.log(price, condition, categories, keyword, sort, count)
+            let filter: any = {};
+
+            // Keyword Search
+            if (keyword) {
+                filter.name = { $regex: keyword, $options: "i" }; // Case-insensitive search
+            }
+
+            // Category Filter
+            if (categories) {
+                filter.category = { $in: categories.split(",") };
+            }
+
+            // Price Filter
+            if (price) {
+                filter.price = { $gte: 0, $lte: price || Infinity };
+            }
+
+            // Condition Filter
+            if (condition && condition !== "All") {
+                filter.condition = condition; // Assuming condition is stored as "new" or "used"
+            }
+
+            // Count Filter for pagination
+            const skip = (count.page - 1) * count.limit;
+
+            // Sorting
+            let sortOption: any = {};
+            if (sort === "new") sortOption.name = 1;
+            if (sort === "low") sortOption.price = -1;
+            if (sort === "high") sortOption.price = 1;
+            if (sort === "popular") sortOption.name = -1;
+
+            // Fetch Filtered Products
+            const filteredItems = await Item.find(filter)
+                .sort(sortOption)
+                .skip(skip)
+                .limit(count.limit)
+            const totalCount = await Item.countDocuments(filter);
+            if (totalCount < count.to) count.to = totalCount;
+
+            return {
+                count: { tot: totalCount },
+                items: filteredItems
+            };
+        } catch (error) {
+            console.error("Error filtering products:", error);
+            throw error;
+        }
     }
 }
 

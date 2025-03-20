@@ -19,7 +19,7 @@ function Admin() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg w-full ">
+        <div className="max-w-4xl mx-auto p-6 flex-grow bg-white rounded-lg w-full ">
             <h1 className="text-2xl font-semibold mb-4 text-center">Admin Panel - User Verification</h1>
             <table className="w-full border-collapse border border-gray-300">
                 <thead>

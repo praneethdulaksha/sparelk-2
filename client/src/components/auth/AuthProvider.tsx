@@ -41,13 +41,13 @@ export default function AuthProvider({ children }: Props) {
         setTimeout(() => setLoading(false), 500);
     }, [])
 
-    if (isUserAuthed) {
-        return (
-            <div className="w-screen flex-grow flex flex-col items-center">
-                {children}
-            </div>
-        );
-    }
+    // if (isUserAuthed) {
+    //     return (
+    //         <div className="w-screen flex-grow flex flex-col items-center">
+    //             {children}
+    //         </div>
+    //     );
+    // }
 
     return loading ?
         (
@@ -57,7 +57,7 @@ export default function AuthProvider({ children }: Props) {
         )
         : isUserAuthed ? (
             <div
-                className="w-screen flex flex-col items-center"
+                className="w-screen flex flex-col items-center flex-grow"
             >
                 {children}
             </div>

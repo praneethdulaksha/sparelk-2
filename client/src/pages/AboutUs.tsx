@@ -1,6 +1,6 @@
 const AboutUs = () => {
     return (
-        <div className="text-gray-900 p-6 md:p-12">
+        <div className="text-gray-900 p-6 md:p-12 flex-grow">
             {/* About Us Section */}
             <div className="max-w-6xl mx-auto">
                 <h2 className="text-3xl font-bold text-center mb-6">About Us</h2>

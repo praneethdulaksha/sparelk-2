@@ -15,7 +15,7 @@ export default function ItemCard({itm}: Props) {
 
   return (
     // item &&
-    <div className='relative flex flex-col justify-start aspect-item-card w-60 bg-pane-color rounded-md overflow-hidden cursor-pointer hover:scale-105 border-black duration-100 pb-3 shadow-lg'
+    <div className='relative flex flex-col justify-start aspect-item-card w-60 bg-pane-color rounded-md overflow-hidden cursor-pointer hover:scale-105 border border-gray-300 duration-100 pb-3 shadow-lg'
     onClick={()=> {
       navigate(`/item/${itm._id}`)
     }}

@@ -39,7 +39,7 @@ function Item() {
 
     function addItemCart() {
         api.put(`cart/add/${cartId}`, { itemId: itemId, qty: itemQty }).then(result => {
-            console.log(result.data.data);
+            // console.log(result.data.data);
             dispatch(cartActions.addItemToCart({ itemId: itemId, qty: itemQty }))
             addedToCartAlert();
         }).catch(err => console.log(err));

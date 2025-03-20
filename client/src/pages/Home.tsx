@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { items } from '../data/items';
 import { allCategories } from '../data/categories';
 import Slider from '../components/home/Slider';
 import Section from '../components/Section';

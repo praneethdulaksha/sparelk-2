@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useSelector((state: RootState) => state.user);
+  const { cartItems } = useSelector((state: RootState) => state.cart);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -56,8 +57,13 @@ const Navbar = () => {
       {/* Right section */}
       <div className="flex items-center space-x-4">
         {
-          user.role == EUserRole.BUYER && <Link to='cart' className=' border-r-2 border-gray-700 pr-4'>
+          user.role == EUserRole.BUYER && <Link to='cart' className=' border-r-2 border-gray-700 pr-4 relative'>
             <FiShoppingCart className="text-black h-6 w-6 hover:text-gray-800 cursor-pointer hover:scale-105 hover:rotate-6 duration-75" />
+            {
+              cartItems.length > 0 && <div className='size-5 bg-red-600 border-2 text-sm text-white flex items-center justify-center border-red-400 rounded-full absolute -top-2 right-2'>
+                {cartItems.length}
+              </div>
+            }
           </Link>
         }
 
@@ -76,6 +82,7 @@ const Navbar = () => {
                 {
                   user.role === EUserRole.SELLER ? <>
                     <Li to="/" icon={faUser}>My Profile</Li>
+                    <Li to="/seller-form" icon={faStore}>My Store</Li>
                     <Li to="/manage-items" icon={faClipboardList}>Manage Items</Li>
                     <Li to="/add-item/new" icon={faPlus}>Add a Item</Li>
                   </>

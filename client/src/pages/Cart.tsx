@@ -57,7 +57,7 @@ function Cart() {
 
   return items.length == 0 ?
     (
-      <div className="flex flex-grow items-center justify-center h-full text-gray-500 min-h-svh">
+      <div className="flex flex-grow items-center justify-center h-full text-gray-500">
         <FiInfo className="w-10 h-10" />
         <p className="ml-3">No items in your cart</p>
       </div>
@@ -70,7 +70,7 @@ function Cart() {
           <div className="col-span-2 space-y-5">
             {
               items.map((item) => (
-                <CartItem cartItem={item} setTotal={updateTotal} />
+                <CartItem key={item._id} cartItem={item} setTotal={updateTotal} />
               ))
             }
           </div>

@@ -34,6 +34,7 @@ export interface TCreditCard {
 export enum ECondition {
     NEW = 'New',
     USED = 'Used',
+    ALL = 'All',
 }
 
 export interface TUser {
