@@ -2,6 +2,8 @@ import mongoose, { ClientSession } from 'mongoose';
 import Order, { IOrder } from '../models/orderModel';
 import Cart from '../controller/cartController';
 import Item from '../models/itemModel';
+import { sendMail } from '../config/emailConfig';
+import userModel from '../models/userModel';
 
 interface OrderItem {
     itemId: string;
@@ -20,6 +22,8 @@ interface OrderRequest {
 
 class OrderItemController {
     async saveOrder(cartOrItem: string, order: OrderRequest): Promise<IOrder[]> {
+        const user = await userModel.findById(order.userId);
+        if (!user) throw new Error("User not found");
         const ordersToSave: any[] = order.orderItems.map(oItem => ({
             userId: order.userId,
             itemId: oItem.itemId,
@@ -34,8 +38,33 @@ class OrderItemController {
         session.startTransaction();
         try {
             if (cartOrItem === 'cart') await Cart.clearCart(order.userId);
-            const data = await Promise.all(ordersToSave.map(orderData => new Order(orderData).save()));
+            const data = await Promise.all(
+                ordersToSave.map((orderData) => {
+                    // reduce item stock quantity
+                    return Item.findByIdAndUpdate(orderData.itemId, { $inc: { stock: -orderData.qty } })
+                        .then(() => new Order(orderData).save({ session }))
+                        .catch(() => { throw new Error('Not enough stock to place order') })
+                })
+            );
             await session.commitTransaction();
+            // Send email with order details
+            const emailHtml = `
+                <h2>Thank you for your order at SpareLK!</h2>
+                <p>Your order has been successfully placed. Below are your order details:</p>
+                <ul>
+                    ${ordersToSave.map(oItem => `
+                        <li>Item ID: ${oItem.itemId}, Quantity: ${oItem.qty}, Total: $${oItem.total}</li>
+                    `).join('')}
+                </ul>
+                <p>We will notify you once your order is processed.</p>
+            `;
+
+            await sendMail({
+                to: user.email,
+                subject: "SpareLK - Order Confirmation",
+                html: emailHtml
+            });
+
             return data;
         } catch (err) {
             await session.abortTransaction();

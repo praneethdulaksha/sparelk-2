@@ -55,6 +55,14 @@ class UserController {
         // search by verifycode
         const user = await User.findOne({ verifyCode });
         if (!user) throw new Error('User not found');
+        await sendMail({
+            to: user.email,
+            subject: "Spare.lk - Email Verification",
+            html: `
+            <h1>Spare.lk - Email Verification</h1>
+            <p>Your email verification has been successful. You can now login to your account.</p>
+        `,
+        });
         await User.findByIdAndUpdate(user._id, { verified: true });
     }
 
@@ -76,6 +84,11 @@ class UserController {
 
                 const accessToken = getJwtToken(user, '3h');
                 const refreshToken = getJwtToken(user, '72h');
+                await sendMail({
+                    to: user.email,
+                    subject: "Logged in to SpareLK",
+                    text: `Logged in to SpareLK at ${new Date().toLocaleString()}`,
+                })
                 return { user, cart, store, accessToken, refreshToken };
             } else {
                 throw new Error('User not found');

@@ -59,14 +59,6 @@ mongoose
 // configure email service
 emailConfig();
 
-// send test email verification mail
-// sendMail({
-//   to: "tgdilshanrangaka2002@gmail.com",
-//   subject: "Test Email",
-//   text: "This is a test email verification mail",
-//   html: "<h1>This is a test email verification mail</h1><p>Click the link to verify your email: <a href='http://localhost:5173/'>Verify Email</a></p>",
-// })
-
 // start server
 app.listen(port, () => console.log("Server listening on port " + port));
 
