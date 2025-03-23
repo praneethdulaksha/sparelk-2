@@ -24,6 +24,16 @@ router.post('/register', async (req: Request, res: Response) => {
     }
 });
 
+router.put('/verify-email/:code', async (req: Request, res: Response) => {
+    try {
+        await userController.verify(req.params.code);
+        console.log('sdf')
+        res.status(200).json({ success: true });
+    } catch (err: any) {
+        res.status(500).json({ success: false, err: err.message });
+    }
+});
+
 router.put('/:id', async (req: Request, res: Response) => {
     try {
         const result = await userController.update(req.params.id, req.body);
@@ -69,9 +79,9 @@ router.post('/login', async (req: Request, res: Response) => {
         } else {
             throw new Error('Invalid Credentials')
         }
-    } catch (err) {
+    } catch (err: any) {
         console.error(err);
-        res.status(500).json({ success: false });
+        res.status(500).json({ success: false, err: err.message });
     }
 });
 

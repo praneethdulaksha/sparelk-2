@@ -7,6 +7,8 @@ import { userActions } from "../../reducers/userSlice";
 import { cartActions } from "../../reducers/cartSlice";
 import { api } from "../../api/api";
 import { FiLoader } from "react-icons/fi";
+import { Route, Routes } from "react-router-dom";
+import UserVerify from "./UserVerify";
 
 type Props = {
     children: React.ReactNode;
@@ -41,13 +43,18 @@ export default function AuthProvider({ children }: Props) {
         setTimeout(() => setLoading(false), 500);
     }, [])
 
-    // if (isUserAuthed) {
-    //     return (
-    //         <div className="w-screen flex-grow flex flex-col items-center">
-    //             {children}
-    //         </div>
-    //     );
-    // }
+    const Auth = () => {
+        return (
+            <div className="min-h-screen w-screen flex flex-col gap-12 items-center justify-center bg-gradient-to-r from-yellow-200 to-main">
+                <h1 className="text-gray-700 text-6xl font-semibold -mt-20">SpareLK</h1>
+                {
+                    isLogin
+                        ? <Login setIsLogin={setIsLogin} />
+                        : <Register setIsLogin={setIsLogin} />
+                }
+            </div>
+        )
+    }
 
     return loading ?
         (
@@ -63,13 +70,9 @@ export default function AuthProvider({ children }: Props) {
             </div>
         )
             : (
-                <div className="min-h-screen w-screen flex flex-col gap-12 items-center justify-center bg-gradient-to-r from-yellow-200 to-main">
-                    <h1 className="text-gray-700 text-6xl font-semibold -mt-20">SpareLK</h1>
-                    {
-                        isLogin
-                            ? <Login setIsLogin={setIsLogin} />
-                            : <Register setIsLogin={setIsLogin} />
-                    }
-                </div>
+                <Routes>
+                    <Route path="/" element={<Auth />} />
+                    <Route path="/user-verify/:code" element={<UserVerify />} />
+                </Routes>
             )
 }

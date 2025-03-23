@@ -11,7 +11,6 @@ type Props = {
 }
 
 export default function Register({ setIsLogin }: Props) {
-
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -40,15 +39,12 @@ export default function Register({ setIsLogin }: Props) {
                 fData.append('userId', res.data.data.user._id);
 
                 await api.post('store', fData);
-                // if (status !== 201) throw new Error("Creating store failed");
             }
             if (res.status === 201) {
                 Swal.fire({
-                    position: "top-end",
                     icon: "success",
-                    title: "Registration Successful",
-                    showConfirmButton: false,
-                    timer: 1500
+                    title: 'Verify Your Email Address',
+                    text: 'Verification link sent to your email address. Please verify your email address.',
                 })
                 setTimeout(() => { }, 500)
                 setTermsOpen(true);

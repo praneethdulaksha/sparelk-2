@@ -47,7 +47,14 @@ export default function Login({ setIsLogin }: Props) {
                     timer: 1000
                 });
             }
-        } catch (err) {
+        } catch (err: any) {
+            if(err.response.data.err === 'User not verified'){
+                Swal.fire({
+                    icon: "warning",
+                    title: "Email not verified!",
+                });
+                return;
+            }
             Swal.fire({
                 position: "top-end",
                 icon: "error",

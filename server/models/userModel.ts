@@ -26,6 +26,7 @@ export interface IUser extends Document {
     password: string;
     role: ERole;
     verified: boolean;
+    verifyCode: string;
     authCode: number;
     authCodeExpiration: number;
     phone?: string;
@@ -41,6 +42,7 @@ const UserSchema: Schema = new Schema<IUser>({
     role: { type: String, enum: ERole, default: ERole.BUYER },
     phone: { type: String, required: false },
     verified: { type: Boolean, default: false },
+    verifyCode: { type: String, required: false},
     authCode: { type: Number, required: false, default: -1 },
     authCodeExpiration: { type: Number, required: false, default: -1 },
     address: {
