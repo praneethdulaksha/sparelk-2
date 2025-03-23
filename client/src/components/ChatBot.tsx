@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { getPromt } from "../data/chatbot";
 import { Link } from "react-router-dom";
-import { FiCircle, FiLink } from "react-icons/fi";
+import { FiLink } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 
@@ -44,17 +44,19 @@ export default function ChatBot() {
     const getAiRespond = async (input: string) => {
         const { response } = await model.generateContent(getPromt(input, cartId!, user!));
         const botMessage: Message = { sender: "bot", text: JSON.parse(response.text()) };
-        console.log(JSON.parse(response.text()));
         setMessages((prev) => [...prev, botMessage]);
     };
 
 
     return (
         <div className='fixed right-20 bottom-16 z-50'>
-            <button onClick={() => setChatOpen(!chatOpen)} className=' size-16 rounded-full border border-gray-800 overflow-hidden shadow-lg shadow-black'>
-                <img src="/chat.png" alt="chatbot" className="scale-150 hover:scale-[2] hover:rotate-12 hover:animate-pulse duration-100 ease-in-out" />
+            <div className="size-16 group">
+                <button onClick={() => setChatOpen(!chatOpen)} className='size-16 rounded-full border border-gray-800 overflow-hidden shadow-lg shadow-black'>
+                    <img src="/chat.png" alt="chatbot" className="scale-150 hover:scale-[2] hover:rotate-12 hover:animate-pulse duration-100 ease-in-out" />
+                </button>
+                {!chatOpen && <div className="w-40 rounded-lg text-center absolute bottom-[120%] right-0 shadow-lg shadow-black py-2 bg-main origin-bottom-right scale-0 duration-75 group-hover:scale-100">Need Help?</div>}
+            </div>
 
-            </button>
 
             {/* chat */}
             <div
@@ -77,9 +79,9 @@ export default function ChatBot() {
                                     {
                                         msg.text[1] && msg.text[1].length > 0 && <div className="mt-2 space-y-2">
                                             {msg.text[1].map((link: any) => (
-                                                    <Link onClick={() => setChatOpen(false)} to={link[1]} key={link[1]} className="text-blue-600 text-xs flex gap-1 pl-2 items-center">
-                                                        <FiLink className=""/> {link[0]}
-                                                    </Link>
+                                                <Link onClick={() => setChatOpen(false)} to={link[1]} key={link[1]} className="text-blue-600 text-xs flex gap-1 pl-2 items-center">
+                                                    <FiLink className="" /> {link[0]}
+                                                </Link>
                                             ))}
                                         </div>
                                     }

@@ -9,7 +9,6 @@ Spare.lk is an online marketplace for buying and selling vehicle spare parts. It
 - **Secure Transactions:** Verified sellers and buyers ensure authenticity in transactions.
 - **User Verification:** Users must verify their accounts before listing or purchasing items.
 - **Customer Support:** Help is available for orders, payments, refunds, and disputes.
-- **Delivery & Pickup:** Buyers can choose between shipping or pickup options.
 - **Listings & Promotions:** Sellers can create listings and promote featured products.
 
 ### About Problem asked user:
@@ -17,7 +16,7 @@ Spare.lk is an online marketplace for buying and selling vehicle spare parts. It
 - Address - ${JSON.stringify(user.address)},
 - Email - ${user.email},
 - Phone - ${user.phone},
-- Role - ${user.role},
+- Role(don't show to user) - ${user.role},
 
 ### Important Links:
 - home page - (/),
@@ -41,9 +40,12 @@ Spare.lk is an online marketplace for buying and selling vehicle spare parts. It
 ### User Query:
 "${input}"
 
-### Expected AI Response Format:
-Return a string array like this dont use markdowns:
+### Expected AI Response:
+No matter what return a string array like this no need to be json and used markdowns:
 [text, [links[label, path]]]
+
+### Example Prompt:
+["Hi <name>, how can I help you today?",[["Browse Spare Parts", "/shop"],["My Orders & Purchases", "/profile/my-orders"]]]
 
 Now generate the response.
 `;

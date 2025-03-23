@@ -37,22 +37,22 @@ const Navbar = () => {
   }
 
   return user && (
-    <nav className="bg-main flex items-center justify-between px-40 py-3 w-screen z-30">
-      {/* Left section */}
-      <div className="flex items-center space-x-4">
-        <Link to='/' className="flex items-center space-x-1 text-black font-bold text-xl hover:scale-105 hover:text-gray-800 duration-200">
-          <span className="font-semibold">Spare.LK</span>
-        </Link>
-      </div>
-
+    <nav className="bg-main flex items-center justify-between px-40 py-2 w-screen z-30">
       {/* Center section */}
       {
         user.role == EUserRole.BUYER && <div className="flex items-center space-x-6 text-black">
-          <Link to="/" className="font-semibold text-gray-800 hover:text-black">Home</Link>
-          <Link to="/shop" className="font-semibold text-gray-800 hover:text-black">Shop</Link>
-          <a href="#footer" className="font-semibold text-gray-800 hover:text-black">Contacts</a>
+          <Link to="/" className="font-semibold text-gray-900 hover:text-black">Home</Link>
+          <Link to="/shop" className="font-semibold text-gray-900 hover:text-black">Shop</Link>
+          <a href="#footer" className="font-semibold text-gray-900 hover:text-black">Contacts</a>
         </div>
       }
+
+      {/* Left section */}
+      <div className="flex items-center space-x-4">
+        <Link to='/' className="flex items-center space-x-1 text-black font-bold text-xl hover:scale-105 hover:text-gray-800 duration-200">
+          <img className='h-10' src="/logo.png" alt="sparelk-logo" />
+        </Link>
+      </div>
 
       {/* Right section */}
       <div className="flex items-center space-x-4">
