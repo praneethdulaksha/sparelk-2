@@ -32,6 +32,7 @@ const userSlice = createSlice({
         },
         updateUser: (state, action) => {
             state.user = action.payload;
+            localStorage.setItem('user', JSON.stringify(action.payload))
         },
         setPreviosPage: (state, action) => {
             state.previousPage = action.payload;

@@ -17,7 +17,7 @@ const conditions = [
 export default function Shop() {
     const [loading, setLoading] = useState(true);
     const [allItems, setAllItems] = useState([]);
-    const [count, setCount] = useState({ limit: 10, page: 1, tot: 0})
+    const [count, setCount] = useState({ limit: 30, page: 1, tot: 0})
     const [filteredItems, setFilteredItems] = useState([]);
     const [price, setPrice] = useState(10000); // Default value
     const [categories, setCategories] = useState<string[]>([]);
@@ -27,14 +27,14 @@ export default function Shop() {
 
     const loadingDone = () => setTimeout(() => setLoading(false), 500);
 
-    const getFilteredItems = async (cat?: string[]) => {
+    const getFilteredItems = async () => {
         setLoading(true);
         try {
             const resp = await api.put("item/filter",
                 {
                     price,
                     condition,
-                    categories: cat ? [...cat].join(',') : categories.join(','),
+                    categories: categories.join(','),
                     keyword,
                     sort,
                     count
@@ -49,6 +49,10 @@ export default function Shop() {
         }
     }
 
+    useEffect(() => {
+        getFilteredItems();
+    },[condition, sort, categories])
+
     const priceOnChange = () => {
         getFilteredItems();
     }
@@ -59,12 +63,10 @@ export default function Shop() {
 
     const onConditionChange = (e: any) => {
         setCondition(e.target.value as ECondition);
-        getFilteredItems();
     }
 
     const onSortChange = (e: any) => {
         setSort(e.target.value as 'new' | 'low' | 'high' | 'popular');
-        getFilteredItems();
     }
 
     const categoryOnCheck = (val: boolean, cat: string) => {
@@ -75,7 +77,6 @@ export default function Shop() {
             newCategories.splice(newCategories.indexOf(cat), 1);
         }
         setCategories(newCategories);
-        getFilteredItems(newCategories);
     }
 
     const onClear = () => {
@@ -147,7 +148,7 @@ export default function Shop() {
                     <input
                         type="range"
                         min="0"
-                        max="20000"
+                        max="300000"
                         value={price}
                         onChange={(e) => setPrice(parseInt(e.target.value))}
                         onMouseUp={priceOnChange}
@@ -156,7 +157,7 @@ export default function Shop() {
                     <div className="flex justify-between text-gray-500 text-sm mt-1">
                         <span>Rs.0</span>
                         <span>Rs.{price}</span>
-                        <span>Rs.20,000</span>
+                        <span>Rs.300,000</span>
                     </div>
 
                 </div>

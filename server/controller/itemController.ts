@@ -104,9 +104,9 @@ class ItemModel {
 
             // Sorting
             let sortOption: any = {};
-            if (sort === "new") sortOption.name = 1;
-            if (sort === "low") sortOption.price = -1;
-            if (sort === "high") sortOption.price = 1;
+            if (sort === "new") sortOption.createdAt = 1;
+            if (sort === "low") sortOption.price = 1;
+            if (sort === "high") sortOption.price = -1;
             if (sort === "popular") sortOption.name = -1;
 
             // Fetch Filtered Products

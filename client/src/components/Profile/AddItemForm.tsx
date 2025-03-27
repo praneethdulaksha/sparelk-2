@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { RootState } from '../../store/store';
 import { api } from '../../api/api';
 import { allCategories } from '../../data/categories';
+import { ECondition } from '../../types';
 
 const AddItemForm = () => {
     const params = useParams();
@@ -16,6 +17,7 @@ const AddItemForm = () => {
         price: 0,
         description: '',
         image: null,
+        condition: ECondition.NEW,
         stock: 0,
         category: ''
     });
@@ -64,6 +66,7 @@ const AddItemForm = () => {
         formData.append('discount', itemData.discount.toString());
         formData.append('price', itemData.price.toString());
         formData.append('description', itemData.description);
+        formData.append('condition', itemData.condition);
         formData.append('image', itemData.image as any);
         formData.append('stock', itemData.stock.toString());
         formData.append('category', itemData.category);
@@ -88,6 +91,7 @@ const AddItemForm = () => {
     function updateItem(formData: any) {
         api.put('item/' + params.itemId, formData).then(result => {
             console.log(result);
+            navigate('/manage-items')
             Swal.fire({
                 icon: 'success',
                 title: 'Item Updated Successfully',
@@ -161,9 +165,19 @@ const AddItemForm = () => {
                         </div>
                         <div className="mb-4 col-span-4">
                             <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                            <textarea id="description" name="description" value={itemData.description} onChange={handleChange} className={`w-[280px] ${validations.description ? 'bg-green-100' : 'bg-red-100'} border p-2 border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}></textarea>
+                            <textarea id="description" name="description" value={itemData.description} onChange={handleChange} className={`w-full ${validations.description ? 'bg-green-100' : 'bg-red-100'} border p-2 border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}></textarea>
                         </div>
-                        <div className="mb-4 col-span-2">
+                        {/* radio buttons for condition new or used */}
+                        <div>
+                            <label htmlFor="condition" className="block text-sm font-medium text-gray-700 mb-1">Condition</label>
+                            <div className="flex items-center">
+                                <input type="radio" id="new" name="condition" value="New" checked={itemData.condition === ECondition.NEW} onChange={handleChange} className="form-radio mr-2" />
+                                <label htmlFor="new" className="text-sm font-medium text-gray-700 mr-5">New</label>
+                                <input type="radio" id="used" name="condition" value="Used" checked={itemData.condition === ECondition.USED} onChange={handleChange} className="form-radio" />
+                                <label htmlFor="used" className="text-sm font-medium text-gray-700 ml-2">Used</label>
+                            </div>
+                        </div>
+                        <div className="mb-4 col-span-3">
                             <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">Category</label>
                             <select id="category" name="category" value={itemData.category} onChange={handleChange} className={`w-full h-9 ${validations.category ? 'bg-green-100' : 'bg-red-100'} border px-2 border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}>
                                 <option value="">Select a category</option>

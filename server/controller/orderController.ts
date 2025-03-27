@@ -21,7 +21,7 @@ interface OrderRequest {
 }
 
 class OrderItemController {
-    async saveOrder(cartOrItem: string, order: OrderRequest): Promise<IOrder[]> {
+    async saveOrder(cartOrItem: string, order: OrderRequest) {
         const user = await userModel.findById(order.userId);
         if (!user) throw new Error("User not found");
         const ordersToSave: any[] = order.orderItems.map(oItem => ({
@@ -39,9 +39,9 @@ class OrderItemController {
         try {
             if (cartOrItem === 'cart') await Cart.clearCart(order.userId);
             const data = await Promise.all(
-                ordersToSave.map((orderData) => {
+                ordersToSave.map(async (orderData) => {
                     // reduce item stock quantity
-                    return Item.findByIdAndUpdate(orderData.itemId, { $inc: { stock: -orderData.qty } })
+                    await Item.findByIdAndUpdate(orderData.itemId, { $inc: { stock: -orderData.qty } })
                         .then(() => new Order(orderData).save({ session }))
                         .catch(() => { throw new Error('Not enough stock to place order') })
                 })
@@ -64,8 +64,6 @@ class OrderItemController {
                 subject: "SpareLK - Order Confirmation",
                 html: emailHtml
             });
-
-            return data;
         } catch (err) {
             await session.abortTransaction();
             console.error(err);

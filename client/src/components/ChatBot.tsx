@@ -43,7 +43,7 @@ export default function ChatBot() {
 
     const getAiRespond = async (input: string) => {
         const { response } = await model.generateContent(getPromt(input, cartId!, user!));
-        const botMessage: Message = { sender: "bot", text: JSON.parse(response.text()) };
+        const botMessage: Message = { sender: "bot", text: response.text() };
         setMessages((prev) => [...prev, botMessage]);
     };
 
@@ -75,7 +75,8 @@ export default function ChatBot() {
                         </div>
                             : <div key={index} className={`flex justify-start`}>
                                 <div className={`p-2 max-w-xs rounded-lg bg-gray-200 text-gray-800`}>
-                                    {msg.text[0]}
+                                    {msg.text}
+                                    {/* {msg.text[0]}
                                     {
                                         msg.text[1] && msg.text[1].length > 0 && <div className="mt-2 space-y-2">
                                             {msg.text[1].map((link: any) => (
@@ -84,7 +85,7 @@ export default function ChatBot() {
                                                 </Link>
                                             ))}
                                         </div>
-                                    }
+                                    } */}
                                 </div>
                             </div>
 
