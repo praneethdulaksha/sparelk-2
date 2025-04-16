@@ -36,6 +36,7 @@ export default function AuthProvider({ children }: Props) {
                 console.error(error);
                 localStorage.removeItem('user');
                 setIsLogin(true);
+                location.reload();
             });
             return;
         }

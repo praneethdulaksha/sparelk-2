@@ -134,10 +134,10 @@ function Item() {
                 {item && <RatingsReviews item={item} />}
 
                 <div>
-                    <h2 className="px-5 mt-3 text-2xl md:text-3xl lg:text-4xl mb-2">Description</h2>
+                    <h2 className="px-5 mt-12 mb-5 text-2xl md:text-3xl lg:text-4xl">Description</h2>
                     {/* <p className='bg-pane-color rounded-2xl text-lg md:text-2xl p-5'>    {item?.description}</p> */}
                     <textarea
-                        className='w-full bg-pane-color rounded-2xl text-lg md:text-2xl p-5'
+                        className='w-full bg-pane-color rounded-2xl text-lg md:text-2xl p-5 border border-gray-700'
                         value={item?.description}
                         style={{ resize: 'none' }}
                         rows={item?.description.split('\n').length + 1}

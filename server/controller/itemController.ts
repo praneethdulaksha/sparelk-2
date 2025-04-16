@@ -73,10 +73,10 @@ class ItemModel {
         return Item.findByIdAndDelete(itemId);
     }
 
-    async filterItems({ price, condition, categories, keyword, sort, count }: any) {
+    async filterItems({ price, condition, categories, brands, keyword, sort, count }: any) {
 
         try {
-            console.log(price, condition, categories, keyword, sort, count)
+            console.log(price, condition, categories, brands, keyword, sort, count)
             let filter: any = {};
 
             // Keyword Search
@@ -87,6 +87,11 @@ class ItemModel {
             // Category Filter
             if (categories) {
                 filter.category = { $in: categories.split(",") };
+            }
+
+            // Brands Filter
+            if (brands) {
+                filter.brand = { $in: brands.split(",") };
             }
 
             // Price Filter

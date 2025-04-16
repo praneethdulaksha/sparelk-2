@@ -6,6 +6,7 @@ import { RootState } from '../../store/store';
 import { api } from '../../api/api';
 import { allCategories } from '../../data/categories';
 import { ECondition } from '../../types';
+import { brands } from '../../data/brands';
 
 const AddItemForm = () => {
     const params = useParams();
@@ -16,12 +17,14 @@ const AddItemForm = () => {
         discount: 0,
         price: 0,
         description: '',
+        brand: '',
+        vehicleModel: '',
         image: null,
         condition: ECondition.NEW,
         stock: 0,
         category: ''
     });
-    const [validations, setValidations] = useState({ name: false, discount: true, price: false, description: false, image: false, stock: false, category: false });
+    const [validations, setValidations] = useState({ name: false, discount: true, vehicleModel: true, brand: false, price: false, description: false, image: false, stock: false, category: false });
     const [imagePreview, setImagePreview] = useState<any>(null);
     const [categories] = useState(allCategories);
     const isNewItem = (params.itemId === 'new');
@@ -31,7 +34,7 @@ const AddItemForm = () => {
     useEffect(() => {
         if (params.itemId !== 'new') {
             getItem();
-            setValidations({ name: true, discount: true, price: true, description: true, image: true, stock: true, category: true })
+            setValidations({ name: true, discount: true, vehicleModel: true, brand: false, price: true, description: true, image: true, stock: true, category: true })
         }
     }, [])
 
@@ -64,6 +67,8 @@ const AddItemForm = () => {
         const formData = new FormData();
         formData.append('name', itemData.name);
         formData.append('discount', itemData.discount.toString());
+        formData.append('brand', itemData.brand);
+        formData.append('vehicleModel', itemData.vehicleModel);
         formData.append('price', itemData.price.toString());
         formData.append('description', itemData.description);
         formData.append('condition', itemData.condition);
@@ -115,6 +120,9 @@ const AddItemForm = () => {
         } else if (field === 'discount') {
             parseFloat(value) <= 100 && parseFloat(value) >= 0
                 ? setValidations({ ...validations, discount: true }) : setValidations({ ...validations, discount: false });
+        } else if (field === 'vehicleModel') {
+            value
+                ? setValidations({ ...validations, vehicleModel: true }) : setValidations({ ...validations, vehicleModel: false });
         } else if (field === 'price') {
             parseFloat(value) >= 0
                 ? setValidations({ ...validations, price: true }) : setValidations({ ...validations, price: false });
@@ -130,6 +138,9 @@ const AddItemForm = () => {
         } else if (field === 'category') {
             !value
                 ? setValidations({ ...validations, category: false }) : setValidations({ ...validations, category: true });
+        } else if (field === 'brand') {
+            value
+                ? setValidations({ ...validations, brand: true }) : setValidations({ ...validations, brand: false });
         }
     }
 
@@ -185,6 +196,19 @@ const AddItemForm = () => {
                                     <option key={category} value={category}>{category}</option>
                                 ))}
                             </select>
+                        </div>
+                        <div className="mb-4 col-span-1">
+                            <label htmlFor="brand" className="block text-sm font-medium text-gray-700 mb-1">Brand</label>
+                            <select id="brand" name="brand" value={itemData.brand} onChange={handleChange} className={`w-full h-9 ${validations.brand ? 'bg-green-100' : 'bg-red-100'} border px-2 border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}>
+                                <option value="All" defaultChecked>All</option>
+                                {brands.map(({ brand }) => (
+                                    <option key={brand} value={brand}>{brand}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="mb-4 col-span-4 sm:col-span-3">
+                            <label htmlFor="vehicleModel" className="block text-sm font-medium text-gray-700 mb-1">Vehicle Model</label>
+                            <input type="text" id="vehicleModel" name="vehicleModel" value={itemData.vehicleModel} onChange={handleChange} className={`w-full h-9 ${validations.vehicleModel ? 'bg-green-100' : 'bg-red-100'} px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`} />
                         </div>
                     </div>
                     <div className="mt-6">

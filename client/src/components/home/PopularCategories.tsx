@@ -58,7 +58,7 @@ type CategoryCardProps = {
 
 const CategoryCard = ({ category }: CategoryCardProps) => {
     return (
-        <div className="category-card border flex rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
+        <div className="category-card border border-gray-300 flex rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
             <img
                 src={category.image}
                 alt={category.title}

@@ -9,6 +9,7 @@ import Button from '../components/Button';
 import { api } from '../api/api';
 import ItemsList from '../components/home/ItemsList';
 import { useNavigate } from 'react-router-dom';
+import VehicleBrandScroller from '../components/home/VehicleBrandScroller';
 
 export default function Home() {
   const [allItems, setAllItems] = useState([]);
@@ -36,13 +37,19 @@ export default function Home() {
     }
   }
 
+  const navToCategory = (cat: string) => {
+    navigate('/shop', { state: { cat } });
+  }
+
+
   useEffect(() => {
     getAllItems();
     getDiscountItems();
+  window.scrollTo({ top: 0 });
   }, [])
 
   return (
-    <main className="flex flex-col flex-grow w-screen items-center">
+    <main className="flex flex-col flex-grow w-screen items-center bg-[#fffef4]">
 
       <Slider />
 
@@ -55,7 +62,7 @@ export default function Home() {
             p='High-quality engine parts for your vehicle'
             btnText='Show Now'
             imgLink='offer1.jpg'
-            onClick={() => { navigate('/shop') }}
+            onClick={() => navToCategory(categories[0])}
           />
           <OfferCard
             h1='Lighting & Indicators'
@@ -63,7 +70,7 @@ export default function Home() {
             p='Explore headlights, fog lamps, indicators, and LED upgrades for your vehicle.'
             btnText='Show Now'
             imgLink='offer2.jpg'
-            onClick={() => { navigate('/shop') }}
+            onClick={() => navToCategory(categories[5])}
           />
           <OfferCard
             h1='Brake Systems'
@@ -71,9 +78,11 @@ export default function Home() {
             p='Browse brake pads, discs, and calipers to ensure your safety on the road.'
             btnText='Show Now'
             imgLink='offer3.jpg'
-            onClick={() => { navigate('/shop') }}
+            onClick={() => navToCategory(categories[1])}
           />
         </div>
+
+        <VehicleBrandScroller />
 
         <div className='flex flex-col gap-6 items-center'>
           <div className='flex justify-center gap-10'>

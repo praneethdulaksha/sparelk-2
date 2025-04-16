@@ -84,15 +84,15 @@ function Cart() {
               </div>
               <div className="flex justify-between items-center border-b py-4 border-gray-500">
                 <p className="text-gray-600">Shipping estimate</p>
-                <p className="text-gray-800 font-semibold">Rs. 1.00</p>
+                <p className="text-gray-800 font-semibold">Rs. 100.00</p>
               </div>
               <div className="flex justify-between items-center border-b py-4 border-gray-500">
                 <p className="text-gray-600">Tax estimate</p>
-                <p className="text-gray-800 font-semibold">Rs. 1.00</p>
+                <p className="text-gray-800 font-semibold">Rs. 0.00</p>
               </div>
               <div className="flex justify-between items-center py-4">
                 <p className="text-gray-600 font-semibold">Order Total</p>
-                <p className="text-gray-800 font-semibold">Rs. {(total + 2).toFixed(2)}</p>
+                <p className="text-gray-800 font-semibold">Rs. {(total + 100).toFixed(2)}</p>
               </div>
               <button
                 type="button"

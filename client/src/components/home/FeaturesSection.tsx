@@ -2,7 +2,7 @@ import { FiTruck, FiRefreshCw, FiCreditCard, FiGift } from 'react-icons/fi';
 
 const FeaturesSection = () => {
     return (
-        <div className="w-screen bg-yellow-50 py-6">
+        <div className="w-screen bg-gray-200 py-6">
             <div className="max-w-7xl mx-auto flex justify-around items-center space-x-6">
                 {/* Feature Item */}
                 <div className="flex items-center space-x-4">

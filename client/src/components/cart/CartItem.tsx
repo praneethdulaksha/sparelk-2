@@ -73,14 +73,16 @@ export default function CartItem({ cartItem, setTotal }: Props) {
           <h5 className=" text-gray-800">{item.name}</h5>
           <FiPlus
             onClick={() => {
-              updateQty(cItem.qty < item.stock ? cItem.qty + 1 : item.stock)
+              if(cItem.qty >= item.stock) return
+              updateQty(cItem.qty + 1)
               setTotal(discountPrice)
             }}
             className="border rounded-full text-3xl text-gray-600" />
           {cItem.qty}
           <FiMinus
             onClick={() => {
-              updateQty(cItem.qty > 1 ? cItem.qty - 1 : 1);
+              if(cItem.qty <= 1) return
+              updateQty(cItem.qty - 1);
               setTotal(-discountPrice)
             }}
             className="border rounded-full text-3xl text-gray-600" />

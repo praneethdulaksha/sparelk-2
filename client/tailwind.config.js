@@ -9,7 +9,7 @@ export default {
     extend: {
       colors: {
         navbar: "#eab308",
-        main: "#fdb91a",
+        main: "#B4B4B3",
         dark: "#212121",
         "link-color": "#008934",
         "price-color": "#FF5207",
@@ -23,6 +23,15 @@ export default {
       spacing: {
         670: "670px",
         450: "450px",
+      },
+      animation: {
+        scroll: "scroll 40s linear infinite",
+      },
+      keyframes: {
+        scroll: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
     },
   },

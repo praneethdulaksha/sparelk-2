@@ -1,0 +1,20 @@
+export const brands = [
+    { brand: "Toyota", url: "https://upload.wikimedia.org/wikipedia/commons/e/e7/Toyota.svg" },
+    { brand: "Honda", url: "https://upload.wikimedia.org/wikipedia/commons/3/38/Honda.svg" },
+    { brand: "Nissan", url: "https://upload.wikimedia.org/wikipedia/commons/2/23/Nissan_2020_logo.svg" },
+    { brand: "Suzuki", url: "https://upload.wikimedia.org/wikipedia/commons/1/12/Suzuki_logo_2.svg" },
+    { brand: "Mazda", url: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Mazda_logo.svg" },
+    { brand: "Mitsubishi", url: "https://upload.wikimedia.org/wikipedia/commons/5/5a/Mitsubishi_logo.svg" },
+    { brand: "Hyundai", url: "https://upload.wikimedia.org/wikipedia/commons/4/44/Hyundai_Motor_Company_logo.svg" },
+    { brand: "Kia", url: "https://upload.wikimedia.org/wikipedia/commons/b/b6/KIA_logo3.svg" },
+    { brand: "Ford", url: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Ford_logo_flat.svg" },
+    { brand: "Chevrolet", url: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Chevrolet-logo.png" },
+    { brand: "Volkswagen", url: "https://upload.wikimedia.org/wikipedia/commons/6/6d/Volkswagen_logo_2019.svg" },
+    { brand: "BMW", url: "https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg" },
+    { brand: "Mercedes-Benz", url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Mercedes-Benz_Star.svg/1024px-Mercedes-Benz_Star.svg.png" },
+    { brand: "Audi", url: "https://upload.wikimedia.org/wikipedia/commons/9/92/Audi-Logo_2016.svg" },
+    { brand: "Isuzu", url: "https://upload.wikimedia.org/wikipedia/commons/4/49/Isuzu.svg" },
+    { brand: "Tata", url: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Tata_logo.svg" },
+    { brand: "Subaru", url: "https://upload.wikimedia.org/wikipedia/commons/4/47/Subaru_logo.svg" },
+    { brand: "Jeep", url: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Jeep.svg" }
+];

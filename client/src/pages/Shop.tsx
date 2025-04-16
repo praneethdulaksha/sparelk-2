@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FiChevronRight, FiDelete, FiLoader, FiSearch } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { api } from "../api/api";
@@ -6,6 +6,8 @@ import ItemsList from "../components/home/ItemsList";
 import { ECondition } from "../types";
 import { allCategories } from "../data/categories";
 import Button from "../components/Button";
+import { brands as allBrands } from "../data/brands";
+import CollapsibleSection from "../components/CollapsibleSection";
 
 // vehicle spare parts
 const conditions = [
@@ -16,16 +18,20 @@ const conditions = [
 
 export default function Shop() {
     const [loading, setLoading] = useState(true);
-    const [allItems, setAllItems] = useState([]);
-    const [count, setCount] = useState({ limit: 30, page: 1, tot: 0})
+    const [count, setCount] = useState({ limit: 30, page: 1, tot: 0 })
     const [filteredItems, setFilteredItems] = useState([]);
-    const [price, setPrice] = useState(10000); // Default value
+    const [price, setPrice] = useState(300000);
     const [categories, setCategories] = useState<string[]>([]);
+    const [brands, setBrands] = useState<string[]>([]);
     const [sort, setSort] = useState<'new' | 'low' | 'high' | 'popular'>('new')
     const [condition, setCondition] = useState<ECondition>(ECondition.ALL);
     const [keyword, setKeyword] = useState('');
+    const [isOpened, setOpened] = useState({ price: true, condition: true, categories: true, brands: true });
 
     const loadingDone = () => setTimeout(() => setLoading(false), 500);
+    const location = useLocation();
+    const brandFromState = location.state?.brand || null;
+    const catFromState = location.state?.cat || null;
 
     const getFilteredItems = async () => {
         setLoading(true);
@@ -35,13 +41,14 @@ export default function Shop() {
                     price,
                     condition,
                     categories: categories.join(','),
+                    brands: brands.join(','),
                     keyword,
                     sort,
                     count
                 }
             );
             setFilteredItems(resp.data.items);
-            setCount({...count, tot: resp.data.count.tot})
+            setCount({ ...count, tot: resp.data.count.tot })
         } catch (err) {
             console.error(err);
         } finally {
@@ -51,7 +58,7 @@ export default function Shop() {
 
     useEffect(() => {
         getFilteredItems();
-    },[condition, sort, categories])
+    }, [condition, sort, categories, brands])
 
     const priceOnChange = () => {
         getFilteredItems();
@@ -79,15 +86,30 @@ export default function Shop() {
         setCategories(newCategories);
     }
 
+    const brandOnCheck = (val: boolean, brand: string) => {
+        const newBrands = [...brands];
+        if (val) {
+            newBrands.push(brand);
+        } else {
+            newBrands.splice(newBrands.indexOf(brand), 1);
+        }
+        setBrands(newBrands);
+    }
+
     const onClear = () => {
         setCategories([]);
+        setBrands([]);
         setCondition(ECondition.ALL);
         setPrice(10000);
         setKeyword('');
         getFilteredItems();
     }
 
+
     useEffect(() => {
+        window.scrollTo({ top: 0 });
+        brandFromState && brandOnCheck(true, brandFromState);
+        catFromState && categoryOnCheck(true, catFromState);
         getFilteredItems();
     }, [])
 
@@ -113,8 +135,32 @@ export default function Shop() {
                     <button onClick={onSearch} type="button" className="absolute right-2 text-gray-500"><FiSearch /></button>
                 </div>
 
-                <div className="py-3 mb-3 border-b border-main">
-                    <h5 className="text-gray-600 font-semibold mb-2 uppercase">Condition</h5>
+                <CollapsibleSection
+                    title="Price"
+                    isOpened={isOpened.price}
+                    onToggle={() => setOpened({ ...isOpened, price: !isOpened.price })}
+                >
+                    <input
+                        type="range"
+                        min="0"
+                        max="300000"
+                        value={price}
+                        onChange={(e) => setPrice(parseInt(e.target.value))}
+                        onMouseUp={priceOnChange}
+                        className="w-full cursor-pointer accent-yellow-500"
+                    />
+                    <div className="flex justify-between text-gray-500 text-sm mt-1">
+                        <span>Rs.0</span>
+                        <span>Rs.{price}</span>
+                        <span>Rs.300,000</span>
+                    </div>
+                </CollapsibleSection>
+
+                <CollapsibleSection
+                    title="Condition"
+                    isOpened={isOpened.condition}
+                    onToggle={() => setOpened({ ...isOpened, condition: !isOpened.condition })}
+                >
                     {conditions.map((cond) => (
                         <div key={cond.value} className="ml-3">
                             <input
@@ -129,38 +175,33 @@ export default function Shop() {
                             <label htmlFor={`condition-${cond.value}`} className="text-gray-700">{cond.label}</label>
                         </div>
                     ))}
-                </div>
+                </CollapsibleSection>
 
-                <div className="py-3 mb-3 border-b border-main">
-                    <h5 className="text-gray-600 font-semibold mb-2 uppercase">Categories</h5>
-                    {
-                        allCategories.map((cat) => (
-                            <div key={cat} className="ml-3">
-                                <input checked={categories.includes(cat)} onChange={(e) => categoryOnCheck(e.target.checked, cat)} type="checkbox" name={`cb-cat-${cat}`} id={`cb-cat-${cat}`} className="mr-2" />
-                                <label htmlFor={`cb-cat-${cat}`} className="text-gray-700">{cat}</label>
-                            </div>
-                        ))
-                    }
-                </div>
+                <CollapsibleSection
+                    title="Categories"
+                    isOpened={isOpened.categories}
+                    onToggle={() => setOpened({ ...isOpened, categories: !isOpened.categories })}
+                >
+                    {allCategories.map((cat) => (
+                        <div key={cat} className="ml-3">
+                            <input checked={categories.includes(cat)} onChange={(e) => categoryOnCheck(e.target.checked, cat)} type="checkbox" name={`cb-cat-${cat}`} id={`cb-cat-${cat}`} className="mr-2" />
+                            <label htmlFor={`cb-cat-${cat}`} className="text-gray-700">{cat}</label>
+                        </div>
+                    ))}
+                </CollapsibleSection>
 
-                <div className="py-3 mb-3 border-b border-main">
-                    <h5 className="text-gray-600 font-semibold mb-2 uppercase">Price</h5>
-                    <input
-                        type="range"
-                        min="0"
-                        max="300000"
-                        value={price}
-                        onChange={(e) => setPrice(parseInt(e.target.value))}
-                        onMouseUp={priceOnChange}
-                        className="w-full cursor-pointer accent-main"
-                    />
-                    <div className="flex justify-between text-gray-500 text-sm mt-1">
-                        <span>Rs.0</span>
-                        <span>Rs.{price}</span>
-                        <span>Rs.300,000</span>
-                    </div>
-
-                </div>
+                <CollapsibleSection
+                    title="Brands"
+                    isOpened={isOpened.brands}
+                    onToggle={() => setOpened({ ...isOpened, brands: !isOpened.brands })}
+                >
+                    {allBrands.map(({ brand }) => (
+                        <div key={brand} className="ml-3">
+                            <input checked={brands.includes(brand)} onChange={(e) => brandOnCheck(e.target.checked, brand)} type="checkbox" name={`cb-bnd-${brand}`} id={`cb-bnd-${brand}`} className="mr-2" />
+                            <label htmlFor={`cb-bnd-${brand}`} className="text-gray-700">{brand}</label>
+                        </div>
+                    ))}
+                </CollapsibleSection>
 
                 <Button
                     onClick={onClear}

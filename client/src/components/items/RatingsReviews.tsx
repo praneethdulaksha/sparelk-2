@@ -35,7 +35,7 @@ export default function RatingsReviews({ item }: Props) {
 
     return reviews && (
         <>
-            <h2 className="px-5 mt-3 text-2xl md:text-4xl">Ratings & Reviews({reviews.length})</h2>
+            <h2 className="px-5 mt-16 text-2xl md:text-4xl">Ratings & Reviews({reviews.length})</h2>
             <div className='flex flex-col px-5 pb-5 bg-pane-color rounded-2xl'>
                 <div className='flex flex-col-reverse md:flex-row justify-between md:items-center w-full border-b pb-5 border-gray-300' >
                     <div className='flex justify-evenly flex-col md:1/2 lg:w-2/5 mt-3'>

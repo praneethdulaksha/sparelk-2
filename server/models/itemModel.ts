@@ -14,6 +14,8 @@ export interface IItem extends Document {
     rating: number;
     discount?: number;
     image: string;
+    brand: string;
+    vehicleModel: string;
     category: string;
     condition: ECondition;
     isActive: boolean;
@@ -34,6 +36,8 @@ const itemSchema = new Schema<IItem>({
     rating: { type: Number, required: true, default: 0 },
     discount: { type: Number, default: 0 },
     image: { type: String, required: true },
+    brand: { type: String, required: true },
+    vehicleModel: { type: String, required: true },
     category: { type: String, required: true },
     condition: { type: String, enum: Object.values(ECondition), default: ECondition.NEW },
     isActive: { type: Boolean, required: true, default: true },
