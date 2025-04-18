@@ -31,7 +31,16 @@ const orderSchema: Schema = new Schema({
         default: 'Pending',
     },
     review: {
-        type: Object,
+        type: {
+            user: String,
+            rate: Number,
+            comment: String,
+            date: String,
+            sellerFeedback: {
+                type: Object,
+                default: null,
+            },
+        },
         default: null,
     },
     total: {

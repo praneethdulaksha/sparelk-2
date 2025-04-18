@@ -58,6 +58,8 @@ function App() {
                       <Route path='add-item/:itemId' element={<AddItemForm />} />
                       <Route path='seller-form' element={<SellerForm />} />
                     </Route>
+                    <Route path="/item/:itemId" element={<Item />} />
+                    <Route path='store/:storeId' element={<Store />} />
                   </>
                   : user?.role === EUserRole.ADMIN ?
                     <>

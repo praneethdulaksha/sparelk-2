@@ -13,6 +13,7 @@ const AddItemForm = () => {
     const navigate = useNavigate();
 
     const [itemData, setItemData] = useState({
+        code: '',
         name: '',
         discount: 0,
         price: 0,
@@ -24,7 +25,7 @@ const AddItemForm = () => {
         stock: 0,
         category: ''
     });
-    const [validations, setValidations] = useState({ name: false, discount: true, vehicleModel: true, brand: false, price: false, description: false, image: false, stock: false, category: false });
+    const [validations, setValidations] = useState({ code: false, name: false, discount: true, vehicleModel: false, brand: false, price: false, description: false, image: false, stock: false, category: false });
     const [imagePreview, setImagePreview] = useState<any>(null);
     const [categories] = useState(allCategories);
     const isNewItem = (params.itemId === 'new');
@@ -34,7 +35,7 @@ const AddItemForm = () => {
     useEffect(() => {
         if (params.itemId !== 'new') {
             getItem();
-            setValidations({ name: true, discount: true, vehicleModel: true, brand: false, price: true, description: true, image: true, stock: true, category: true })
+            setValidations({ code: true, name: true, discount: true, vehicleModel: true, brand: true, price: true, description: true, image: true, stock: true, category: true })
         }
     }, [])
 
@@ -65,6 +66,7 @@ const AddItemForm = () => {
         e.preventDefault();
 
         const formData = new FormData();
+        formData.append('code', itemData.code.toUpperCase());
         formData.append('name', itemData.name);
         formData.append('discount', itemData.discount.toString());
         formData.append('brand', itemData.brand);
@@ -90,7 +92,15 @@ const AddItemForm = () => {
                 showConfirmButton: false,
                 timer: 1500
             });
-        }).catch(err => console.log(err));
+        }).catch(err => {
+            console.log(err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: err.response.data.err,
+                showConfirmButton: true,
+            });
+        });
     }
 
     function updateItem(formData: any) {
@@ -103,7 +113,15 @@ const AddItemForm = () => {
                 showConfirmButton: false,
                 timer: 1500
             });
-        }).catch(err => console.log(err));
+        }).catch(err => {
+            console.log(err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: err.response.data.err,
+                showConfirmButton: true,
+            });
+        });
     }
 
     function getItem() {
@@ -141,6 +159,9 @@ const AddItemForm = () => {
         } else if (field === 'brand') {
             value
                 ? setValidations({ ...validations, brand: true }) : setValidations({ ...validations, brand: false });
+        } else if (field === 'code') {
+            value
+                ? setValidations({ ...validations, code: true }) : setValidations({ ...validations, code: false });
         }
     }
 
@@ -158,7 +179,11 @@ const AddItemForm = () => {
                         <input type="file" id="image" name="image" accept="image/*" onChange={handleChange} className={`w-80 h-9 ${validations.image ? 'bg-green-100' : 'bg-red-100'} rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`} />
                     </div>
                     <div className='grid grid-cols-4 gap-3'>
-                        <div className="mb-4 col-span-4">
+                        <div className="mb-4 col-span-1">
+                            <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">Item Code</label>
+                            <input type="text" id="code" name="code" value={itemData.code} onChange={handleChange} className={`w-full h-9 uppercase ${validations.code ? 'bg-green-100' : 'bg-red-100'} px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`} />
+                        </div>
+                        <div className="mb-4 col-span-3">
                             <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                             <input type="text" id="name" name="name" value={itemData.name} onChange={handleChange} className={`w-full h-9 ${validations.name ? 'bg-green-100' : 'bg-red-100'} px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`} />
                         </div>
@@ -200,7 +225,7 @@ const AddItemForm = () => {
                         <div className="mb-4 col-span-1">
                             <label htmlFor="brand" className="block text-sm font-medium text-gray-700 mb-1">Brand</label>
                             <select id="brand" name="brand" value={itemData.brand} onChange={handleChange} className={`w-full h-9 ${validations.brand ? 'bg-green-100' : 'bg-red-100'} border px-2 border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}>
-                                <option value="All" defaultChecked>All</option>
+                                <option value="">Select Brand</option>
                                 {brands.map(({ brand }) => (
                                     <option key={brand} value={brand}>{brand}</option>
                                 ))}
@@ -208,7 +233,7 @@ const AddItemForm = () => {
                         </div>
                         <div className="mb-4 col-span-4 sm:col-span-3">
                             <label htmlFor="vehicleModel" className="block text-sm font-medium text-gray-700 mb-1">Vehicle Model</label>
-                            <input type="text" id="vehicleModel" name="vehicleModel" value={itemData.vehicleModel} onChange={handleChange} className={`w-full h-9 ${validations.vehicleModel ? 'bg-green-100' : 'bg-red-100'} px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`} />
+                            <input type="text" id="vehicleModel" name="vehicleModel" placeholder='all or specific model' value={itemData.vehicleModel} onChange={handleChange} className={`w-full h-9 ${validations.vehicleModel ? 'bg-green-100' : 'bg-red-100'} px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`} />
                         </div>
                     </div>
                     <div className="mt-6">

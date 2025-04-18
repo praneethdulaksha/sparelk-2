@@ -1,5 +1,6 @@
 export type TItem = {
     _id: string;
+    code: string;
     name: string;
     price: number;
     discount: number;
@@ -7,6 +8,8 @@ export type TItem = {
     image: string;
     rating: number;
     category: string;
+    vehicleModel: string;
+    brand: string;
     condition: ECondition;
     sold: number;
     stock: number;
@@ -70,4 +73,31 @@ export enum EUserRole {
     SELLER = 'seller',
     BUYER = 'buyer',
     ADMIN = 'admin',
+}
+
+export interface TOrder {
+    _id?: string;
+    userId: string;
+    itemId: string;
+    qty: number;
+    status: string;
+    total: number;
+    orderDate: string;
+    receivedDate: string | null;
+    review: {
+        user: string;
+        rate: number;
+        comment: string;
+        date: string;
+        sellerFeedback: any;
+    } | null;
+}
+
+export interface TReview {
+    _id: string;
+    user: string;
+    rate: number;
+    comment: string;
+    date: string;
+    sellerFeedback: any;
 }

@@ -15,14 +15,14 @@ export default function VehicleBrandScroller() {
 
     return (
         <div className=" my-12">
-            <h2 className="text-center font-bold text-gray-800 mb-12">Spare parts for any model</h2>
+            <h2 className="text-center font-bold text-gray-600 mb-12">Spare parts for any</h2>
             <Marquee speed={speed} gradient={false} className="" pauseOnHover>
                 {brands.map((logo) => (
                     <img
                         key={logo.brand}
                         src={logo.url}
                         alt={logo.brand}
-                        className="h-10 w-auto mx-12 cursor-pointer opacity-80 hover:opacity-100 transition duration-300"
+                        className="h-10 w-auto mx-12 cursor-pointer opacity-70 hover:opacity-100 transition duration-300"
                         onClick={() => handleClick(logo.brand)}
                     />
                 ))}

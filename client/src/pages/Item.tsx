@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import { RootState } from '../store/store';
 import { api } from '../api/api';
 import { cartActions } from '../reducers/cartSlice';
-import { TItem } from '../types';
+import { EUserRole, TItem } from '../types';
 import ItemCard from '../components/ItemCard';
 import RatingsReviews from '../components/items/RatingsReviews';
 
@@ -19,6 +19,7 @@ function Item() {
     const dispatch = useDispatch();
     const itemId = params.itemId;
     const { cartId } = useSelector((state: RootState) => state.cart);
+    const { user } = useSelector((state: RootState) => state.user);
     const [item, setItem] = useState<TItem | null>(null);
     const [itemQty, setItemQty] = useState(1);
     const [items, setAllItems] = useState([]);
@@ -119,14 +120,16 @@ function Item() {
                     </div>
                     <label className='text-sm text-zinc-500 -mt-1' >(Delivery By Feb 26 ~ Feb 29)</label>
 
-                    <div className='flex flex-col sm:flex-row items-center justify-center px-5 pt-3 gap-3 sm:gap-16 sm:h-16 sm:my-5'>
-                        <Link to={`/item/place-order/${item._id}/${itemQty}`} className='bg-main rounded-md py-1 px-3 shadow-lg w-full sm:w-fit'><button className='h-full w-full text-center'>
-                            Buy Now
-                        </button></Link>
-                        <button className='bg-blue-500 rounded-md py-1 px-3 shadow-lg w-full sm:w-fit'
-                            onClick={addItemCart}
-                        >Add to Cart</button>
-                    </div>
+                    {
+                        user?.role !== EUserRole.SELLER && <div className='flex flex-col sm:flex-row items-center justify-center px-5 pt-3 gap-3 sm:gap-16 sm:h-16 sm:my-5'>
+                            <Link to={`/item/place-order/${item._id}/${itemQty}`} className='bg-main rounded-md py-1 px-3 shadow-lg w-full sm:w-fit'><button className='h-full w-full text-center'>
+                                Buy Now
+                            </button></Link>
+                            <button className='bg-blue-500 rounded-md py-1 px-3 shadow-lg w-full sm:w-fit'
+                                onClick={addItemCart}
+                            >Add to Cart</button>
+                        </div>
+                    }
                 </div>
             </div>
 
@@ -145,7 +148,7 @@ function Item() {
                     />
                 </div>
 
-                <div className="relative mt-5">
+                {/* <div className="relative mt-5">
                     <h2 className="px-5 mt-3 text-2xl md:text-4xl">Related Items</h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 place-items-center gap-3">
                         {
@@ -159,7 +162,7 @@ function Item() {
                             <button className="border border-black px-9 rounded-md bg-pane-color text-lg">Shop More</button>
                         </Link>
                     </div>
-                </div>
+                </div> */}
             </div>
         </main>
     ) : (

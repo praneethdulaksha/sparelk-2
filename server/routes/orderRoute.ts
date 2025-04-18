@@ -51,4 +51,14 @@ router.put('/review', async (req: Request, res: Response) => {
     }
 });
 
+router.put('/review/feedback/:id', async (req: Request, res: Response) => {
+    try {
+        await Order.addSellerFeedback(req.params.id, req.body);
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ err });
+    }
+})
+
 export default router;

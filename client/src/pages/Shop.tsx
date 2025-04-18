@@ -17,21 +17,23 @@ const conditions = [
 ];
 
 export default function Shop() {
+    const location = useLocation();
+    const brandFromState = location.state?.brand || null;
+    const catFromState = location.state?.cat || null;
+    const keywordFromState = location.state?.keyword || '';
+
     const [loading, setLoading] = useState(true);
     const [count, setCount] = useState({ limit: 30, page: 1, tot: 0 })
     const [filteredItems, setFilteredItems] = useState([]);
     const [price, setPrice] = useState(300000);
-    const [categories, setCategories] = useState<string[]>([]);
-    const [brands, setBrands] = useState<string[]>([]);
+    const [categories, setCategories] = useState<string[]>([catFromState]);
+    const [brands, setBrands] = useState<string[]>([brandFromState]);
     const [sort, setSort] = useState<'new' | 'low' | 'high' | 'popular'>('new')
     const [condition, setCondition] = useState<ECondition>(ECondition.ALL);
-    const [keyword, setKeyword] = useState('');
+    const [keyword, setKeyword] = useState(keywordFromState);
     const [isOpened, setOpened] = useState({ price: true, condition: true, categories: true, brands: true });
 
     const loadingDone = () => setTimeout(() => setLoading(false), 500);
-    const location = useLocation();
-    const brandFromState = location.state?.brand || null;
-    const catFromState = location.state?.cat || null;
 
     const getFilteredItems = async () => {
         setLoading(true);
@@ -67,6 +69,10 @@ export default function Shop() {
     const onSearch = () => {
         getFilteredItems();
     }
+    const onSubmit = (e: any) => {
+        e.preventDefault();
+        getFilteredItems();
+    }
 
     const onConditionChange = (e: any) => {
         setCondition(e.target.value as ECondition);
@@ -100,22 +106,20 @@ export default function Shop() {
         setCategories([]);
         setBrands([]);
         setCondition(ECondition.ALL);
-        setPrice(10000);
+        setPrice(300000);
         setKeyword('');
-        getFilteredItems();
+        // getFilteredItems();
     }
 
 
     useEffect(() => {
         window.scrollTo({ top: 0 });
-        brandFromState && brandOnCheck(true, brandFromState);
-        catFromState && categoryOnCheck(true, catFromState);
         getFilteredItems();
     }, [])
 
     return (
         <div className="container xl:max-w-7xl flex-grow py-5 px-2 md:px-0 min-h-screen flex">
-            <form className="w-[300px] mr-3">
+            <form className="w-[300px] mr-3" onSubmit={onSubmit}>
                 <span className="flex items-center">
                     <Link to='/' className="font-semibold text-gray-700">Home</Link>
                     <span className="mx-2"><FiChevronRight /></span>

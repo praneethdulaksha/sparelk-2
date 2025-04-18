@@ -84,9 +84,9 @@ router.post('/', upload.single('image'), async (req: Request, res: Response) => 
 
         const data = await Item.save(req.body, req.file);
         res.status(200).json({ success: true, data: data });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ err: err });
+    } catch (err: any) {
+        console.log(err.message);
+        res.status(500).json({ err: err.message });
     }
 });
 
@@ -94,8 +94,9 @@ router.put('/:itemId', upload.single('image'), async (req: Request, res: Respons
     try {
         const data = await Item.update(req.params.itemId, req.body, req.file);
         res.status(200).json({ success: true, data: data });
-    } catch (err) {
-        res.status(500).json({ err: err });
+    } catch (err: any) {
+        console.log(err.message);
+        res.status(500).json({ err: err.message });
     }
 });
 

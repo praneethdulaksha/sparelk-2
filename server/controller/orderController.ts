@@ -123,6 +123,25 @@ class OrderItemController {
             throw err;
         }
     }
+
+    async addSellerFeedback(reviewId: string, feedback: any) {
+        try {
+            const result = await Order.findOneAndUpdate(
+                { "review._id": new mongoose.Types.ObjectId(reviewId) },
+                { $set: { "review.sellerFeedback": feedback } },
+                { new: true }
+            );
+
+            console.log("result", result, feedback);
+
+            if (!result) {
+                throw new Error("Review not found");
+            }
+        } catch (err) {
+            console.error("Error adding seller feedback:", err);
+            throw err;
+        }
+    }
 }
 
 export default new OrderItemController();

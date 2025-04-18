@@ -10,30 +10,30 @@ import {
 const Footer = () => {
   return (
     <footer id="footer" className="bg-dark text-white py-10 w-screen mt-20">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-3 gap-8">
         {/* Left Column - Logo and Contact Info */}
         <div className="flex flex-col gap-2">
           <h2 className="text-5xl font-bold mb-4">
-            <span className="text-yellow-500">SpareLK</span>
+            <span className="text-main">SpareLK</span>
           </h2>
           <p className="text-sm">
             <FiMapPin className="inline mr-2" />
-            Chromium Co., 25 Silicon Road, London D04 89GR
+            12/B, Lake Road, Colombo 1, Sri Lanka
           </p>
           <p className="text-sm">
             <FiPhone className="inline mr-2" />
-            +27 34 66 2455-198 <br /> Mon-Fri 8:00 to 19:00
+            +94770673892 <br /> Mon-Fri 8:00 to 19:00
           </p>
           <p className="text-sm">
             <FiMail className="inline mr-2" />
-            example@example.com
+            mailto@sparelk.com
           </p>
           <div className="flex space-x-4 mt-4">
-            <FaFacebookF className="w-6 h-6 cursor-pointer hover:text-yellow-500" />
-            <FaTwitter className="w-6 h-6 cursor-pointer hover:text-yellow-500" />
-            <FaGoogle className="w-6 h-6 cursor-pointer hover:text-yellow-500" />
-            <FaInstagram className="w-6 h-6 cursor-pointer hover:text-yellow-500" />
-            <FaPinterest className="w-6 h-6 cursor-pointer hover:text-yellow-500" />
+            <FaFacebookF className="w-6 h-6 cursor-pointer hover:text-main" />
+            <FaTwitter className="w-6 h-6 cursor-pointer hover:text-main" />
+            <FaGoogle className="w-6 h-6 cursor-pointer hover:text-main" />
+            <FaInstagram className="w-6 h-6 cursor-pointer hover:text-main" />
+            <FaPinterest className="w-6 h-6 cursor-pointer hover:text-main" />
           </div>
         </div>
 
@@ -51,21 +51,26 @@ const Footer = () => {
         {/* Column 3 - Why Buy From Us */}
         <div>
           <h3 className="font-semibold mb-4">WHY BUY FROM US</h3>
-          <ul className="space-y-2 text-sm text-gray-400">
-            <li>About Us</li>
-            <li>Blog</li>
-            <li>Compare</li>
-            <li>Contacts</li>
-            <li>Gallery</li>
-            <li>Shop</li>
-            <li>Test</li>
-            <li>Typography</li>
-            <li>Wishlist</li>
-          </ul>
+          <p className="space-y-2 text-sm text-gray-400">
+            <span className="block mb-2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </span>
+            <span className="block mb-2">
+              Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </span>
+            <span className="block mb-2">
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </span>
+            <span className="block mb-2">
+              Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur.
+            </span>
+          </p>
         </div>
 
         {/* Column 4 - Newsletter */}
-        <div>
+        {/* <div>
           <h3 className="font-semibold mb-4">
             SUBSCRIBE AND GET 5% OFF DISCOUNT
           </h3>
@@ -115,7 +120,7 @@ const Footer = () => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       <p className="text-gray-500 text-sm text-center mt-10">
         Copyright © 2025 SpareLK Spare Parts.

@@ -14,7 +14,7 @@ export default function Slide({ h1, p, btnText, imgLink, handleClick }: Props) {
             <div className="max-w-[40%] z-10">
                 <h1 className="text-3xl font-bold leading-tight mb-4">{h1}</h1>
                 <p className="mb-6 text-gray-300">{p}</p>
-                <button onClick={handleClick} className="px-6 py-1 bg-yellow-400 text-black font-medium rounded hover:bg-gray-200 transition">{btnText}</button>
+                <button onClick={handleClick} className="px-6 py-1 bg-main text-black font-medium rounded hover:bg-gray-200 transition">{btnText}</button>
             </div>
         </div>
     )

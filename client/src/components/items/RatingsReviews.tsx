@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { faStarHalfStroke } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faEmptyStar } from '@fortawesome/free-regular-svg-icons';
-import { TItem } from '../../types';
+import { TItem, TReview } from '../../types';
 import { api } from '../../api/api';
 import RatingBar from './RatingBar';
 import Review from './Review';
@@ -13,7 +13,7 @@ type Props = {
 }
 
 export default function RatingsReviews({ item }: Props) {
-    const [reviews, setReviews] = useState([]);
+    const [reviews, setReviews] = useState<TReview[]>([]);
     const [ratings, setRatings] = useState([0, 0, 0, 0, 0]);
 
     useEffect(() => {
@@ -30,6 +30,7 @@ export default function RatingsReviews({ item }: Props) {
             })
             setRatings(tempRatings);
             setReviews(revs)
+            // console.log(revs);
         }).catch(err => console.error(err));
     }
 

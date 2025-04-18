@@ -7,6 +7,7 @@ export enum ECondition {
 }
 
 export interface IItem extends Document {
+    code: string;
     name: string;
     description: string;
     price: number;
@@ -25,6 +26,7 @@ export interface IItem extends Document {
 }
 
 const itemSchema = new Schema<IItem>({
+    code: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     description: {
         type: String,

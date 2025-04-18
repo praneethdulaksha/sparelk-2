@@ -13,6 +13,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useSelector((state: RootState) => state.user);
   const { cartItems } = useSelector((state: RootState) => state.cart);
+  const [keyword, setKeyword] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -37,22 +38,34 @@ const Navbar = () => {
   }
 
   return user && (
-    <nav className="bg-main flex items-center justify-between px-40 py-2 w-screen z-30">
+    <nav className="bg-main flex items-center gap-8 px-28 py-2 w-screen z-30">
+      {/* Left section */}
+      <div className="flex items-center space-x-4">
+        <Link to='/' className="flex items-center space-x-1 text-black font-bold text-xl hover:scale-105 hover:text-gray-800 duration-200">
+          <img className='h-8' src="/logo.png" alt="sparelk-logo" />
+        </Link>
+      </div>
+
       {/* Center section */}
       {
-        user.role == EUserRole.BUYER && <div className="flex items-center space-x-6 text-black">
+        user.role == EUserRole.BUYER && <div className="flex items-center space-x-6 text-black text-sm">
           <Link to="/" className="font-semibold text-gray-900 hover:text-black">Home</Link>
           <Link to="/shop" className="font-semibold text-gray-900 hover:text-black">Shop</Link>
           <a href="#footer" className="font-semibold text-gray-900 hover:text-black">Contacts</a>
         </div>
       }
 
-      {/* Left section */}
-      <div className="flex items-center space-x-4">
-        <Link to='/' className="flex items-center space-x-1 text-black font-bold text-xl hover:scale-105 hover:text-gray-800 duration-200">
-          <img className='h-10' src="/logo.png" alt="sparelk-logo" />
-        </Link>
-      </div>
+      {/* search bar */}
+      {user.role !== EUserRole.SELLER ? <form className="flex items-center flex-grow mx-10" onSubmit={(e) => {
+        e.preventDefault();
+        navigate('/shop', { state: { keyword } });
+        setKeyword('');
+      }}>
+        <input value={keyword} onChange={(e) => setKeyword(e.target.value)} type="text" placeholder="Search..." className="border text-sm border-gray-300 rounded-full py-2 px-4 w-full" />
+        <button className="bg-gray-800 text-white text-sm rounded-full px-4 py-2 ml-2 hover:bg-gray-900">Search</button>
+      </form>
+      : <div className='flex-grow'></div>}
+
 
       {/* Right section */}
       <div className="flex items-center space-x-4">
@@ -73,12 +86,12 @@ const Navbar = () => {
           className="flex items-center gap-2 cursor-pointer relative"
         >
           <FiUser className="text-black h-6 w-6 hover:text-gray-800 cursor-pointer" />
-          <span className="text-base text-gray-800">Welcome, <b>{user.firstName}</b></span>
+          <span className="text-gray-800 text-sm">Welcome, <b>{user.firstName}</b></span>
           <FiChevronDown className={``} />
 
           {
             isMenuOpen && (
-              <div className="absolute bg-yellow-300 shadow-md w-64 p-2 rounded-md top-[100%] right-0 left-0 m-auto">
+              <div className="absolute bg-main shadow-md w-64 p-2 rounded-md top-[100%] right-0 left-0 m-auto">
                 {
                   user.role === EUserRole.SELLER ? <>
                     <Li to="/" icon={faUser}>My Profile</Li>

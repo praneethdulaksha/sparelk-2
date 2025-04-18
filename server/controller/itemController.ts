@@ -29,6 +29,9 @@ class ItemModel {
     }
 
     async save(body: any, imageFile: Express.Multer.File): Promise<any> {
+        // search item by code
+        const existingItem = await Item.findOne({ code: body.code });
+        if (existingItem) throw new Error('Item with this code already exists');
         const itemData = { ...body, image: imageFile.filename };
         return await new Item(itemData).save();
     }
@@ -76,12 +79,15 @@ class ItemModel {
     async filterItems({ price, condition, categories, brands, keyword, sort, count }: any) {
 
         try {
-            console.log(price, condition, categories, brands, keyword, sort, count)
             let filter: any = {};
 
             // Keyword Search
             if (keyword) {
-                filter.name = { $regex: keyword, $options: "i" }; // Case-insensitive search
+                filter.$or = [
+                    { name: { $regex: keyword, $options: "i" } },
+                    { vehicleModel: { $regex: keyword, $options: "i" } },
+                    { code: { $regex: keyword, $options: "i" } }
+                ];
             }
 
             // Category Filter
@@ -101,7 +107,7 @@ class ItemModel {
 
             // Condition Filter
             if (condition && condition !== "All") {
-                filter.condition = condition; // Assuming condition is stored as "new" or "used"
+                filter.condition = condition;
             }
 
             // Count Filter for pagination
@@ -121,6 +127,8 @@ class ItemModel {
                 .limit(count.limit)
             const totalCount = await Item.countDocuments(filter);
             if (totalCount < count.to) count.to = totalCount;
+
+            console.log("Filtered Items:", filter);
 
             return {
                 count: { tot: totalCount },
