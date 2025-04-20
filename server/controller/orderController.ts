@@ -4,6 +4,7 @@ import Cart from '../controller/cartController';
 import Item from '../models/itemModel';
 import { sendMail } from '../config/emailConfig';
 import userModel from '../models/userModel';
+import Store from '../models/storeModel';
 
 interface OrderItem {
     itemId: string;
@@ -42,7 +43,23 @@ class OrderItemController {
                 ordersToSave.map(async (orderData) => {
                     // reduce item stock quantity
                     await Item.findByIdAndUpdate(orderData.itemId, { $inc: { stock: -orderData.qty } })
-                        .then(() => new Order(orderData).save({ session }))
+                        .then((updated) => {
+                            // send main to seller if stock is low
+                            if (updated && updated.stock < 5) {
+                                // get user email from storeid
+                                Store.findById(updated.store).populate('userId').then((store) => {
+                                    store && sendMail({
+                                        to: (store.userId as any).email,
+                                        subject: "SpareLK - Low Stock Alert",
+                                        html: `
+                                        <h2>Low Stock Alert - ItemCode: ${updated.code}!</h2>
+                                        <p>The item ${updated.name} is running low on stock. Please check your inventory.</p>
+                                    `
+                                    });
+                                })
+                            }
+                            new Order(orderData).save({ session })
+                        })
                         .catch(() => { throw new Error('Not enough stock to place order') })
                 })
             );
@@ -53,7 +70,7 @@ class OrderItemController {
                 <p>Your order has been successfully placed. Below are your order details:</p>
                 <ul>
                     ${ordersToSave.map(oItem => `
-                        <li>Item ID: ${oItem.itemId}, Quantity: ${oItem.qty}, Total: $${oItem.total}</li>
+                        <li>Item ID: ${oItem.itemId}, Quantity: ${oItem.qty}, Total: ${oItem.total} LKR</li>
                     `).join('')}
                 </ul>
                 <p>We will notify you once your order is processed.</p>

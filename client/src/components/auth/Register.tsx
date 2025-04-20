@@ -143,7 +143,7 @@ export default function Register({ setIsLogin }: Props) {
                             {
                                 !isSeller && <Button
                                     onClick={handleSubmit}
-                                    className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-medium py-2 px-4 rounded-md shadow-lg focus:outline-none focus:ring focus:ring-yellow-300"
+                                    className="w-full bg-main hover:bg-main/80 text-black font-medium py-2 px-4 rounded-md shadow-lg focus:outline-none focus:ring focus:ring-yellow-300"
                                 >
                                     Register as Buyer
                                 </Button>
@@ -217,7 +217,7 @@ export default function Register({ setIsLogin }: Props) {
                             </motion.div>
                             <Button
                                 onClick={handleSubmit}
-                                className="w-full bg-yellow-500 hover:bg-yellow-600 text-black py-2 px-4 rounded-md shadow-lg focus:outline-none focus:ring focus:ring-yellow-300"
+                                className="w-full bg-main hover:bg-main/80 text-black py-2 px-4 rounded-md shadow-lg focus:outline-none focus:ring focus:ring-yellow-300"
                             >
                                 Register as Seller
                             </Button>
@@ -234,7 +234,7 @@ export default function Register({ setIsLogin }: Props) {
                         {"Already have an account?" + " "}
                         <button
                             onClick={() => setIsLogin(true)}
-                            className="text-yellow-500 text-sm font-medium hover:underline focus:outline-none"
+                            className="text-main text-sm font-medium hover:underline focus:outline-none"
                         >
                             Login
                         </button>

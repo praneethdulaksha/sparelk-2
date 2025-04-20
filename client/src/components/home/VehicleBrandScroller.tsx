@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { brands } from "../../data/brands";
 export default function VehicleBrandScroller() {
     const navigate = useNavigate();
-    const [speed] = React.useState(100);
+    const [speed] = React.useState(70);
 
     function handleClick(brand: string) {
         navigate('/shop', { state: { brand } });

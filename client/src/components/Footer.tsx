@@ -9,31 +9,32 @@ import {
 
 const Footer = () => {
   return (
-    <footer id="footer" className="bg-dark text-white py-10 w-screen mt-20">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-3 gap-8">
-        {/* Left Column - Logo and Contact Info */}
+    <footer id="footer" className="bg-dark text-white py-10 w-full mt-20">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {/* Column 1 - Logo and Contact Info */}
         <div className="flex flex-col gap-2">
-          <h2 className="text-5xl font-bold mb-4">
+          <h2 className="text-4xl font-bold mb-4">
             <span className="text-main">SpareLK</span>
           </h2>
-          <p className="text-sm">
-            <FiMapPin className="inline mr-2" />
+          <p className="text-sm flex items-start">
+            <FiMapPin className="inline mr-2 mt-1" />
             12/B, Lake Road, Colombo 1, Sri Lanka
           </p>
-          <p className="text-sm">
-            <FiPhone className="inline mr-2" />
-            +94770673892 <br /> Mon-Fri 8:00 to 19:00
+          <p className="text-sm flex items-start">
+            <FiPhone className="inline mr-2 mt-1" />
+            +94770673892 <br />
+            Mon-Fri 8:00 to 19:00
           </p>
-          <p className="text-sm">
-            <FiMail className="inline mr-2" />
+          <p className="text-sm flex items-start">
+            <FiMail className="inline mr-2 mt-1" />
             mailto@sparelk.com
           </p>
           <div className="flex space-x-4 mt-4">
-            <FaFacebookF className="w-6 h-6 cursor-pointer hover:text-main" />
-            <FaTwitter className="w-6 h-6 cursor-pointer hover:text-main" />
-            <FaGoogle className="w-6 h-6 cursor-pointer hover:text-main" />
-            <FaInstagram className="w-6 h-6 cursor-pointer hover:text-main" />
-            <FaPinterest className="w-6 h-6 cursor-pointer hover:text-main" />
+            <FaFacebookF className="w-5 h-5 cursor-pointer hover:text-main" />
+            <FaTwitter className="w-5 h-5 cursor-pointer hover:text-main" />
+            <FaGoogle className="w-5 h-5 cursor-pointer hover:text-main" />
+            <FaInstagram className="w-5 h-5 cursor-pointer hover:text-main" />
+            <FaPinterest className="w-5 h-5 cursor-pointer hover:text-main" />
           </div>
         </div>
 
@@ -41,109 +42,38 @@ const Footer = () => {
         <div>
           <h3 className="font-semibold mb-4">INFORMATION</h3>
           <ul className="space-y-2 text-sm text-gray-400">
-            <li>Log in</li>
-            <li>Entries feed</li>
-            <li>Comments feed</li>
-            <li>WordPress.org</li>
+            <li><a href="/login" className="hover:text-white">Log in</a></li>
+            <li><a href="/feed" className="hover:text-white">Entries feed</a></li>
+            <li><a href="/comments" className="hover:text-white">Comments feed</a></li>
+            <li><a href="https://wordpress.org" target="_blank" rel="noreferrer" className="hover:text-white">WordPress.org</a></li>
           </ul>
         </div>
 
         {/* Column 3 - Why Buy From Us */}
         <div>
           <h3 className="font-semibold mb-4">WHY BUY FROM US</h3>
-          <p className="space-y-2 text-sm text-gray-400">
-            <span className="block mb-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            </span>
-            <span className="block mb-2">
-              Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </span>
-            <span className="block mb-2">
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </span>
-            <span className="block mb-2">
-              Duis aute irure dolor in reprehenderit in voluptate velit esse
-              cillum dolore eu fugiat nulla pariatur.
-            </span>
-          </p>
+          <div className="space-y-3 text-sm text-gray-400">
+            <p>We offer trusted auto part listings from verified sellers across Sri Lanka.</p>
+            <p>Compare parts, search by category or vehicle model, and buy with confidence.</p>
+            <p>Every transaction is secure and supported by our dedicated customer service.</p>
+            <p>Join SpareLK to simplify your spare part buying and selling experience.</p>
+          </div>
         </div>
-
-        {/* Column 4 - Newsletter */}
-        {/* <div>
-          <h3 className="font-semibold mb-4">
-            SUBSCRIBE AND GET 5% OFF DISCOUNT
-          </h3>
-          <p className="text-sm text-gray-400 mb-4">
-            Subscribe to our Newsletter and get bonuses for the next purchase
-          </p>
-          <div className="flex items-center border border-gray-500 rounded-lg">
-            <input
-              type="email"
-              placeholder="Enter Your E-Mail Here"
-              className="flex-1 px-4 py-2 bg-dark text-sm text-gray-300 outline-none rounded-l-md"
-            />
-            <button className="bg-yellow-500 px-4 py-2 rounded-r-md">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-black"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path d="M10 2a8 8 0 018 8v2h-3v-2a5 5 0 10-10 0v2H2v-2a8 8 0 018-8z" />
-                <path d="M6 12h8a2 2 0 002-2v-1h-2v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-1H4v1a2 2 0 002 2z" />
-              </svg>
-            </button>
-          </div>
-          <div className="mt-6">
-            <p className="font-semibold mb-2">WE ACCEPT:</p>
-            <div className="flex space-x-4">
-              <img
-                src="/path/to/maestro-logo.png"
-                alt="Maestro"
-                className="w-10 h-6"
-              />
-              <img
-                src="/path/to/mastercard-logo.png"
-                alt="MasterCard"
-                className="w-10 h-6"
-              />
-              <img
-                src="/path/to/paypal-logo.png"
-                alt="PayPal"
-                className="w-10 h-6"
-              />
-              <img
-                src="/path/to/visa-logo.png"
-                alt="Visa"
-                className="w-10 h-6"
-              />
-            </div>
-          </div>
-        </div> */}
       </div>
-      <p className="text-gray-500 text-sm text-center mt-10">
-        Copyright © 2025 SpareLK Spare Parts.
-      </p>
+
+      {/* Divider & Bottom Section */}
+      <div className="mt-10 border-t border-gray-700 pt-6 text-center text-sm text-gray-500">
+        <p>&copy; {new Date().getFullYear()} SpareLK. All rights reserved.</p>
+        <div className="mt-3 flex justify-center space-x-4 flex-wrap text-xs">
+          <a href="/privacy" className="hover:text-white">Privacy Policy</a>
+          <span>|</span>
+          <a href="/terms" className="hover:text-white">Terms & Conditions</a>
+          <span>|</span>
+          <a href="/contact" className="hover:text-white">Contact Us</a>
+        </div>
+      </div>
     </footer>
   );
 };
-
-// function Footer() {
-//   return (
-//     <footer className="w-full bg-gray-900 text-gray-400 py-6 text-center">
-//       <div className="max-w-4xl mx-auto">
-//         <p>&copy; {new Date().getFullYear()} Spare.lk. All rights reserved.</p>
-//         <nav className="mt-2 space-x-4">
-//           <a href="/privacy" className="hover:underline">Privacy Policy</a>
-//           <span>|</span>
-//           <a href="/terms" className="hover:underline">Terms & Conditions</a>
-//           <span>|</span>
-//           <a href="/contact" className="hover:underline">Contact Us</a>
-//         </nav>
-//       </div>
-//     </footer>
-//   );
-// }
 
 export default Footer;

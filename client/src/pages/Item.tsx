@@ -10,8 +10,8 @@ import { RootState } from '../store/store';
 import { api } from '../api/api';
 import { cartActions } from '../reducers/cartSlice';
 import { EUserRole, TItem } from '../types';
-import ItemCard from '../components/ItemCard';
 import RatingsReviews from '../components/items/RatingsReviews';
+import Model3D from '../components/items/Model3D';
 
 function Item() {
     const params = useParams();
@@ -23,13 +23,17 @@ function Item() {
     const [item, setItem] = useState<TItem | null>(null);
     const [itemQty, setItemQty] = useState(1);
     const [items, setAllItems] = useState([]);
+    const [is3DView, setIs3DView] = useState(false);
+    const [loading, setLoading] = useState(true);
 
 
 
     function getItemRequest() {
+        setLoading(true);
         api.get('item/' + itemId).then(result => {
             setItem(result.data.data)
-        }).catch(err => console.log(err));
+            setLoading(false);
+        }).catch(err => {console.log(err); setLoading(false)});
     }
 
     function getAllItems() {
@@ -66,7 +70,12 @@ function Item() {
         window.scrollTo({ top: 0 });
     }, [params.itemId])
 
-    return item ? (
+    return loading ? (
+        <div className="flex items-center justify-center flex-grow min-h-screen w-screen">
+            <h1 className='text-gray-400 animate-pulse text-3xl'>Loading...</h1>
+        </div>
+    )
+    :(item ? (
         <main className="container xl:max-w-7xl flex-grow py-5 px-2 md:px-0">
 
             <div className=' flex items-center gap-3'>
@@ -77,7 +86,27 @@ function Item() {
 
             <div className='flex flex-col md:flex-row bg-pane-color rounded-2xl overflow-hidden mt-3 pb-3'>
                 <div className='flex items-center justify-center md:w-72 lg:w-96'>
-                    <div className='aspect-square h-72 lg:h-96 md:w-full bg-cover bg-center' style={{ backgroundImage: `url(http://localhost:3000/images/${item.image})` }}></div>
+                    <div className='aspect-square h-72 lg:h-96 md:w-full relative'>
+                        <button
+                            onClick={() => setIs3DView(!is3DView)}
+                            className="absolute top-3 right-3 z-10"
+                        >
+                            <div
+                                className={`font-bold text-xl rounded-lg border-2 aspect-square px-1 py-1 border-dashed bg-black/70 ${is3DView ? "text-white" : "text-gray-400"
+                                    }`}
+                            >
+                                3D
+                            </div>
+                        </button>
+                        {
+                            is3DView ? <div className='w-full h-full'>
+                                {/* add spare part 3d model to view */}
+                                {/* <Shirt3D/> */}
+                                <Model3D/>
+                            </div>
+                                : <div style={{ backgroundImage: `url(http://localhost:3000/images/${item.image})` }} className='w-full h-full bg-cover bg-center' />
+                        }
+                    </div>
                     {/* <div className='aspect-square h-72 lg:h-96 md:w-full bg-cover bg-center' style={{ backgroundImage: `url(/tires-category.png)` }}></div> */}
                 </div>
 
@@ -169,7 +198,7 @@ function Item() {
         <div className="flex items-center justify-center flex-grow min-h-screen w-screen">
             <h1 className='text-gray-400'>Item Not Found</h1>
         </div>
-    )
+    ))
 }
 
 export default Item

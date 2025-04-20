@@ -46,7 +46,7 @@ export default function AuthProvider({ children }: Props) {
 
     const Auth = () => {
         return (
-            <div className="min-h-screen w-screen flex flex-col gap-12 items-center justify-center bg-gradient-to-r from-yellow-200 to-main">
+            <div className="min-h-screen w-screen flex flex-col gap-12 items-center justify-center bg-gradient-to-r from-red-500 to-main">
                 <img className='h-20' src="/logo.png" alt="sparelk-logo" />
                 {
                     isLogin
