@@ -14,9 +14,9 @@ export default function VehicleBrandScroller() {
 
 
     return (
-        <div className=" my-12">
-            <h2 className="text-center font-bold text-gray-600 mb-12">Spare parts for any</h2>
-            <Marquee speed={speed} gradient={false} className="" pauseOnHover>
+        <div className=" my-12 w-screen">
+            <h2 className="text-center font-bold text-gray-600 mb-12 w-screen">Spare parts for any</h2>
+            <Marquee speed={speed} gradient={false} className="w-screen" pauseOnHover>
                 {brands.map((logo) => (
                     <img
                         key={logo.brand}

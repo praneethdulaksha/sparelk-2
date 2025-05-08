@@ -58,22 +58,22 @@ const Navbar = () => {
         <div className="flex items-center space-x-4">
           <Link
             to="/"
-            className="flex items-center space-x-1 text-black font-bold text-xl hover:scale-105 hover:text-gray-800 duration-200"
+            className="flex items-center space-x-1 text-light font-bold text-xl hover:scale-105 hover:text-gray-800 duration-200"
           >
-            <img className="h-6 lg:h-8" src="/logo.png" alt="sparelk-logo" />
+            <img className="h-6 lg:h-8" src="/logo-light.png" alt="sparelk-logo" />
           </Link>
         </div>
 
         {/* Center links */}
         {user.role == EUserRole.BUYER && (
-          <div className="flex items-center space-x-2 lg:space-x-6 text-black text-sm">
-            <Link to="/" className="font-semibold text-gray-900 hover:text-black">
+          <div className="flex items-center space-x-2 lg:space-x-6 text-light text-sm">
+            <Link to="/" className="font-semibold text-light hover:text-black">
               Home
             </Link>
-            <Link to="/shop" className="font-semibold text-gray-900 hover:text-black">
+            <Link to="/shop" className="font-semibold text-light hover:text-white">
               Shop
             </Link>
-            <a href="#footer" className="font-semibold text-gray-900 hover:text-black">
+            <a href="#footer" className="font-semibold text-light hover:text-white">
               Contacts
             </a>
           </div>
@@ -93,10 +93,10 @@ const Navbar = () => {
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               type="text"
-              placeholder="Search..."
-              className="border text-sm border-gray-300 rounded-full py-2 px-4 flex-grow"
+              placeholder="Enter Item Code or name here..."
+              className="border text-sm border-gray-300 rounded-l-full py-2 px-4 flex-grow"
             />
-            <button className="bg-gray-800 text-white text-sm rounded-full px-4 py-2 ml-2 hover:bg-gray-900">
+            <button className="bg-light border text-sm border-gray-300 text-main rounded-r-full px-4 py-2 hover:bg-light">
               Search
             </button>
           </form>
@@ -108,7 +108,7 @@ const Navbar = () => {
         <div className="flex items-center space-x-4">
           {user.role == EUserRole.BUYER && (
             <Link to="cart" className="relative border-r-2 border-gray-700 pr-4">
-              <FiShoppingCart className="text-black h-6 w-6 hover:text-gray-800 cursor-pointer hover:scale-105 hover:rotate-6 duration-75" />
+              <FiShoppingCart className="text-light h-6 w-6 hover:text-light cursor-pointer hover:scale-105 hover:rotate-6 duration-75" />
               {cartItems.length > 0 && (
                 <div className="size-5 bg-red-600 border-2 text-sm text-white flex items-center justify-center border-red-400 rounded-full absolute -top-2 right-2">
                   {cartItems.length}
@@ -122,14 +122,14 @@ const Navbar = () => {
             onMouseOut={() => setIsMenuOpen(false)}
             className="flex items-center gap-2 cursor-pointer relative"
           >
-            <FiUser className="text-black h-6 w-6 hover:text-gray-800 cursor-pointer" />
-            <span className="text-gray-800 text-sm">
+            <FiUser className="text-light h-6 w-6 hover:text-light cursor-pointer" />
+            <span className="text-light text-sm">
               Welcome, <b>{user.firstName}</b>
             </span>
             <FiChevronDown />
 
             {isMenuOpen && (
-              <div className="absolute bg-main shadow-md w-64 p-2 rounded-md top-[100%] right-0 left-0 m-auto">
+              <div className="absolute bg-main text-light shadow-md w-64 p-2 rounded-md top-[100%] right-0 left-0 m-auto">
                 {user.role === EUserRole.SELLER ? (
                   <>
                     <Li to="/" icon={faUser}>My Profile</Li>
@@ -156,16 +156,16 @@ const Navbar = () => {
 
       {/* Mobile Navbar */}
       <nav className="md:hidden fixed bottom-0 w-full bg-main border-t border-gray-300 z-50 flex justify-around items-center py-2 shadow-md">
-        <Link to="/" className="flex flex-col items-center text-sm text-gray-900">
+        <Link to="/" className="flex flex-col items-center text-sm text-light">
           <FiHome className="text-xl" />
           <span>Home</span>
         </Link>
-        <Link to="/shop" className="flex flex-col items-center text-sm text-gray-900">
+        <Link to="/shop" className="flex flex-col items-center text-sm text-light">
           <FiGrid className="text-xl" />
           <span>Shop</span>
         </Link>
         {user.role === EUserRole.BUYER && (
-          <Link to="/cart" className="flex flex-col items-center text-sm text-gray-900 relative">
+          <Link to="/cart" className="flex flex-col items-center text-sm text-light relative">
             <FiShoppingCart className="text-xl" />
             <span>Cart</span>
             {cartItems.length > 0 && (
@@ -175,11 +175,11 @@ const Navbar = () => {
             )}
           </Link>
         )}
-        <Link to="/profile" className="flex flex-col items-center text-sm text-gray-900">
+        <Link to="/profile" className="flex flex-col items-center text-sm text-light">
           <FiUser className="text-xl" />
           <span>Profile</span>
         </Link>
-        <button onClick={logoutAlert} className="flex flex-col items-center text-sm text-gray-900">
+        <button onClick={logoutAlert} className="flex flex-col items-center text-sm text-light">
           <FiLogOut className="text-xl" />
           <span>Logout</span>
         </button>

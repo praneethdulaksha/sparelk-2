@@ -10,6 +10,7 @@ import { api } from '../api/api';
 import ItemsList from '../components/home/ItemsList';
 import { useNavigate } from 'react-router-dom';
 import VehicleBrandScroller from '../components/home/VehicleBrandScroller';
+import WhyBuyFromUs from '../components/home/WhyBuyFromUs';
 
 export default function Home() {
   const [allItems, setAllItems] = useState([]);
@@ -45,7 +46,7 @@ export default function Home() {
   useEffect(() => {
     getAllItems();
     getDiscountItems();
-  window.scrollTo({ top: 0 });
+    window.scrollTo({ top: 0 });
   }, [])
 
   return (
@@ -101,10 +102,13 @@ export default function Home() {
                   : null
           }
 
-          <Button onClick={() => navigate('/shop')} className='w-fit font-semibold text-lg mt-6'>Shop All</Button>
+          <Button onClick={() => navigate('/shop')} className='w-fit font-semibold text-light text-lg mt-6'>Shop All</Button>
         </div>
 
-        <FeaturesSection />
+        {/* why buy from us */}
+        <WhyBuyFromUs />
+
+        {/* <FeaturesSection /> */}
 
         <PopularCategories />
 

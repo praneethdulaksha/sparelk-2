@@ -34,7 +34,7 @@ export default function ItemCard({ itm }: Props) {
       <h6 className='mx-3 truncate text-base sm:text-lg'>{item.name}</h6>
 
       <span className='flex-grow'></span>
-      <div className="px-3 text-base sm:text-lg text-gray-900 font-bold bg-main/70 flex justify-between items-center">
+      <div className="px-3 text-base sm:text-lg text-main font-bold  flex justify-between items-center">
         <span>Rs.{parseFloat(item.price * ((100 - item.discount) / 100) + "").toFixed(2)}</span>
         {item.discount != 0 && <span className='font-medium text-sm sm:text-base'>-{item.discount}%</span>}
       </div>
@@ -48,7 +48,9 @@ export default function ItemCard({ itm }: Props) {
         ))}
         <h6 className='text-zinc-500 text-xs sm:text-sm ml-1'>{item.sold} Sold</h6>
         <div className='flex-grow'></div>
-        <img src={brands.find(b => b.brand == item.brand)?.url} alt="brand" className='h-3 md:h-5' title={item.brand} />
+        {item.brand ?
+          <img src={brands.find(b => b.brand == item.brand)?.url} alt="brand" className='h-3 md:h-5 max-w-12' title={item.brand} />
+          : <span className='text-xs sm:text-sm text-gray-500'>No Brand</span>}
       </span>
     </div>
   )

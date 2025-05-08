@@ -71,13 +71,13 @@ export default function Login({ setIsLogin }: Props) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.5 }}
-            className="w-full max-w-md bg-white shadow-2xl rounded-xl p-8"
+            className="w-full max-w-md bg-main/30 border border-gray-300 backdrop-blur-md shadow-2xl rounded-xl p-8"
         >
             <motion.h2
                 initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-3xl font-bold text-center text-gray-800"
+                className="text-3xl font-bold text-center text-white mb-4"
             >
                 Login
             </motion.h2>
@@ -85,7 +85,7 @@ export default function Login({ setIsLogin }: Props) {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="text-center text-gray-500 mb-8"
+                className="text-center text-white mb-8"
             >
                 Welcome back! Please login to your account.
             </motion.p>
@@ -125,7 +125,7 @@ export default function Login({ setIsLogin }: Props) {
                 >
                     <Button
                         onClick={handleSubmit}
-                        className="w-full bg-main hover:bg-main/80 text-white font-medium py-2 px-4 rounded-md shadow-lg focus:outline-none focus:ring focus:ring-yellow-300"
+                        className="w-full bg-main hover:bg-main/80 text-light font-medium py-2 px-4 rounded-md shadow-lg focus:outline-none focus:ring focus:ring-yellow-300"
                     >
                         Login
                     </Button>
@@ -137,11 +137,11 @@ export default function Login({ setIsLogin }: Props) {
                 transition={{ delay: 0.7 }}
                 className="mt-6 text-center"
             >
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-800">
                     {"Don't have an account?" + " "}
                     <button
                         onClick={() => setIsLogin(false)}
-                        className="text-main text-sm font-medium hover:underline focus:outline-none"
+                        className="text-white underline text-sm font-medium hover:underline focus:outline-none"
                     >
                         Register
                     </button>

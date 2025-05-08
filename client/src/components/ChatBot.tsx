@@ -54,7 +54,7 @@ export default function ChatBot() {
                 <button onClick={() => setChatOpen(!chatOpen)} className='size-16 rounded-full border border-gray-800 overflow-hidden shadow-lg shadow-black'>
                     <img src="/chat.png" alt="chatbot" className="scale-150 hover:scale-[2] hover:rotate-12 hover:animate-pulse duration-100 ease-in-out" />
                 </button>
-                {!chatOpen && <div className="w-40 rounded-lg text-center absolute bottom-[120%] right-0 shadow-lg shadow-black py-2 bg-main origin-bottom-right scale-0 duration-75 group-hover:scale-100">Need Help?</div>}
+                {!chatOpen && <div className="w-40 rounded-lg text-center absolute bottom-[120%] right-0 shadow-lg shadow-black py-2 bg-main text-light origin-bottom-right scale-0 duration-75 group-hover:scale-100">Need Help?</div>}
             </div>
 
 
@@ -69,12 +69,12 @@ export default function ChatBot() {
                 <div ref={chatRef} className="flex-1 overflow-y-auto p-4 space-y-2 text-sm">
                     {messages.map((msg, index) => (
                         msg.sender == "user" ? <div key={index} className={`flex justify-end`}>
-                            <div className={`p-2 max-w-xs rounded-lg bg-main text-gray-800`}>
+                            <div className={`p-2 max-w-xs rounded-lg bg-main text-light`}>
                                 {msg.text}
                             </div>
                         </div>
                             : <div key={index} className={`flex justify-start`}>
-                                <div className={`p-2 max-w-xs rounded-lg bg-gray-200 text-gray-800`}>
+                                <div className={`p-2 max-w-xs rounded-lg bg-light text-main border border-main`}>
                                     {msg.text}
                                     {/* {msg.text[0]}
                                     {
@@ -90,7 +90,7 @@ export default function ChatBot() {
                             </div>
 
                     ))}
-                    {isTyping && <p className="text-gray-500 text-sm">Bot is typing...</p>}
+                    {isTyping && <p className="text-gray-500 text-sm animate-pulse">Bot is typing...</p>}
                 </div>
 
                 {/* Input Box */}

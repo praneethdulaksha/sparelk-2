@@ -15,7 +15,7 @@ export default function OfferCard({ h1, h2, p, btnText, imgLink, onClick }: Prop
       <h2 className='text-2xl font-bold text-gray-100 z-10'>{h1}</h2>
       <h1 className='text-xl font-semibold' z-10>{h2}</h1>
       <p className='text-sm mt-3 z-10'>{p}</p>
-      {btnText && <Button onClick={onClick} className='mt-2 w-32 z-10 bg-main'>{btnText}</Button>}
+      {btnText && <Button onClick={onClick} className='mt-2 w-32 z-10 bg-main text-light'>{btnText}</Button>}
 
       <div className='bg-center bg-cover w-full h-full absolute left-0 top-0 ' style={{ backgroundImage: `url(${imgLink})`}}></div>
       <div className='bg-gradient-to-r from-black to-black/20 w-full h-full absolute left-0 top-0 '></div>

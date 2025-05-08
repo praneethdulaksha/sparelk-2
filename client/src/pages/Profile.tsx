@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2';
@@ -11,6 +11,7 @@ import { EUserRole } from '../types';
 
 export default function Profile() {
     const { user, isUserAuthed } = useSelector((state: RootState) => state.user);
+    const [selected, setSelected] = useState('/profile');
     const { role } = user!;
 
     const location = useLocation();
@@ -18,6 +19,13 @@ export default function Profile() {
     const navigate = useNavigate();
 
     const removeCookie = useCookies(['user'])[2]
+
+
+
+    useEffect(() => {
+        setSelected(location.pathname);
+        console.log(location.pathname);
+    }, [location.pathname])
 
     useEffect(() => {
         if (!isUserAuthed) {
@@ -47,20 +55,20 @@ export default function Profile() {
     }
 
     return isUserAuthed && user && (
-        <main className="relative container xl:max-w-7xl flex flex-grow py-3 gap-3 min-h-svh">
-            <div className='sticky top-0 w-64 bg-white rounded-lg items-start p-5 text-md text-zinc-500 hidden lg:block'>
+        <main className="relative w-screen flex flex-grow pr-10 gap-3 min-h-svh">
+            <div className='sticky top-0 w-80 bg-gray-200 items-start p-5 text-md text-zinc-500 hidden lg:block border-r-2 border-main/50'>
                 <div className='sticky top-10 w-full h-fit flex flex-col gap-3 text-sm text-gray-700'>
                     {
                         role === EUserRole.SELLER ? <>
-                            <Li to="/" icon={faUser}>My Profile</Li>
-                            <Li to="/seller-form" icon={faStore}>My Store</Li>
-                            <Li to="/manage-items" icon={faClipboardList}>Manage Items</Li>
-                            <Li to="/add-item/new" icon={faPlus}>Add a Item</Li>
+                            <Li currentPath={selected} to="/" icon={faUser}>My Profile</Li>
+                            <Li currentPath={selected} to="/seller-form" icon={faStore}>My Store</Li>
+                            <Li currentPath={selected} to="/manage-items" icon={faClipboardList}>Manage Items</Li>
+                            <Li currentPath={selected} to="/add-item/new" icon={faPlus}>Add a Item</Li>
                         </>
                             : role === EUserRole.BUYER ? <>
-                                <Li to="/profile" icon={faUser}>My Profile</Li>
-                                <Li to="/profile/my-orders" icon={faBoxOpen}>Orders</Li>
-                                <Li to="/profile/seller-form" icon={faStore}>Be a Seller</Li>
+                                <Li currentPath={selected} to="/profile" icon={faUser}>My Profile</Li>
+                                <Li currentPath={selected} to="/profile/my-orders" icon={faBoxOpen}>Orders</Li>
+                                <Li currentPath={selected} to="/profile/seller-form" icon={faStore}>Be a Seller</Li>
                             </>
                                 : null
                     }

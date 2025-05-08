@@ -62,13 +62,13 @@ export default function Register({ setIsLogin }: Props) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.5 }}
-                className=" bg-white shadow-2xl rounded-xl p-8"
+                className=" bg-main/30 border border-gray-300 backdrop-blur-md shadow-2xl rounded-xl p-8"
             >
                 <motion.h2
                     initial={{ opacity: 0, y: -30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="text-3xl font-bold text-center text-gray-800"
+                    className="text-3xl font-bold text-center text-white mb-4"
                 >
                     Register
                 </motion.h2>
@@ -76,11 +76,11 @@ export default function Register({ setIsLogin }: Props) {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="text-center text-gray-500 mb-8"
+                    className="text-center text-white mb-8"
                 >
                     Create your account to get started.
                 </motion.p>
-                <form className="flex gap-5">
+                <form className="flex gap-5 flex-col md:flex-row">
                     <div className='w-[350px] space-y-5'>
                         <motion.div
                             initial={{ opacity: 0, x: -20 }}
@@ -132,7 +132,7 @@ export default function Register({ setIsLogin }: Props) {
                         >
                             <label className="inline-flex items-center cursor-pointer">
                                 <input type="checkbox" className="form-checkbox h-4 w-4 text-indigo-600" checked={isSeller} onChange={() => setSeller(!isSeller)} />
-                                <span className="ml-2 text-gray-700">I am a seller</span>
+                                <span className="ml-2 text-light">I am a seller</span>
                             </label>
                         </motion.div>
                         <motion.div
@@ -143,7 +143,7 @@ export default function Register({ setIsLogin }: Props) {
                             {
                                 !isSeller && <Button
                                     onClick={handleSubmit}
-                                    className="w-full bg-main hover:bg-main/80 text-black font-medium py-2 px-4 rounded-md shadow-lg focus:outline-none focus:ring focus:ring-yellow-300"
+                                    className="w-full bg-main hover:bg-main/80 text-light font-medium py-2 px-4 rounded-md shadow-lg focus:outline-none focus:ring focus:ring-yellow-300"
                                 >
                                     Register as Buyer
                                 </Button>
@@ -152,7 +152,7 @@ export default function Register({ setIsLogin }: Props) {
                     </div>
                     {
                         isSeller &&
-                        <div className='w-[400px] space-y-5'>
+                        <div className=' w-full md:w-[400px] space-y-5'>
                             <motion.div
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
@@ -160,7 +160,7 @@ export default function Register({ setIsLogin }: Props) {
                             >
                                 <label
                                     htmlFor='storeImage'
-                                    className="block text-sm font-medium text-gray-700"
+                                    className="block text-sm font-medium text-light"
                                 >
                                     Store Image
                                 </label>
@@ -217,7 +217,7 @@ export default function Register({ setIsLogin }: Props) {
                             </motion.div>
                             <Button
                                 onClick={handleSubmit}
-                                className="w-full bg-main hover:bg-main/80 text-black py-2 px-4 rounded-md shadow-lg focus:outline-none focus:ring focus:ring-yellow-300"
+                                className="w-full bg-main hover:bg-main/80 text-light py-2 px-4 rounded-md shadow-lg focus:outline-none focus:ring focus:ring-yellow-300"
                             >
                                 Register as Seller
                             </Button>
@@ -230,11 +230,11 @@ export default function Register({ setIsLogin }: Props) {
                     transition={{ delay: 0.8 }}
                     className="mt-6 text-center"
                 >
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-800">
                         {"Already have an account?" + " "}
                         <button
                             onClick={() => setIsLogin(true)}
-                            className="text-main text-sm font-medium hover:underline focus:outline-none"
+                            className="text-white underline text-sm font-medium hover:underline focus:outline-none"
                         >
                             Login
                         </button>

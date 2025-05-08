@@ -9,12 +9,12 @@ import {
 
 const Footer = () => {
   return (
-    <footer id="footer" className="bg-dark text-white py-10 w-full mt-20">
+    <footer id="footer" className="bg-main text-light pt-16 pb-5 w-full">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {/* Column 1 - Logo and Contact Info */}
         <div className="flex flex-col gap-2">
           <h2 className="text-4xl font-bold mb-4">
-            <span className="text-main">SpareLK</span>
+            <span className="text-light">SpareLK</span>
           </h2>
           <p className="text-sm flex items-start">
             <FiMapPin className="inline mr-2 mt-1" />
@@ -30,47 +30,38 @@ const Footer = () => {
             mailto@sparelk.com
           </p>
           <div className="flex space-x-4 mt-4">
-            <FaFacebookF className="w-5 h-5 cursor-pointer hover:text-main" />
-            <FaTwitter className="w-5 h-5 cursor-pointer hover:text-main" />
-            <FaGoogle className="w-5 h-5 cursor-pointer hover:text-main" />
-            <FaInstagram className="w-5 h-5 cursor-pointer hover:text-main" />
-            <FaPinterest className="w-5 h-5 cursor-pointer hover:text-main" />
+            <FaFacebookF className="w-5 h-5 cursor-pointer hover:scale-105" />
+            <FaTwitter className="w-5 h-5 cursor-pointer hover:scale-105" />
+            <FaGoogle className="w-5 h-5 cursor-pointer hover:scale-105" />
+            <FaInstagram className="w-5 h-5 cursor-pointer hover:scale-105" />
+            <FaPinterest className="w-5 h-5 cursor-pointer hover:scale-105" />
           </div>
         </div>
 
         {/* Column 2 - Information */}
         <div>
           <h3 className="font-semibold mb-4">INFORMATION</h3>
-          <ul className="space-y-2 text-sm text-gray-400">
-            <li><a href="/login" className="hover:text-white">Log in</a></li>
-            <li><a href="/feed" className="hover:text-white">Entries feed</a></li>
-            <li><a href="/comments" className="hover:text-white">Comments feed</a></li>
-            <li><a href="https://wordpress.org" target="_blank" rel="noreferrer" className="hover:text-white">WordPress.org</a></li>
+          <ul className="space-y-2 text-sm text-gray-800">
+            <li><a href="/#" className="hover:text-white">Home</a></li>
+            <li><a href="/shop" className="hover:text-white">Shop</a></li>
+            <li><a href="/profile" className="hover:text-white">Profile</a></li>
+            <li><a href="/profile/my-orders" className="hover:text-white">My Orders</a></li>
+            <li><a href="/profile/seller-form" className="hover:text-white">Be a Seller</a></li>
           </ul>
         </div>
 
-        {/* Column 3 - Why Buy From Us */}
+        {/* Column 3 - About Us */}
         <div>
-          <h3 className="font-semibold mb-4">WHY BUY FROM US</h3>
-          <div className="space-y-3 text-sm text-gray-400">
-            <p>We offer trusted auto part listings from verified sellers across Sri Lanka.</p>
-            <p>Compare parts, search by category or vehicle model, and buy with confidence.</p>
-            <p>Every transaction is secure and supported by our dedicated customer service.</p>
-            <p>Join SpareLK to simplify your spare part buying and selling experience.</p>
-          </div>
+          <h3 className="font-semibold mb-4">ABOUT US</h3>
+          <p>
+            SpareLK is your trusted partner for quality spare parts in Sri Lanka, committed to reliability, affordability, and exceptional customer service across all vehicle types.
+          </p>
         </div>
       </div>
 
       {/* Divider & Bottom Section */}
-      <div className="mt-10 border-t border-gray-700 pt-6 text-center text-sm text-gray-500">
+      <div className="mt-10 border-t border-gray-700 pt-6 text-center text-sm text-gray-800">
         <p>&copy; {new Date().getFullYear()} SpareLK. All rights reserved.</p>
-        <div className="mt-3 flex justify-center space-x-4 flex-wrap text-xs">
-          <a href="/privacy" className="hover:text-white">Privacy Policy</a>
-          <span>|</span>
-          <a href="/terms" className="hover:text-white">Terms & Conditions</a>
-          <span>|</span>
-          <a href="/contact" className="hover:text-white">Contact Us</a>
-        </div>
       </div>
     </footer>
   );
