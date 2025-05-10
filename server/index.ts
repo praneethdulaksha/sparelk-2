@@ -37,7 +37,10 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    return callback(null, true);
+  },
   credentials: true
 }));
 app.use(cookieParser());

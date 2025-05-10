@@ -94,6 +94,7 @@ class UserController {
                 throw new Error('User not found');
             }
         } catch (err) {
+            console.log(err)
             throw err;
         }
     }
