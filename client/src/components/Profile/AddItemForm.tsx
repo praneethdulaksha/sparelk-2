@@ -83,7 +83,11 @@ const AddItemForm = () => {
     };
 
     function saveItem(formData: any) {
-        api.post('item', formData).then(result => {
+        api.post('item', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(result => {
             console.log(result.data.data);
             navigate('/manage-items')
             Swal.fire({
@@ -104,7 +108,11 @@ const AddItemForm = () => {
     }
 
     function updateItem(formData: any) {
-        api.put('item/' + params.itemId, formData).then(result => {
+        api.put('item/' + params.itemId, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(result => {
             console.log(result);
             navigate('/manage-items')
             Swal.fire({

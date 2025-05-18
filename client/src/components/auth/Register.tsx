@@ -38,7 +38,12 @@ export default function Register({ setIsLogin }: Props) {
                 fData.append('image', image as any);
                 fData.append('userId', res.data.data.user._id);
 
-                await api.post('store', fData);
+                await api.post('store', fData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+                );
             }
             if (res.status === 201) {
                 Swal.fire({

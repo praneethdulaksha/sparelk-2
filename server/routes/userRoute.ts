@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import userController from '../controller/userController';
 import { getJwtToken } from '../util/utilMatters';
 import jwt from 'jsonwebtoken';
+import multer from 'multer';
 
 const router = express.Router();
 
@@ -14,7 +15,17 @@ router.get('/', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/register', async (req: Request, res: Response) => {
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'assets/images/');
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now();
+        cb(null, 'item_' + uniqueSuffix + '.png');
+    }
+});
+const upload = multer({ storage: storage });
+router.post('/register', upload.single('image'), async (req: Request, res: Response) => {
     try {
         const result = await userController.register(req.body);
         res.status(201).json({ success: true, data: result });
