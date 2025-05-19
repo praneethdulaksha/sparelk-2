@@ -38,9 +38,32 @@ export default function Register() {
     }
   };
 
+<<<<<<< HEAD
   const handleBuyerSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
+=======
+                await api.post('store', fData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+                );
+            }
+            if (res.status === 201) {
+                Swal.fire({
+                    icon: "success",
+                    title: 'Verify Your Email Address',
+                    text: 'Verification link sent to your email address. Please verify your email address.',
+                })
+                setTimeout(() => { }, 500)
+                setTermsOpen(true);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+>>>>>>> 5ec3dfa601f50fc9ee750dd7b37bb6557d013672
 
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
       toast.error("Please fill in all required fields");

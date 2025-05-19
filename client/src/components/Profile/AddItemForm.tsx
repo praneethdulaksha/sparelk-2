@@ -104,6 +104,7 @@ const AddItemForm = () => {
     isNewItem ? saveItem(formData) : updateItem(formData);
   };
 
+<<<<<<< HEAD
   function saveItem(formData: any) {
     api
       .post("item", formData, {
@@ -128,6 +129,55 @@ const AddItemForm = () => {
           title: "Error",
           text: err.response.data.err,
           showConfirmButton: true,
+=======
+    function saveItem(formData: any) {
+        api.post('item', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(result => {
+            console.log(result.data.data);
+            navigate('/manage-items')
+            Swal.fire({
+                icon: 'success',
+                title: 'Item Added Successfully',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }).catch(err => {
+            console.log(err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: err.response.data.err,
+                showConfirmButton: true,
+            });
+        });
+    }
+
+    function updateItem(formData: any) {
+        api.put('item/' + params.itemId, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(result => {
+            console.log(result);
+            navigate('/manage-items')
+            Swal.fire({
+                icon: 'success',
+                title: 'Item Updated Successfully',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }).catch(err => {
+            console.log(err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: err.response.data.err,
+                showConfirmButton: true,
+            });
+>>>>>>> 5ec3dfa601f50fc9ee750dd7b37bb6557d013672
         });
       });
   }
