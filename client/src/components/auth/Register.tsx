@@ -1,245 +1,481 @@
-import Button from '../Button'
-import { motion } from 'framer-motion';
-import Input from './Input';
-import { useState } from 'react';
-import { api } from '../../api/api';
-import Swal from 'sweetalert2';
-import TermsAndConditions from '../../pages/TermsAndConditions';
+import { FormEvent, useState, useRef, ChangeEvent } from "react";
+import { toast } from "sonner";
+import { api } from "../../api/api";
+import TermsAndConditions from "../../pages/TermsAndConditions";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import Button from "../Button";
+import Input from "./Input";
+import { Link, useNavigate } from "react-router-dom";
+import { AlertCircle, UserPlus } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ErrorMessage } from "@/components/ui/error-message";
 
-type Props = {
-    setIsLogin: (arg: boolean) => void;
-}
+export default function Register() {
+  // Shared fields
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
-export default function Register({ setIsLogin }: Props) {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  // Seller specific fields
+  const [businessName, setBusinessName] = useState("");
+  const [businessAddress, setBusinessAddress] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [storeImage, setStoreImage] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const [store, setStore] = useState<any>({
-        name: '', address: '', phone: '', image: ''
-    });
-    const [isSeller, setSeller] = useState(false);
-    const [isTermsOpen, setTermsOpen] = useState(false);
+  const [isTermsOpen, setTermsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [componentLoading, setComponentLoading] = useState(false);
+  const navigate = useNavigate();
 
-    const handleSubmit = async () => {
-        try {
-            const names = name.split(' ');
-            const firstName = names[0];
-            const lastName = names.length > 1 ? names[1] : '';
-            const res = await api.post('user/register', { firstName, lastName, email, password })
-            if (isSeller) {
-                const { name, address, phone, image } = store;
-                // validations 
-                const fData = new FormData();
-                fData.append('name', name);
-                fData.append('address', address);
-                fData.append('email', email);
-                fData.append('phone', phone);
-                fData.append('image', image as any);
-                fData.append('userId', res.data.data.user._id);
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setStoreImage(e.target.files[0]);
+    }
+  };
 
-                await api.post('store', fData);
-            }
-            if (res.status === 201) {
-                Swal.fire({
-                    icon: "success",
-                    title: 'Verify Your Email Address',
-                    text: 'Verification link sent to your email address. Please verify your email address.',
-                })
-                setTimeout(() => { }, 500)
-                setTermsOpen(true);
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    };
+  const handleBuyerSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError(null);
 
-    return isTermsOpen ?
-        <TermsAndConditions setLogin={setIsLogin} setTermOpen={setTermsOpen} />
-        : (
-            <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.5 }}
-                className=" bg-main/30 border border-gray-300 backdrop-blur-md shadow-2xl rounded-xl p-8"
-            >
-                <motion.h2
-                    initial={{ opacity: 0, y: -30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="text-3xl font-bold text-center text-white mb-4"
-                >
-                    Register
-                </motion.h2>
-                <motion.p
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="text-center text-white mb-8"
-                >
-                    Create your account to get started.
-                </motion.p>
-                <form className="flex gap-5 flex-col md:flex-row">
-                    <div className='w-[350px] space-y-5'>
-                        <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.4 }}
-                        >
-                            <Input
-                                htmlFor='name'
-                                label="Your Name"
-                                type="text"
-                                placeholder="Enter tour name"
-                                value={name}
-                                setValue={setName}
-                            />
-                        </motion.div>
-                        <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.5 }}
-                        >
-                            <Input
-                                htmlFor='email'
-                                label="Email Address"
-                                type="email"
-                                placeholder="example@domain.com"
-                                value={email}
-                                setValue={setEmail}
-                            />
-                        </motion.div>
-                        <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.6 }}
-                        >
-                            <Input
-                                htmlFor='password'
-                                label="Password"
-                                type="password"
-                                placeholder="••••••••"
-                                value={password}
-                                setValue={setPassword}
-                            />
-                        </motion.div>
-                        {/* checkbox for is seller register */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.7 }}
-                        >
-                            <label className="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" className="form-checkbox h-4 w-4 text-indigo-600" checked={isSeller} onChange={() => setSeller(!isSeller)} />
-                                <span className="ml-2 text-light">I am a seller</span>
-                            </label>
-                        </motion.div>
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.7 }}
-                        >
-                            {
-                                !isSeller && <Button
-                                    onClick={handleSubmit}
-                                    className="w-full bg-main hover:bg-main/80 text-light font-medium py-2 px-4 rounded-md shadow-lg focus:outline-none focus:ring focus:ring-yellow-300"
-                                >
-                                    Register as Buyer
-                                </Button>
-                            }
-                        </motion.div>
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    if (!termsAccepted) {
+      toast.error("Please accept the terms and conditions");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const res = await api.post("user/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+
+      if (res.status === 201) {
+        toast.success("Account created successfully!", {
+          position: "top-center",
+          description:
+            "Verification link sent to your email address. Please verify your email address.",
+          duration: 5000,
+        });
+        setTermsOpen(true);
+      }
+    } catch (err: any) {
+      console.error(err);
+      const errorMessage = err.response?.data?.message || "Registration failed";
+      toast.error(errorMessage);
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSellerSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !password ||
+      !confirmPassword ||
+      !businessName ||
+      !businessAddress ||
+      !phoneNumber
+    ) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    if (!termsAccepted) {
+      toast.error("Please accept the terms and conditions");
+      return;
+    }
+
+    if (!storeImage) {
+      toast.warning("Please upload a store image");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const res = await api.post("user/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+
+      if (res.status === 201) {
+        // Create store
+        const fData = new FormData();
+        fData.append("name", businessName);
+        fData.append("address", businessAddress);
+        fData.append("email", email);
+        fData.append("phone", phoneNumber);
+        fData.append("userId", res.data.data.user._id);
+        fData.append("image", storeImage);
+
+        await api.post("store", fData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        toast.success("Account created successfully!", {
+          position: "top-center",
+          description:
+            "Verification link sent to your email address. Please verify your email address.",
+          duration: 5000,
+        });
+        setTermsOpen(true);
+      }
+    } catch (err: any) {
+      console.error(err);
+      const errorMessage = err.response?.data?.message || "Registration failed";
+      toast.error(errorMessage);
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (componentLoading) {
+    return (
+      <div className="w-full max-w-md mx-auto my-4">
+        <div className="w-full bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden flex flex-col p-6">
+          <Skeleton className="h-8 w-3/4 mx-auto mb-4" />
+          <Skeleton className="h-4 w-2/3 mx-auto mb-8" />
+
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-4">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-12 w-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return isTermsOpen ? (
+    <TermsAndConditions
+      setLogin={() => navigate("/login")}
+      setTermOpen={setTermsOpen}
+    />
+  ) : (
+    <div className="w-full max-w-md mx-auto my-4">
+      <div className="w-full bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden flex flex-col">
+        <div className="px-6 pt-6 pb-4 border-b border-gray-100">
+          <h2 className="text-2xl font-semibold text-center text-gray-800">
+            Create an account
+          </h2>
+          <p className="text-center text-gray-600 mt-2 mb-6">
+            Choose your account type to get started
+          </p>
+
+          {error && (
+            <div className="mb-6">
+              <ErrorMessage message={error} />
+            </div>
+          )}
+
+          <Tabs defaultValue="buyer" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-0">
+              <TabsTrigger value="buyer">Buyer</TabsTrigger>
+              <TabsTrigger value="seller">Seller</TabsTrigger>
+            </TabsList>
+
+            <div className="overflow-y-auto max-h-[50vh] py-4">
+              {/* Buyer Registration Form */}
+              <TabsContent value="buyer" className="mt-0">
+                <form onSubmit={handleBuyerSubmit} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Input
+                        htmlFor="firstName"
+                        label="First Name"
+                        type="text"
+                        placeholder="John"
+                        value={firstName}
+                        setValue={setFirstName}
+                      />
                     </div>
-                    {
-                        isSeller &&
-                        <div className=' w-full md:w-[400px] space-y-5'>
-                            <motion.div
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.4 }}
-                            >
-                                <label
-                                    htmlFor='storeImage'
-                                    className="block text-sm font-medium text-light"
-                                >
-                                    Store Image
-                                </label>
-                                <input
-                                    required={true}
-                                    type='file'
-                                    id='storeImage'
-                                    accept="image/*"
-                                    onChange={(e: any) => setStore({ ...store, image: e.target.files[0] })}
-                                    className="mt-1 block w-full p-3 rounded-md bg-gray-200 shadow-sm focus:border-yellow-500 focus:ring focus:ring-yellow-200"
-                                />
-                            </motion.div>
-                            <motion.div
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.4 }}
-                            >
-                                <Input
-                                    htmlFor='storeName'
-                                    label="Store Name"
-                                    type="text"
-                                    placeholder="Example Store"
-                                    value={store.name}
-                                    setValue={(v: string) => setStore({ ...store, name: v })}
-                                />
-                            </motion.div>
-                            <motion.div
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.5 }}
-                            >
-                                <Input
-                                    htmlFor='address'
-                                    label="Store Address"
-                                    type="text"
-                                    placeholder="Enter store address"
-                                    value={store.address}
-                                    setValue={(v: string) => setStore({ ...store, address: v })}
-                                />
-                            </motion.div>
-                            <motion.div
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.6 }}
-                            >
-                                <Input
-                                    htmlFor='phone'
-                                    label="Contact No"
-                                    type="text"
-                                    placeholder="Enter contact number"
-                                    value={store.phone}
-                                    setValue={(v: string) => setStore({ ...store, phone: v })}
-                                />
-                            </motion.div>
-                            <Button
-                                onClick={handleSubmit}
-                                className="w-full bg-main hover:bg-main/80 text-light py-2 px-4 rounded-md shadow-lg focus:outline-none focus:ring focus:ring-yellow-300"
-                            >
-                                Register as Seller
-                            </Button>
-                        </div>
-                    }
+                    <div>
+                      <Input
+                        htmlFor="lastName"
+                        label="Last Name"
+                        type="text"
+                        placeholder="Doe"
+                        value={lastName}
+                        setValue={setLastName}
+                      />
+                    </div>
+                  </div>
+
+                  <Input
+                    htmlFor="email"
+                    label="Email"
+                    type="email"
+                    placeholder="name@example.com"
+                    value={email}
+                    setValue={setEmail}
+                  />
+
+                  <Input
+                    htmlFor="password"
+                    label="Password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    setValue={setPassword}
+                  />
+
+                  <Input
+                    htmlFor="confirmPassword"
+                    label="Confirm Password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={confirmPassword}
+                    setValue={setConfirmPassword}
+                  />
+
+                  <div className="flex items-center space-x-2 mt-2">
+                    <input
+                      type="checkbox"
+                      id="terms"
+                      checked={termsAccepted}
+                      onChange={() => setTermsAccepted(!termsAccepted)}
+                      className="h-4 w-4 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
+                    />
+                    <label
+                      htmlFor="terms"
+                      className="text-sm leading-none text-gray-600"
+                    >
+                      I agree to the{" "}
+                      <Link
+                        to="#"
+                        className="text-orange-500 hover:text-orange-700"
+                      >
+                        terms and conditions
+                      </Link>
+                    </label>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-4 rounded-md mt-4 flex items-center justify-center gap-2"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        Creating account...
+                      </>
+                    ) : (
+                      <>
+                        <UserPlus className="h-4 w-4" />
+                        Create Account
+                      </>
+                    )}
+                  </Button>
                 </form>
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8 }}
-                    className="mt-6 text-center"
-                >
-                    <p className="text-sm text-gray-800">
-                        {"Already have an account?" + " "}
-                        <button
-                            onClick={() => setIsLogin(true)}
-                            className="text-white underline text-sm font-medium hover:underline focus:outline-none"
-                        >
-                            Login
-                        </button>
-                    </p>
-                </motion.div>
-            </motion.div>
-        )
+              </TabsContent>
+
+              {/* Seller Registration Form */}
+              <TabsContent value="seller" className="mt-0">
+                <form onSubmit={handleSellerSubmit} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Input
+                        htmlFor="sellerFirstName"
+                        label="First Name"
+                        type="text"
+                        placeholder="John"
+                        value={firstName}
+                        setValue={setFirstName}
+                      />
+                    </div>
+                    <div>
+                      <Input
+                        htmlFor="sellerLastName"
+                        label="Last Name"
+                        type="text"
+                        placeholder="Doe"
+                        value={lastName}
+                        setValue={setLastName}
+                      />
+                    </div>
+                  </div>
+
+                  <Input
+                    htmlFor="sellerEmail"
+                    label="Email"
+                    type="email"
+                    placeholder="name@example.com"
+                    value={email}
+                    setValue={setEmail}
+                  />
+
+                  <Input
+                    htmlFor="businessName"
+                    label="Business Name"
+                    type="text"
+                    placeholder="Your business name"
+                    value={businessName}
+                    setValue={setBusinessName}
+                  />
+
+                  <Input
+                    htmlFor="businessAddress"
+                    label="Business Address"
+                    type="text"
+                    placeholder="Your business address"
+                    value={businessAddress}
+                    setValue={setBusinessAddress}
+                  />
+
+                  <Input
+                    htmlFor="phoneNumber"
+                    label="Phone Number"
+                    type="text"
+                    placeholder="Your phone number"
+                    value={phoneNumber}
+                    setValue={setPhoneNumber}
+                  />
+
+                  <div className="space-y-1">
+                    <label
+                      htmlFor="storeImage"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Store Image
+                    </label>
+                    <div className="flex items-center mt-1">
+                      <input
+                        type="file"
+                        id="storeImage"
+                        ref={fileInputRef}
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-200"
+                      >
+                        Choose file
+                      </button>
+                      <span className="ml-3 text-sm text-gray-600">
+                        {storeImage ? storeImage.name : "No file chosen"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <Input
+                    htmlFor="sellerPassword"
+                    label="Password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    setValue={setPassword}
+                  />
+
+                  <Input
+                    htmlFor="sellerConfirmPassword"
+                    label="Confirm Password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={confirmPassword}
+                    setValue={setConfirmPassword}
+                  />
+
+                  <div className="flex items-center space-x-2 mt-2">
+                    <input
+                      type="checkbox"
+                      id="sellerTerms"
+                      checked={termsAccepted}
+                      onChange={() => setTermsAccepted(!termsAccepted)}
+                      className="h-4 w-4 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
+                    />
+                    <label
+                      htmlFor="sellerTerms"
+                      className="text-sm leading-none text-gray-600"
+                    >
+                      I agree to the{" "}
+                      <Link
+                        to="/terms"
+                        className="text-orange-500 hover:underline"
+                      >
+                        terms and conditions
+                      </Link>
+                    </label>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-4 rounded-md mt-4 flex items-center justify-center gap-2"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        Creating account...
+                      </>
+                    ) : (
+                      <>
+                        <UserPlus className="h-4 w-4" />
+                        Register as Seller
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </TabsContent>
+            </div>
+          </Tabs>
+        </div>
+
+        <div className="border-t border-gray-100 p-6 text-center">
+          <p className="text-sm text-gray-600">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-orange-500 hover:text-orange-700 font-medium"
+            >
+              Sign in
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 }

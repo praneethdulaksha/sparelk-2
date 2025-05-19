@@ -1,207 +1,242 @@
-import { useState, useEffect } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight, faStar, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
-import { faStarHalfStroke } from '@fortawesome/free-solid-svg-icons';
-import { faStar as faEmptyStar } from '@fortawesome/free-regular-svg-icons';
-import { useDispatch, useSelector } from 'react-redux';
-import Swal from 'sweetalert2';
-import { RootState } from '../store/store';
-import { api } from '../api/api';
-import { cartActions } from '../reducers/cartSlice';
-import { EUserRole, TItem } from '../types';
-import RatingsReviews from '../components/items/RatingsReviews';
-import Model3D from '../components/items/Model3D';
+/**
+ * Item Page Component
+ *
+ * Displays detailed information about a product item including images,
+ * description, pricing, and customer reviews. Handles item purchase
+ * and add-to-cart functionality.
+ *
+ * @module Pages/Item
+ */
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { ChevronRight } from "lucide-react";
+import { toast } from "sonner";
+import { RootState } from "@/store/store";
+import { api } from "@/api/api";
+import { cartActions } from "@/reducers/cartSlice";
+import { EUserRole, TItem, TReview } from "@/types";
+import { Button } from "@/components/ui/button";
+import { ImageGallery } from "@/components/product/ImageGallery";
+import { ProductInfo } from "@/components/product/ProductInfo";
+import { ProductPricing } from "@/components/product/ProductPricing";
+import { ProductDescription } from "@/components/product/ProductDescription";
+import { ProductRatings } from "@/components/product/ProductRatings";
 
+/**
+ * Item page component
+ * Displays detailed product information and purchase options
+ *
+ * @returns {JSX.Element} Item page component
+ */
 function Item() {
-    const params = useParams();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const itemId = params.itemId;
-    const { cartId } = useSelector((state: RootState) => state.cart);
-    const { user } = useSelector((state: RootState) => state.user);
-    const [item, setItem] = useState<TItem | null>(null);
-    const [itemQty, setItemQty] = useState(1);
-    const [items, setAllItems] = useState([]);
-    const [is3DView, setIs3DView] = useState(false);
-    const [loading, setLoading] = useState(true);
+  const params = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const itemId = params.itemId;
+  const { cartId } = useSelector((state: RootState) => state.cart);
+  const { user } = useSelector((state: RootState) => state.user);
 
+  // State for item data and UI
+  const [item, setItem] = useState<TItem | null>(null);
+  const [itemQty, setItemQty] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [reviews, setReviews] = useState<TReview[]>([]);
 
+  /**
+   * Fetches item details from API
+   */
+  function getItemRequest() {
+    setLoading(true);
+    api
+      .get("item/" + itemId)
+      .then((result) => {
+        setItem(result.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  }
 
-    function getItemRequest() {
-        setLoading(true);
-        api.get('item/' + itemId).then(result => {
-            setItem(result.data.data)
-            setLoading(false);
-        }).catch(err => { console.log(err); setLoading(false) });
-    }
+  /**
+   * Adds current item to cart with selected quantity
+   */
+  function addItemCart() {
+    api
+      .put(`cart/add/${cartId}`, { itemId: itemId, qty: itemQty })
+      .then(() => {
+        dispatch(cartActions.addItemToCart({ itemId: itemId, qty: itemQty }));
+        toast.success("Item added to cart", {
+          action: {
+            label: "View Cart",
+            onClick: () => navigate("/cart"),
+          },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Failed to add item to cart");
+      });
+  }
 
-    function getAllItems() {
-        api.get('item/all').then(result => {
-            setAllItems(result.data.data)
-        }).catch(err => console.log(err));
-    }
+  /**
+   * Fetches reviews for the current item
+   * @param {string | undefined} id - Item ID
+   */
+  function getReviews(id: string | undefined) {
+    if (!id) return;
 
-    function addItemCart() {
-        api.put(`cart/add/${cartId}`, { itemId: itemId, qty: itemQty }).then(result => {
-            // console.log(result.data.data);
-            dispatch(cartActions.addItemToCart({ itemId: itemId, qty: itemQty }))
-            addedToCartAlert();
-        }).catch(err => console.log(err));
-    }
+    api
+      .get("order/reviews/" + id)
+      .then((result) => {
+        setReviews(result.data.data);
+      })
+      .catch((err) => console.error(err));
+  }
 
-    const addedToCartAlert = () => {
-        Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Item Added to Cart",
-            showConfirmButton: true,
-            confirmButtonText: "View Cart",
-            timer: 3000
-        }).then(result => {
-            if (result.isConfirmed) {
-                navigate(`/cart`);
-            }
-        })
-    }
-    useEffect(() => {
-        getItemRequest();
-        getAllItems();
-        window.scrollTo({ top: 0 });
-    }, [params.itemId])
+  /**
+   * Load item data and reviews when component mounts or item ID changes
+   */
+  useEffect(() => {
+    getItemRequest();
+    getReviews(itemId);
+    window.scrollTo({ top: 0 });
+  }, [params.itemId]);
 
-    return loading ? (
-        <div className="flex items-center justify-center flex-grow min-h-screen w-screen">
-            <h1 className='text-gray-400 animate-pulse text-3xl'>Loading...</h1>
+  /**
+   * Navigates to order placement page for direct purchase
+   */
+  const handleBuyNow = () => {
+    navigate(`/item/place-order/${item?._id}/${itemQty}`);
+  };
+
+  /**
+   * Updates selected quantity when user changes it
+   * @param {number} quantity - New quantity value
+   */
+  const handleQuantityChange = (quantity: number) => {
+    setItemQty(quantity);
+  };
+
+  // Loading state display
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center flex-grow min-h-screen w-full">
+        <h1 className="text-gray-400 animate-pulse text-3xl">Loading...</h1>
+      </div>
+    );
+  }
+
+  // Error state when item not found
+  if (!item) {
+    return (
+      <div className="flex items-center justify-center flex-grow min-h-screen w-full">
+        <h1 className="text-gray-400">Item Not Found</h1>
+      </div>
+    );
+  }
+
+  // Calculate price after discount
+  const discountedPrice = Math.round(
+    item.price * ((100 - item.discount) / 100)
+  );
+  const deliveryFee = 100; // Fixed for now
+
+  return (
+    <main className="container max-w-7xl mx-auto px-4 py-8">
+      {/* Breadcrumb Navigation */}
+      <nav className="flex items-center text-sm mb-6">
+        <Link to="/" className="text-slate-500 hover:text-orange-500">
+          Home
+        </Link>
+        <ChevronRight className="h-4 w-4 text-slate-400 mx-1" />
+        <Link to="/shop" className="text-slate-500 hover:text-orange-500">
+          Shop
+        </Link>
+        <ChevronRight className="h-4 w-4 text-slate-400 mx-1" />
+        <Link
+          to={`/shop?category=${item.category}`}
+          className="text-slate-500 hover:text-orange-500"
+        >
+          {item.category}
+        </Link>
+        <ChevronRight className="h-4 w-4 text-slate-400 mx-1" />
+        <span className="text-slate-900 font-medium truncate">{item.name}</span>
+      </nav>
+
+      {/* Product Layout - Image and Details */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
+        <div>
+          <ImageGallery
+            mainImage={`http://localhost:3000/images/${item.image}`}
+            additionalImages={[]}
+            images360={item.images360}
+          />
         </div>
-    )
-        : (item ? (
-            <main className="container xl:max-w-7xl flex-grow py-5 px-2 md:px-0">
 
-                <div className=' flex items-center gap-3'>
-                    <Link className="text-link-color" to={`/items/category/${item.category}`}>{item.category}</Link>
-                    <FontAwesomeIcon icon={faAngleRight} className='mt-1 text-xl' />
-                    <label className='truncated'>{item.name}</label>
-                </div>
+        <div className="space-y-8">
+          {/* Product Information */}
+          <ProductInfo
+            name={item.name}
+            brand={item.brand}
+            condition={item.condition}
+            vehicleModel={item.vehicleModel}
+            rating={item.rating}
+            reviewCount={reviews.length}
+            storeId={item.store?._id}
+            storeName={item.store?.name}
+          />
 
-                <div className='flex flex-col md:flex-row bg-pane-color rounded-2xl overflow-hidden mt-3 pb-3'>
-                    <div className='flex items-center justify-center md:w-72 lg:w-96'>
-                        <div className='aspect-square h-72 lg:h-96 md:w-full relative'>
-                            <button
-                                onClick={() => setIs3DView(!is3DView)}
-                                className="absolute top-3 right-3 z-10"
-                            >
-                                <div
-                                    className={`font-bold text-xl rounded-lg border-2 aspect-square px-1 py-1 border-dashed bg-black/70 ${is3DView ? "text-white" : "text-gray-400"
-                                        }`}
-                                >
-                                    3D
-                                </div>
-                            </button>
-                            {
-                                is3DView ? <div className='w-full h-full'>
-                                    {/* add spare part 3d model to view */}
-                                    {/* <Shirt3D/> */}
-                                    <Model3D />
-                                </div>
-                                    : <div style={{ backgroundImage: `url(http://localhost:3000/images/${item.image})` }} className='w-full h-full bg-cover bg-center' />
-                            }
-                        </div>
-                        {/* <div className='aspect-square h-72 lg:h-96 md:w-full bg-cover bg-center' style={{ backgroundImage: `url(/tires-category.png)` }}></div> */}
-                    </div>
+          {/* Product Pricing and Quantity Selection */}
+          <ProductPricing
+            price={discountedPrice}
+            originalPrice={item.price}
+            discount={item.discount}
+            quantity={itemQty}
+            stockCount={item.stock}
+            deliveryFee={deliveryFee}
+            deliveryDate={{ start: "Feb 26", end: "Feb 29" }}
+            onQuantityChange={handleQuantityChange}
+          />
 
-                    <div className='flex flex-grow flex-col px-5 pt-3'>
-                        <label className='text-xl lg:text-2xl'>{item.name}</label>
-                        <span className='text-sm lg:text-base text-gray-400'>Condition: <b>{item.condition}</b></span>
-                        <span className='text-sm lg:text-base text-gray-400'>Brand: <b>{item.brand || 'n/a'}</b></span>
-                        <span className='text-sm lg:text-base text-gray-400'>Vehicle Model: <b>{item.vehicleModel || 'n/a'}</b></span>
-                        <div className=' flex justify-between text-gray-700 border-zinc-300 py-5 border-b'>
-                            <span className='text-sm lg:text-base'>
-                                {
-                                    Array(1, 2, 3, 4, 5).map((n, i) => {
-                                        return (
-                                            <FontAwesomeIcon key={i} icon={(item.rating > i && item.rating < n) ? faStarHalfStroke : (item.rating >= n) ? faStar : faEmptyStar} className=' text-black' />
-                                        )
-                                    })
-                                }
-                                <label className='ml-2'>{item.rating}  |  {item.sold} Sold</label>
-                            </span>
-                            <span className='text-sm lg:text-base'>Store : <Link className='text-link-color' to={`/store/${item.store?._id}`}>{item.store?.name}</Link></span>
-                        </div>
-
-                        <div className='flex flex-col text-gray-700 border-zinc-300 pt-5 pb-10 border-b'>
-                            <label className="my-3 text-3xl lg:text-4xl text-price-color">Rs.{parseFloat(item.price * ((100 - item.discount) / 100) + "").toFixed(2)}</label>
-                            <span className="text-lg lg:text-xl">
-                                <label className="line-through">Rs.{item.price}</label>
-                                <label className="ml-3">-{item.discount}%</label>
-                            </span>
-                        </div>
-
-                        <div className="flex flex-col sm:flex-row sm:gap-3 sm:items-center pt-5">
-                            <div className='flex'>
-                                <label className='w-32 text-lg lg:text-xl mb-3 text-zinc-600'>Quantity</label>
-                                <button disabled={itemQty == 1 ? true : false} className='scale-75 lg:scale-100'><FontAwesomeIcon icon={faMinus} className='border p-1 border-black rounded-full aspect-square' onClick={() => setItemQty(itemQty > 1 ? itemQty - 1 : 1)} /></button>
-                                <label className='px-5 text-lg lg:text-xl mb-2'>{itemQty}</label>
-                                <button disabled={itemQty == item.stock ? true : false} className='scale-75 lg:scale-100'><FontAwesomeIcon icon={faPlus} className='border p-1 border-black rounded-full aspect-square' onClick={() => setItemQty(itemQty < item.stock ? itemQty + 1 : item.stock)} /></button>
-                            </div>
-                            <label className='text-sm text-zinc-500 sm:ml-3 block sm:inline-block' >Only Left {item.stock} stock(s)</label>
-                        </div>
-                        <div className='flex mt-2 text-lg lg:text-xl'>
-                            <label className='w-32 mt-1 text-zinc-600'>Delivery Fee</label>
-                            <label className='px-4'>Rs.{'100.00'}</label>
-                        </div>
-                        <label className='text-sm text-zinc-500 -mt-1' >(Delivery By Feb 26 ~ Feb 29)</label>
-
-                        {
-                            user?.role !== EUserRole.SELLER && <div className='flex flex-col sm:flex-row items-center justify-center px-5 pt-3 gap-3 sm:gap-16 sm:h-16 sm:my-5'>
-                                <Link to={`/item/place-order/${item._id}/${itemQty}`} className='bg-main text-light rounded-md py-1 px-3 shadow-lg w-full sm:w-fit'><button className='h-full w-full text-center'>
-                                    Buy Now
-                                </button></Link>
-                                <button className='bg-light text-main border border-main rounded-md py-1 px-3 shadow-lg w-full sm:w-fit'
-                                    onClick={addItemCart}
-                                >Add to Cart</button>
-                            </div>
-                        }
-                    </div>
-                </div>
-
-                <div className=''>
-                    {item && <RatingsReviews item={item} />}
-
-                    <div>
-                        <h2 className="px-5 mt-12 mb-5 text-2xl md:text-3xl lg:text-4xl">Description</h2>
-                        {/* <p className='bg-pane-color rounded-2xl text-lg md:text-2xl p-5'>    {item?.description}</p> */}
-                        <textarea
-                            className='w-full bg-pane-color rounded-2xl text-lg md:text-2xl p-5 border border-gray-700'
-                            value={item?.description}
-                            style={{ resize: 'none' }}
-                            rows={item?.description.split('\n').length + 1}
-                            readOnly
-                        />
-                    </div>
-
-                    {/* <div className="relative mt-5">
-                    <h2 className="px-5 mt-3 text-2xl md:text-4xl">Related Items</h2>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 place-items-center gap-3">
-                        {
-                            items.map((item, i) => {
-                                return <ItemCard key={i} itm={item} />
-                            })
-                        }
-                    </div>
-                    <div className='flex justify-center items-center mt-5'>
-                        <Link to="/items/all">
-                            <button className="border border-black px-9 rounded-md bg-pane-color text-lg">Shop More</button>
-                        </Link>
-                    </div>
-                </div> */}
-                </div>
-            </main>
-        ) : (
-            <div className="flex items-center justify-center flex-grow min-h-screen w-screen">
-                <h1 className='text-gray-400'>Item Not Found</h1>
+          {/* Action Buttons - Only show for buyers */}
+          {user?.role !== EUserRole.SELLER && (
+            <div className="flex flex-col sm:flex-row gap-4 pt-6">
+              <Button
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+                onClick={handleBuyNow}
+              >
+                Buy Now
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full border-orange-500 text-orange-500 hover:bg-orange-50"
+                onClick={addItemCart}
+              >
+                Add to Cart
+              </Button>
             </div>
-        ))
+          )}
+        </div>
+      </div>
+
+      {/* Product Description Section */}
+      <div className="mb-12">
+        <ProductDescription description={item.description} />
+      </div>
+
+      {/* Reviews Section */}
+      <div className="mb-16">
+        <ProductRatings
+          rating={item.rating}
+          reviewCount={reviews.length}
+          reviews={reviews}
+        />
+      </div>
+    </main>
+  );
 }
 
-export default Item
+export default Item;
