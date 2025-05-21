@@ -104,7 +104,6 @@ const AddItemForm = () => {
     isNewItem ? saveItem(formData) : updateItem(formData);
   };
 
-<<<<<<< HEAD
   function saveItem(formData: any) {
     api
       .post("item", formData, {
@@ -129,55 +128,6 @@ const AddItemForm = () => {
           title: "Error",
           text: err.response.data.err,
           showConfirmButton: true,
-=======
-    function saveItem(formData: any) {
-        api.post('item', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then(result => {
-            console.log(result.data.data);
-            navigate('/manage-items')
-            Swal.fire({
-                icon: 'success',
-                title: 'Item Added Successfully',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }).catch(err => {
-            console.log(err);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: err.response.data.err,
-                showConfirmButton: true,
-            });
-        });
-    }
-
-    function updateItem(formData: any) {
-        api.put('item/' + params.itemId, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then(result => {
-            console.log(result);
-            navigate('/manage-items')
-            Swal.fire({
-                icon: 'success',
-                title: 'Item Updated Successfully',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }).catch(err => {
-            console.log(err);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: err.response.data.err,
-                showConfirmButton: true,
-            });
->>>>>>> 5ec3dfa601f50fc9ee750dd7b37bb6557d013672
         });
       });
   }
@@ -293,9 +243,8 @@ const AddItemForm = () => {
               name="image"
               accept="image/*"
               onChange={handleChange}
-              className={`w-80 h-9 ${
-                validations.image ? "bg-green-100" : "bg-red-100"
-              } rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
+              className={`w-80 h-9 ${validations.image ? "bg-green-100" : "bg-red-100"
+                } rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
             />
           </div>
           <div className="grid grid-cols-4 gap-3">
@@ -312,9 +261,8 @@ const AddItemForm = () => {
                 name="code"
                 value={itemData.code}
                 onChange={handleChange}
-                className={`w-full h-9 uppercase ${
-                  validations.code ? "bg-green-100" : "bg-red-100"
-                } px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
+                className={`w-full h-9 uppercase ${validations.code ? "bg-green-100" : "bg-red-100"
+                  } px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
               />
             </div>
             <div className="mb-4 col-span-3">
@@ -330,9 +278,8 @@ const AddItemForm = () => {
                 name="name"
                 value={itemData.name}
                 onChange={handleChange}
-                className={`w-full h-9 ${
-                  validations.name ? "bg-green-100" : "bg-red-100"
-                } px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
+                className={`w-full h-9 ${validations.name ? "bg-green-100" : "bg-red-100"
+                  } px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
               />
             </div>
             <div className="mb-4 col-span-2 sm:col-span-1">
@@ -348,9 +295,8 @@ const AddItemForm = () => {
                 name="stock"
                 value={itemData.stock}
                 onChange={handleChange}
-                className={`w-full h-9 ${
-                  validations.stock ? "bg-green-100" : "bg-red-100"
-                } border px-2 border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
+                className={`w-full h-9 ${validations.stock ? "bg-green-100" : "bg-red-100"
+                  } border px-2 border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
               />
             </div>
             <div className="mb-4 col-span-2 sm:col-span-1">
@@ -366,9 +312,8 @@ const AddItemForm = () => {
                 name="discount"
                 value={itemData.discount}
                 onChange={handleChange}
-                className={`w-full h-9 ${
-                  validations.discount ? "bg-green-100" : "bg-red-100"
-                } px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
+                className={`w-full h-9 ${validations.discount ? "bg-green-100" : "bg-red-100"
+                  } px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
               />
             </div>
             <div className="mb-4 col-span-4 sm:col-span-2">
@@ -384,9 +329,8 @@ const AddItemForm = () => {
                 name="price"
                 value={itemData.price}
                 onChange={handleChange}
-                className={`w-full h-9 ${
-                  validations.price ? "bg-green-100" : "bg-red-100"
-                } px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
+                className={`w-full h-9 ${validations.price ? "bg-green-100" : "bg-red-100"
+                  } px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
               />
             </div>
             <div className="mb-4 col-span-4">
@@ -401,9 +345,8 @@ const AddItemForm = () => {
                 name="description"
                 value={itemData.description}
                 onChange={handleChange}
-                className={`w-full ${
-                  validations.description ? "bg-green-100" : "bg-red-100"
-                } border p-2 border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
+                className={`w-full ${validations.description ? "bg-green-100" : "bg-red-100"
+                  } border p-2 border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
               ></textarea>
             </div>
             {/* radio buttons for condition new or used */}
@@ -459,9 +402,8 @@ const AddItemForm = () => {
                 name="category"
                 value={itemData.category}
                 onChange={handleChange}
-                className={`w-full h-9 ${
-                  validations.category ? "bg-green-100" : "bg-red-100"
-                } border px-2 border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
+                className={`w-full h-9 ${validations.category ? "bg-green-100" : "bg-red-100"
+                  } border px-2 border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
               >
                 <option value="">Select a category</option>
                 {categories.map((category) => (
@@ -483,9 +425,8 @@ const AddItemForm = () => {
                 name="brand"
                 value={itemData.brand}
                 onChange={handleChange}
-                className={`w-full h-9 ${
-                  validations.brand ? "bg-green-100" : "bg-red-100"
-                } border px-2 border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
+                className={`w-full h-9 ${validations.brand ? "bg-green-100" : "bg-red-100"
+                  } border px-2 border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
               >
                 <option value="">Select Brand</option>
                 {brands.map(({ brand }) => (
@@ -509,9 +450,8 @@ const AddItemForm = () => {
                 placeholder="all or specific model"
                 value={itemData.vehicleModel}
                 onChange={handleChange}
-                className={`w-full h-9 ${
-                  validations.vehicleModel ? "bg-green-100" : "bg-red-100"
-                } px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
+                className={`w-full h-9 ${validations.vehicleModel ? "bg-green-100" : "bg-red-100"
+                  } px-2 border border-black rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200`}
               />
             </div>
           </div>

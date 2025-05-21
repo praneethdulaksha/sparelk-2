@@ -1,16 +1,8 @@
-<<<<<<< HEAD
 import express, { Request, Response } from "express";
 import userController from "../controller/userController";
 import { getJwtToken } from "../util/utilMatters";
 import jwt from "jsonwebtoken";
 import multer from "multer";
-=======
-import express, { Request, Response } from 'express';
-import userController from '../controller/userController';
-import { getJwtToken } from '../util/utilMatters';
-import jwt from 'jsonwebtoken';
-import multer from 'multer';
->>>>>>> 5ec3dfa601f50fc9ee750dd7b37bb6557d013672
 
 const router = express.Router();
 
@@ -57,7 +49,6 @@ router.put("/verify-email/:code", async (req: Request, res: Response) => {
   }
 });
 
-<<<<<<< HEAD
 router.put("/:id", async (req: Request, res: Response) => {
   try {
     const result = await userController.update(req.params.id, req.body);
@@ -65,26 +56,6 @@ router.put("/:id", async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).json({ success: false, err: err });
   }
-=======
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'assets/images/');
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now();
-        cb(null, 'item_' + uniqueSuffix + '.png');
-    }
-});
-const upload = multer({ storage: storage });
-router.post('/register', upload.single('image'), async (req: Request, res: Response) => {
-    try {
-        const result = await userController.register(req.body);
-        res.status(201).json({ success: true, data: result });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, err: err });
-    }
->>>>>>> 5ec3dfa601f50fc9ee750dd7b37bb6557d013672
 });
 
 router.delete("/:id", async (req: Request, res: Response) => {

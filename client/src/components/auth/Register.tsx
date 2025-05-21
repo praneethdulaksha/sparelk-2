@@ -24,6 +24,7 @@ export default function Register() {
   const [businessAddress, setBusinessAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [storeImage, setStoreImage] = useState<File | null>(null);
+  const [brPdf, setBrPdf] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [isTermsOpen, setTermsOpen] = useState(false);
@@ -38,32 +39,15 @@ export default function Register() {
     }
   };
 
-<<<<<<< HEAD
+  const handleBrFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setBrPdf(e.target.files[0]);
+    }
+  };
+
   const handleBuyerSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
-=======
-                await api.post('store', fData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }
-                );
-            }
-            if (res.status === 201) {
-                Swal.fire({
-                    icon: "success",
-                    title: 'Verify Your Email Address',
-                    text: 'Verification link sent to your email address. Please verify your email address.',
-                })
-                setTimeout(() => { }, 500)
-                setTermsOpen(true);
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    };
->>>>>>> 5ec3dfa601f50fc9ee750dd7b37bb6557d013672
 
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
       toast.error("Please fill in all required fields");
@@ -142,6 +126,11 @@ export default function Register() {
       return;
     }
 
+    if (!brPdf) {
+      toast.warning("Please upload Business Registraction file");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -161,6 +150,7 @@ export default function Register() {
         fData.append("phone", phoneNumber);
         fData.append("userId", res.data.data.user._id);
         fData.append("image", storeImage);
+        fData.append("brPdf", brPdf);
 
         await api.post("store", fData, {
           headers: {
@@ -420,6 +410,31 @@ export default function Register() {
                       </button>
                       <span className="ml-3 text-sm text-gray-600">
                         {storeImage ? storeImage.name : "No file chosen"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label htmlFor="brPdf" className="block text-sm font-medium text-gray-700">
+                      Business Registration (PDF)
+                    </label>
+                    <div className="flex items-center mt-1">
+                      <input
+                        type="file"
+                        id="brPdf"
+                        accept="application/pdf"
+                        onChange={handleBrFileChange}
+                        className="hidden"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => document.getElementById("brPdf")?.click()}
+                        className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-200"
+                      >
+                        Choose file
+                      </button>
+                      <span className="ml-3 text-sm text-gray-600">
+                        {brPdf ? brPdf.name : "No file chosen"}
                       </span>
                     </div>
                   </div>
