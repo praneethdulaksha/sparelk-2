@@ -7,13 +7,16 @@
 ## 📦 Features
 
 - 🔍 Advanced product filtering (category, brand, condition, price)
+- 👁️‍🗨️ AI chatbot responding for all automobile queries
 - 🛒 Cart and secure checkout flow
 - 👨‍🔧 Buyer & Seller user roles
 - 🏪 Store creation and management
 - ✉️ Email verification on registration
 - ⭐ Reviews with seller feedback
 - 📄 Seller document (BR PDF) upload
+- ⎋  360 view images upload(future implement)
 - 📱 Responsive design for mobile and desktop
+  
 
 ---
 
