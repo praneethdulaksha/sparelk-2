@@ -53,7 +53,7 @@ SpareLK simplifies the spare part search and purchase process by bringing verifi
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/sparelk-2.git
+   git clone https://github.com/praneethdulaksha/sparelk-2.git
    cd sparelk-2
 
 
