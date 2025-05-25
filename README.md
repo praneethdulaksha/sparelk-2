@@ -1,4 +1,5 @@
-# 🚗 SpareLK - Vehicle Spare Parts Marketplace
+# 🚗 SpareLK - AI integrated ecommerce platform specialized for automobile supplychain optimization in srilanka
+
 
 **SpareLK** is a web-based platform that connects **buyers and sellers of vehicle spare parts** across Sri Lanka. Built on the MERN stack with TypeScript, SpareLK offers a modern, reliable, and user-friendly way to buy and sell new or used auto parts online.
 
